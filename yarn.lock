@@ -5352,6 +5352,11 @@ react-native-pager-view@^5.4.9:
   resolved "https://registry.npmjs.org/react-native-pager-view/-/react-native-pager-view-5.4.9.tgz"
   integrity sha512-D6tzxpwMGdl6CXgtskGWhKRc5cJakCazESRGt7PkqnpyiH3N35ft1KmR82pCSQetAFlytFiToeu3a/dG5CELvA==
 
+react-native-really-awesome-button@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/react-native-really-awesome-button/-/react-native-really-awesome-button-1.6.0.tgz#71700f960aa6d419058beff177c7b6cf18694ef7"
+  integrity sha512-Lar69MRWnCqO0CgOIk/s63P3bS0xKqeMi/m8TDul14tRkYuOW55ZaF4pBeL13GodI+3Cw0dbihwighsQ+obXSA==
+
 react-native-tab-view@^3.1.1:
   version "3.1.1"
   resolved "https://registry.npmjs.org/react-native-tab-view/-/react-native-tab-view-3.1.1.tgz"

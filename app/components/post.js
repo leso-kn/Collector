@@ -1,16 +1,15 @@
 import {Button, Image, Text, TouchableHighlight, TouchableNativeFeedback, TouchableOpacity, View} from "react-native";
 import React, {useEffect, useReducer, useState} from 'react';
 import TimeAgo from 'javascript-time-ago'
-// English.
 import en from 'javascript-time-ago/locale/en'
 import ImageView from "react-native-image-viewing";
 import FastImage from 'react-native-fast-image'
 import Icon from 'react-native-vector-icons/AntDesign';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
-import ifWrapper from "./utils"
-import {FIRST_POST, PREVIEW_POST, OTHER_POST, EMBEDDED_POST} from "./constants";
-import {findService} from "./findService";
+import ifWrapper, {reducer} from "../utils"
+import {FIRST_POST, PREVIEW_POST, OTHER_POST, EMBEDDED_POST} from "../constants";
+import {findService} from "../findService";
 
 TimeAgo.addLocale(en)
 const timeAgo = new TimeAgo('en-US')
@@ -23,13 +22,6 @@ const Post = (props) => {
     const [showReplies, setShowReplies] = useState(0);
     const [showLoadMore, setShowLoadMore] = useState(0);
     const [pn, setPn] = useState(0)
-    const reducer = (data, action) => {
-        let newData = {...data}
-        for (let i = 0; i < action.field.length; i++) {
-            newData[action.field[i]] = action.val[i]
-        }
-        return newData
-    }
     const [data, dispatch] = useReducer(reducer, {})
     useEffect(() => {
         findService(props.url, props.id, props.data).then(res => {
@@ -213,7 +205,7 @@ const Post = (props) => {
             </View>
             <View style={{minHeight: 35}}>
                 {ifWrapper(props.type === FIRST_POST && data.title, titleElement)}
-                <Text numberOfLines={4} ellipsizeMode='tail'
+                <Text numberOfLines={props.type === PREVIEW_POST ?4:undefined} ellipsizeMode='tail'
                       style={{
                           color: props.type === FIRST_POST ? "gray" : "black",
                           fontWeight: "400",
