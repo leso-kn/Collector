@@ -94,7 +94,7 @@ const data1 = {
 
 const Feed = () => (
     <View style={{ flex: 1, backgroundColor: '#ff4081' }} >
-        <Post data={data} isFirstPost={true} depth={0}/>
+        <Post data={data} isFirstPost={true} depth={0} url={"https://t.bilibili.com/683447829539061785?spm_id_from=333.999.0.0"}/>
         <FlatList data={[1, 2, 3, 4]} renderItem={({item}) => <Text>{item}</Text>}>
         </FlatList>
         <Button title={"test1"} onPress={()=>alert("test")}/>
@@ -103,7 +103,7 @@ const Feed = () => (
   
 const Subscription = () => (
 <View style={{ flex: 1, backgroundColor: '#ececec' }} >
-    <FullPost data={data} data1={data1}/>
+    <FullPost url={"https://t.bilibili.com/683540957314941016"}/>
 </View>
 );
 
@@ -142,6 +142,9 @@ const Index = () => {
   
     return (
       <View style={{flex: 1}}>
+          {/*<Text>*/}
+          {/*    test*/}
+          {/*</Text>*/}
         <View style={{height:0.05*layout.height, alignItems:'center', backgroundColor:"#c9d8c5", flexDirection:'row'}}>
           <Text style={{fontSize:18, marginLeft: 0.03* layout.width}}>{routes[index]['title']}</Text>
           <Text style={{right:20, position:"absolute"}}>Search</Text>

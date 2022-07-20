@@ -1,59 +1,47 @@
 import Post from "./post";
-import React from 'react';
-import {ScrollView, Text, View} from "react-native";
-import {FIRST_POST, OTHER_POST} from "./constants";
+import React, {useEffect, useReducer, useRef, useState} from 'react';
+import {FlatList, ScrollView, Text, View} from "react-native";
+import {FIRST_POST, HOT_FIRST, OLD_FIRST, OTHER_POST} from "./constants";
+import {findService} from "./findService";
+import {Picker} from '@react-native-picker/picker';
 
-const data1 = {
-    title:"",
-    name:"嘉然的狗",
-    subname:"",
-    content:"呃呃",
-    avatar:"https://i.imgur.com/UrR8FiA.jpeg",
-    imagePreview:"",
-    images:[],
-    commentNum:1,
-    time: new Date()-1000000,
-    isFirstPost: false,
-    prefix: "#1",
-    replies: {
-        title:"",
-        name:"嘉然的狗",
-        subname:"",
-        content:"呃呃",
-        avatar:"https://i.imgur.com/UrR8FiA.jpeg",
-        imagePreview:"",
-        images:[],
-        commentNum:1,
-        time: new Date()-1000000,
-        isFirstPost: false,
-        prefix: "#1",
-        replies: {
-            title:"",
-            name:"嘉然的狗",
-            subname:"",
-            content:"呃呃",
-            avatar:"https://i.imgur.com/UrR8FiA.jpeg",
-            imagePreview:"",
-            images:[],
-            commentNum:1,
-            time: new Date()-1000000,
-            isFirstPost: false,
-            prefix: "#1"
-        }
+const FullPost = (props) => {
+    const reducer = (state, action) => {
+        return [...state, ...action.data]
     }
-}
-const testData = [
-    data1, data1
-]
+    const [pn, setPn] = useState(1)
+    const [hasMore, setHasMore] = useState(true)
+    const [comments, dispatch] = useReducer(reducer, [])
+    const [sortType, setSortType] = useState(HOT_FIRST)
+    const parentID = useRef(null);
 
-const FullPost = (props)=>{
+    useEffect(() => {
+        findService(props.url).then(res => {
+            parentID.current = res.getID()
+            return res.getComments(pn)
+        }).then(res => {
+            //TODO: show loading when fetching
+            res.data?.data?.replies?.length && dispatch({data: res.data.data.replies})
+            setHasMore(res.data?.data?.replies?.length === 20)
+        })
+    }, [pn])
+    const head = (
+        <View>
+            <View style={{marginTop: 5, marginBottom: 10, borderBottomColor: "gray", borderBottomWidth: 0.3}}>
+                <Post type={FIRST_POST} depth={0} url={props.url}/>
+            </View>
+        </View>
+    )
+    const renderFunc = (comment) => {
+        return (<Post data={comment.item} parentID={parentID.current} type={OTHER_POST} depth={0} url={"biliComment"}/>)
+    }
     return (
-        <ScrollView>
-            <Post data={props.data} type={FIRST_POST} depth={0}/>
-            {testData.map((comment, i)=><Post data={comment} type={OTHER_POST} depth={0}/>)}
-            <View style={{height:50}}/>
-        </ScrollView>
-
+        <FlatList data={comments} renderItem={renderFunc} ListFooterComponent={(<View style={{height: 50}}/>)}
+                  ListHeaderComponent={head}
+                  onEndReached={() => hasMore && setPn(pn + 1)}
+                  onEndReachedThreshold={0.5}
+                  ItemSeparatorComponent={() => (<View style={{backgroundColor: "#dad7d7", height: 0.4}}/>)}
+        />
     )
 }
 export default FullPost;
