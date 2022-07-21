@@ -1,5 +1,6 @@
 import axios from "axios";
 import {requestOption} from "../BiliSpaceService";
+import {spaceApiUrl} from "../BiliSpaceLinks";
 
 export class BiliChannelExtractor {
     data
@@ -40,5 +41,8 @@ export class BiliChannelExtractor {
     }
     getHeadImgRatio(){
         return 1/6.4
+    }
+    getPosts(lastID=0){
+        return axios.get(spaceApiUrl + this.getIdentifyName() + `&offset_dynamic_id=${lastID}`)
     }
 }

@@ -32,9 +32,8 @@ export class BiliPostExtractor {
                 //TODO: Other cases
             case 2:
             case 4:
-                return this.card.desc.user_profile.info.uname
             default:
-                return this.card.user.uname
+                return this.card.desc.user_profile.info.uname
         }
     }
 
@@ -43,9 +42,8 @@ export class BiliPostExtractor {
             case 1:
             case 2:
             case 4:
-                return this.card.desc.user_profile.info.face
             default:
-                return this.card.user.face
+                return this.card.desc.user_profile.info.face
         }
     }
 
@@ -77,6 +75,8 @@ export class BiliPostExtractor {
                 return this.contentCard.item.content
             case 2:
                 return this.contentCard.item.description
+            case 8:
+                return this.contentCard.desc + "\n" + this.contentCard.jump_url
             default:
                 return ""
         }
@@ -131,6 +131,14 @@ export class BiliPostExtractor {
                 requestUrl = commentApiUrl + `type=17&oid=${this.id}&pn=${pn}&sort=${sort}`
         }
         return axios.get(requestUrl, requestOption)
+    }
+    getHighLightUrl(){
+        switch (this.type){
+            case 8:
+                return this.contentCard.jump_url
+            default:
+                return ""
+        }
     }
 }
 

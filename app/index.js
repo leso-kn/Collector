@@ -25,7 +25,6 @@ import Post from "./components/post";
 import FullPost from "./components/fullPost";
 import Channel from "./components/channel";
 
-// alert(JSON.stringify(Dimensions.get("screen")))
 
 const Feed = () => (
     <View style={{ flex: 1, backgroundColor: '#ff4081' }} >
@@ -82,18 +81,19 @@ const Index = () => {
       <View style={{flex: 1}}>
           {/*<Text>*/}
           {/*    test*/}
-          {/*</Text>*/}
-        <View style={{height:0.05*layout.height, alignItems:'center', backgroundColor:"#c9d8c5", flexDirection:'row'}}>
-          <Text style={{fontSize:18, marginLeft: 0.03* layout.width}}>{routes[index]['title']}</Text>
-          <Text style={{right:20, position:"absolute"}}>Search</Text>
-        </View>
-        <TabView
-          renderTabBar={renderTabBar}
-          navigationState={{ index, routes }}
-          renderScene={renderScene}
-          onIndexChange={setIndex}
-          initialLayout={{ width: layout.width }}
-        />
+        {/*  /!*</Text>*!/*/}
+        {/*<View style={{height:0.05*layout.height, alignItems:'center', backgroundColor:"#c9d8c5", flexDirection:'row'}}>*/}
+        {/*  <Text style={{fontSize:18, marginLeft: 0.03* layout.width}}>{routes[index]['title']}</Text>*/}
+        {/*  <Text style={{right:20, position:"absolute"}}>Search</Text>*/}
+        {/*</View>*/}
+        {/*<TabView*/}
+        {/*  renderTabBar={renderTabBar}*/}
+        {/*  navigationState={{ index, routes }}*/}
+        {/*  renderScene={renderScene}*/}
+        {/*  onIndexChange={setIndex}*/}
+        {/*  initialLayout={{ width: layout.width }}*/}
+        {/*/>*/}
+          <Trending/>
         </View>
     );
 };

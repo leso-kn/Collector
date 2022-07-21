@@ -71,4 +71,7 @@ export class BiliCommentExtractor {
         let requestUrl = commentReplyApiUrl + `${parentID}&type=17&pn=${pn}&root=${this.getID()}`
         return axios.get(requestUrl, requestOption)
     }
+    getHighLightUrl(){
+        return ""
+    }
 }

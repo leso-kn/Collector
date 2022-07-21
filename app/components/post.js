@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import ifWrapper, {reducer} from "../utils"
+import { LinkPreview } from '@flyerhq/react-native-link-preview'
 import {FIRST_POST, PREVIEW_POST, OTHER_POST, EMBEDDED_POST} from "../constants";
 import {findService} from "../findService";
 
@@ -28,7 +29,7 @@ const Post = (props) => {
             dispatch({
                 "field": [
                     "name", "avatar", "upvoteNum", "commentNum", "repostNum", "images", "prefix", "title", "subname",
-                    "pubtime", "refPostUrl", "content", "id", "replies"
+                    "pubtime", "refPostUrl", "content", "id", "replies", "highLightUrl"
                 ], "val": [
                     res.getName(),
                     res.getAvatar(),
@@ -43,7 +44,8 @@ const Post = (props) => {
                     res.getRefPostUrl(),
                     res.getContent(),
                     res.getID(),
-                    res.getPreviewReplies()
+                    res.getPreviewReplies(),
+                    res.getHighLightUrl()
                 ]
             })
         })
@@ -156,7 +158,7 @@ const Post = (props) => {
     )
     const rootStyle = {
         backgroundColor: "#FFFFFF",
-        borderRadius: 5,
+        borderRadius: 0,
         marginTop: 0,
         marginBottom: 0,
         marginLeft: props.depth * 5,
@@ -242,7 +244,9 @@ const Post = (props) => {
                     <FeatherIcon name={"trash-2"} size={20} color={"gray"} style={{marginLeft: 15}}/>
                 </View>
             </View>
-
+            {ifWrapper(data.highLightUrl, (
+                <LinkPreview text={data.highLightUrl}></LinkPreview>
+            ))}
             <ImageView
                 images={data.images}
                 imageIndex={0}
