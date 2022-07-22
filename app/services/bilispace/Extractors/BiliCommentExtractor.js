@@ -74,4 +74,7 @@ export class BiliCommentExtractor {
     getHighLightUrl(){
         return ""
     }
+    getIdentifyName(){
+        return this.data.mid
+    }
 }

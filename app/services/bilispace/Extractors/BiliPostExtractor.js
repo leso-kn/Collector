@@ -76,7 +76,9 @@ export class BiliPostExtractor {
             case 2:
                 return this.contentCard.item.description
             case 8:
-                return this.contentCard.desc + "\n" + this.contentCard.jump_url
+                return this.contentCard.desc
+            case 2048:
+                return this.contentCard.vest.content
             default:
                 return ""
         }
@@ -128,17 +130,24 @@ export class BiliPostExtractor {
                 break
             case 1:
             case 4:
+            case 2048:
                 requestUrl = commentApiUrl + `type=17&oid=${this.id}&pn=${pn}&sort=${sort}`
+                break
+            default:
+                return null
         }
         return axios.get(requestUrl, requestOption)
     }
     getHighLightUrl(){
         switch (this.type){
             case 8:
-                return this.contentCard.jump_url
+                return this.contentCard.jump_url.replace("bilibili://video/", "https://www.bilibili.com/video/av").split("/?")[0]
             default:
                 return ""
         }
+    }
+    getIdentifyName(){
+        return this.card.desc.uid
     }
 }
 

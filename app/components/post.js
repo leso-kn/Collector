@@ -8,9 +8,10 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import ifWrapper, {reducer} from "../utils"
-import { LinkPreview } from '@flyerhq/react-native-link-preview'
+import {LinkPreview} from '@flyerhq/react-native-link-preview'
 import {FIRST_POST, PREVIEW_POST, OTHER_POST, EMBEDDED_POST} from "../constants";
 import {findService} from "../findService";
+import {mobileSpaceUrl} from "../services/bilispace/BiliSpaceLinks";
 
 TimeAgo.addLocale(en)
 const timeAgo = new TimeAgo('en-US')
@@ -29,7 +30,7 @@ const Post = (props) => {
             dispatch({
                 "field": [
                     "name", "avatar", "upvoteNum", "commentNum", "repostNum", "images", "prefix", "title", "subname",
-                    "pubtime", "refPostUrl", "content", "id", "replies", "highLightUrl"
+                    "pubtime", "refPostUrl", "content", "id", "replies", "highLightUrl", "identifyName"
                 ], "val": [
                     res.getName(),
                     res.getAvatar(),
@@ -45,7 +46,8 @@ const Post = (props) => {
                     res.getContent(),
                     res.getID(),
                     res.getPreviewReplies(),
-                    res.getHighLightUrl()
+                    res.getHighLightUrl(),
+                    res.getIdentifyName()
                 ]
             })
         })
@@ -58,7 +60,7 @@ const Post = (props) => {
             .then(res => res.getReplies(pn, props.parentID)).then((res) => {
                 res.data?.data?.replies?.length && dispatch({
                     field: ["replies"],
-                    val: [[...data.replies.length < 20 ? [] : data.replies, ...res.data.data.replies]]
+                    val: [[...res.data.data.replies]]
                 })
                 setShowLoadMore(res.data?.data?.replies?.length === 20)
             })
@@ -82,7 +84,7 @@ const Post = (props) => {
         </View>
     )
     const titleElement = (
-        <Text style={{fontWeight: "500", color: "black", fontSize: 16, marginLeft: 13}}>
+        <Text style={{fontWeight: "600", color: "black",marginBottom:-5, fontSize: 16, marginLeft: 13, marginTop:10}}>
             {data.title}
         </Text>
     )
@@ -167,96 +169,131 @@ const Post = (props) => {
         borderLeftWidth: 2
     }
     return (
-        <View style={rootStyle}>
-            <View style={{flexDirection: "row", marginTop: 10, marginLeft: 10}}>
-                <Image source={{uri: data.avatar}}
-                       style={{marginLeft: 5, width: 35, height: 35, borderRadius: 35, marginBottom: 7}}></Image>
-                <View style={{flex: 1, marginLeft: 8, marginTop: data.subname ? 1 : 6}}>
-                    <Text style={{color: "black"}}>
-                        {data.name}
-                    </Text>
-                    <Text style={{color: "#9d9a9a", marginTop: 0, fontSize: 12, maxWidth: 200}}>
-                        {data.subname}
-                    </Text>
-                </View>
-                <View>
-                    {ifWrapper(data.prefix, (
+        <TouchableNativeFeedback onPress={() => {
+            props.navigation.push("FullPost", {url: props.url})
+        }} disabled={props.type !== PREVIEW_POST}>
+            <View style={rootStyle}>
+                <View style={{flexDirection: "row", marginTop: 10, marginLeft: 10, marginBottom:-5}}>
+                    <TouchableOpacity onPress={() => {
+                        props.navigation.push("Channel", {url: mobileSpaceUrl + data.identifyName})
+                    }}>
+                        <Image source={{uri: data.avatar}}
+                               style={{
+                                   marginLeft: 5,
+                                   width: 35,
+                                   height: 35,
+                                   borderRadius: 35,
+                                   marginBottom: 7
+                               }}></Image>
+                    </TouchableOpacity>
+                    <View style={{flex: 1, marginLeft: 8, marginTop: data.subname ? 1 : 6}}>
+                        <Text style={{color: "black"}}>
+                            {data.name}
+                        </Text>
+                        <Text style={{color: "#9d9a9a", marginTop: 0, fontSize: 12, maxWidth: 200}}>
+                            {data.subname}
+                        </Text>
+                    </View>
+                    <View>
+                        {ifWrapper(data.prefix, (
+                            <Text style={{
+                                color: "gray",
+                                marginRight: 20,
+                                marginTop: -5,
+                                fontSize: 11,
+                                fontWeight: "300",
+                                textAlign: "right"
+                            }}>
+                                {data.prefix + "\n"}
+                            </Text>
+                        ))}
+
                         <Text style={{
-                            color: "gray",
+                            color: "black",
                             marginRight: 20,
-                            marginTop: -5,
-                            fontSize: 11,
+                            marginTop: data.prefix ? -15 : 5,
                             fontWeight: "300",
+                            fontSize: 13,
                             textAlign: "right"
                         }}>
-                            {data.prefix + "\n"}
+                            {data.pubtime && timeAgo.format(data.pubtime)}
                         </Text>
-                    ))}
-
-                    <Text style={{
-                        color: "black",
-                        marginRight: 20,
-                        marginTop: data.prefix ? -15 : 5,
-                        fontWeight: "300",
-                        fontSize: 13,
-                        textAlign: "right"
-                    }}>
-                        {data.pubtime && timeAgo.format(data.pubtime)}
-                    </Text>
-                </View>
-            </View>
-            <View style={{minHeight: 35}}>
-                {ifWrapper(props.type === FIRST_POST && data.title, titleElement)}
-                <Text numberOfLines={props.type === PREVIEW_POST ?4:undefined} ellipsizeMode='tail'
-                      style={{
-                          color: props.type === FIRST_POST ? "gray" : "black",
-                          fontWeight: "400",
-                          marginLeft: 13,
-                          fontSize: 14,
-                          marginTop: 4,
-                          width: "95%"
-                      }}>
-                    {data.content}
-                </Text>
-
-                {ifWrapper(data.images, imagePreview)}
-            </View>
-            {ifWrapper(data.refPostUrl, (
-                <View style={{justifyContent: "center", alignItems: 'center'}}>
-                    <View
-                        style={{width: "85%", marginLeft: -10, borderWidth: 0.5, borderColor: "gray", borderRadius: 5}}>
-                        <Post depth={0} type={EMBEDDED_POST} url={data.refPostUrl}/>
                     </View>
                 </View>
-            ))}
+                <View style={{minHeight: 25}}>
+                    {ifWrapper(props.type !== OTHER_POST && data.title, titleElement)}
+                    <Text numberOfLines={props.type === PREVIEW_POST ? 4 : undefined} ellipsizeMode='tail'
+                          style={{
+                              color: props.type === FIRST_POST ? "gray" : "black",
+                              fontWeight: "400",
+                              marginLeft: 13,
+                              fontSize: 14,
+                              marginTop: 10,
+                              width: "95%"
+                          }}>
+                        {data.content}
+                    </Text>
 
-            <View style={{flexDirection: "row", marginBottom: 10, marginTop: 13}}>
-                <View style={{flex: 1, flexDirection: "row", marginLeft: 15}}>
-                    {ifWrapper(data.upvoteNum, upvote)}
-                    {ifWrapper(data.commentNum && props.type !== OTHER_POST, comment)}
-                    {ifWrapper(data.forwardNum, forward)}
+                    {ifWrapper(data.images, imagePreview)}
+                    {ifWrapper(data.refPostUrl, (
+                        <TouchableOpacity onPress={() => (props.navigation.push("FullPost", {url: data.refPostUrl}))}>
+                            <View style={{justifyContent: "center", alignItems: 'center', marginTop: 10}}>
+                                <View
+                                    style={{
+                                        width: "85%",
+                                        marginLeft: -10,
+                                        borderWidth: 0.5,
+                                        borderColor: "gray",
+                                        borderRadius: 5
+                                    }}>
+                                    <Post depth={0} type={EMBEDDED_POST} url={data.refPostUrl}
+                                          navigation={props.navigation}/>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    ))}
+                    {ifWrapper(data.highLightUrl, (
+                        <View style={{justifyContent: "center", alignItems: 'center' , marginTop: 10}}>
+                            <View
+                                style={{
+                                    width: "85%",
+                                    marginLeft: -10,
+                                    borderWidth: 0.5,
+                                    borderColor: "gray",
+                                    borderRadius: 5
+                                }}>
+                                <LinkPreview text={data.highLightUrl}></LinkPreview>
+                            </View>
+                        </View>
+                    ))}
                 </View>
 
-                <View style={{flexDirection: "row", right: 15}}>
-                    {ifWrapper(data.replies?.length > 0 && props.type === OTHER_POST, replies())}
-                    <FeatherIcon name={"bookmark"} size={20} color={"gray"} style={{marginLeft: 20}}/>
-                    <FeatherIcon name={"share-2"} size={20} color={"gray"} style={{marginLeft: 15}}/>
-                    <FeatherIcon name={"trash-2"} size={20} color={"gray"} style={{marginLeft: 15}}/>
+                <View style={{flexDirection: "row", marginBottom: 10, marginTop: 13}}>
+                    <View style={{flex: 1, flexDirection: "row", marginLeft: 15}}>
+                        {ifWrapper(data.upvoteNum != null, upvote)}
+                        {ifWrapper(data.commentNum && props.type !== OTHER_POST, comment)}
+                        {ifWrapper(data.forwardNum, forward)}
+                    </View>
+
+                    <View style={{flexDirection: "row", right: 15}}>
+                        {ifWrapper(data.replies?.length > 0 && props.type === OTHER_POST, replies())}
+                        <FeatherIcon name={"bookmark"} size={20} color={"gray"} style={{marginLeft: 20}}/>
+                        <FeatherIcon name={"share-2"} size={20} color={"gray"} style={{marginLeft: 15}}/>
+                        <FeatherIcon name={"trash-2"} size={20} color={"gray"} style={{marginLeft: 15}}/>
+                    </View>
                 </View>
+
+                <ImageView
+                    images={data.images}
+                    imageIndex={0}
+                    visible={visible}
+                    onRequestClose={() => setIsVisible(false)}
+                />
+                {ifWrapper(showReplies, data.replies?.map(reply => (
+                    <Post url={"biliComment"} data={reply} type={OTHER_POST} depth={props.depth + 1}/>)))}
+                {ifWrapper(showReplies && showLoadMore, loadMore)}
             </View>
-            {ifWrapper(data.highLightUrl, (
-                <LinkPreview text={data.highLightUrl}></LinkPreview>
-            ))}
-            <ImageView
-                images={data.images}
-                imageIndex={0}
-                visible={visible}
-                onRequestClose={() => setIsVisible(false)}
-            />
-            {ifWrapper(showReplies, data.replies?.map(reply => (
-                <Post url={"biliComment"} data={reply} type={OTHER_POST} depth={props.depth + 1}/>)))}
-            {ifWrapper(showReplies && showLoadMore, loadMore)}
-        </View>
+        </TouchableNativeFeedback>
     )
 }
 export default Post;
