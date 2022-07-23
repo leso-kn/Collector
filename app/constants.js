@@ -7,3 +7,6 @@ export const EMBEDDED_POST = 3
 export const HOT_FIRST = 0
 export const OLD_FIRST = 1
 export const deviceWidth = Dimensions.get("screen").width
+export const themeDefault = {
+    color: "#f5deb3"
+}

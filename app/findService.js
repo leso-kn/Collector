@@ -1,7 +1,10 @@
-import {getBiliSpaceService} from "./services/bilispace/BiliSpaceService";
+import * as BiliSpaceService from "./services/bilispace/BiliSpaceService";
+import {themeDefault} from "./constants";
+import * as DefaultService from "./services/default/DefaultService";
 
 const availableServices = [
-    getBiliSpaceService
+    BiliSpaceService.getBiliSpaceService,
+    DefaultService.getDefaultService
 ]
 
 export const findService = async (url, id, data)=>{
@@ -11,3 +14,11 @@ export const findService = async (url, id, data)=>{
     }
     return availableService
 }
+
+export const getCurrentServiceUrl = ()=>{
+    return BiliSpaceService.serviceUrl
+}
+export const getTheme = ()=>{
+    return themeDefault
+}
+

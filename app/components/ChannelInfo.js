@@ -7,7 +7,7 @@ import {mobileSpaceUrl} from "../services/bilispace/BiliSpaceLinks";
 export const ChannelInfo = (props) => {
     const [data, dispatch] = useReducer(reducer, {})
     useEffect(() => {
-        findService(props.url, null, props.data).then((res) => {
+        findService(props.data.url, null, props.data).then((res) => {
             dispatch({
                 field: [
                     "name", "avatar", "info", "identifyName"
@@ -21,7 +21,7 @@ export const ChannelInfo = (props) => {
     return (
         <TouchableNativeFeedback
             onPress={() => props.navigation.push("Channel", {url: mobileSpaceUrl + data.identifyName})}>
-            <View style={{flexDirection: "row", marginTop: 5, marginBottom: 5}}>
+            <View style={{flexDirection: "row", marginTop: 7.5, marginBottom: 7.5}}>
                 <Image source={{uri: data.avatar}}
                        style={{
                            width: 50,
@@ -32,9 +32,9 @@ export const ChannelInfo = (props) => {
                            marginTop: 3
                        }}/>
                 <View style={{width: 284}}>
-                    <Text style={{color: "black", fontSize: 13, marginTop: 3}}>{data.name}</Text>
+                    <Text style={{color: "black", fontSize: 13, marginTop: 3, fontWeight:"500"}}>{data.name}</Text>
                     <Text style={{color: "gray", fontSize: 11}}>{"@" + data.identifyName}</Text>
-                    <Text style={{color: "black", marginTop: 5, fontSize: 12}} numberOfLines={1}>{data.info}  </Text>
+                    <Text style={{color: "black", marginTop: 7, fontSize: 11}} numberOfLines={1}>{data.info}  </Text>
                 </View>
             </View>
         </TouchableNativeFeedback>

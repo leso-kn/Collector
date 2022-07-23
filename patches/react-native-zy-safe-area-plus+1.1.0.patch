@@ -1,0 +1,17 @@
+diff --git a/node_modules/react-native-zy-safe-area-plus/index.js b/node_modules/react-native-zy-safe-area-plus/index.js
+index cf07d3e..8f4007b 100644
+--- a/node_modules/react-native-zy-safe-area-plus/index.js
++++ b/node_modules/react-native-zy-safe-area-plus/index.js
+@@ -65,9 +65,9 @@ class SafeAreaViewPlus extends React.Component {
+       backgroundColor={'transparent'}
+       translucent={true}/>
+       {/* 状态栏 */}
+-      {this.props.translucent ? null : this.getStatusBar()}
+-      {/* 顶部导航 */}
+-      {this.props.hiddenHeader ? null : this.getHeaderView()}
++      {/*{this.props.translucent ? null : this.getStatusBar()}*/}
++      {/*/!* 顶部导航 *!/*/}
++      {/*{this.props.hiddenHeader ? null : this.getHeaderView()}*/}
+       {/* 传入Node */}
+       {this.props.children}
+       </>

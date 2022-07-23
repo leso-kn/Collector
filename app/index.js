@@ -30,28 +30,12 @@ import Post from "./components/post";
 import FullPost from "./components/fullPost";
 import Channel from "./components/channel";
 import {PREVIEW_POST} from "./constants";
+import {Feeds} from "./components/Feeds";
+import {Trending} from "./components/Trending";
+import {getTheme} from "./findService";
+import {Subscriptions} from "./components/Subscriptions";
+import SafeAreaViewPlus from "react-native-zy-safe-area-plus";
 
-
-const Feed = (props) => (
-    <View style={{flex: 1, backgroundColor: '#ff4081'}}>
-        <Post type={{PREVIEW_POST}} navigation={props.navigation} depth={0}
-              url={"https://t.bilibili.com/683447829539061785?spm_id_from=333.999.0.0"}/>
-        <FlatList data={[1, 2, 3, 4]} renderItem={({item}) => <Text>{item}</Text>}>
-        </FlatList>
-        <Button title={"test1"} onPress={() => alert("test")}/>
-    </View>
-);
-
-const Subscription = () => (
-    <View style={{flex: 1, backgroundColor: '#ececec'}}>
-        {/*<FullPost url={"https://t.bilibili.com/683540957314941016"}/>*/}
-    </View>
-);
-
-const Trending = () => (
-    <View style={{flex: 1, backgroundColor: "#FFFFFF"}}>
-    </View>
-);
 const Bookmark = () => (
     <View style={{flex: 1, backgroundColor: "#FFFFFF"}}/>
 );
@@ -61,7 +45,7 @@ const renderTabBar = props => (
         <TabBar
             {...props}
             indicatorStyle={{backgroundColor: 'white'}}
-            style={{backgroundColor: '#c9d8c5', elevation: 0}}
+            style={{backgroundColor: getTheme().color, elevation: 0}}
             renderIcon={({route, focused, color}) => {
                 switch (route.key) {
                     case "Feed":
@@ -91,9 +75,9 @@ const Index = ({navigation}) => {
     const renderScene = ({route}) => {
         switch (route.key) {
             case "Feed":
-                return (<Feed navigation={navigation}/>)
+                return (<Feeds navigation={navigation}/>)
             case "Subscription":
-                return (<Subscription navigation={navigation}/>)
+                return (<Subscriptions navigation={navigation}/>)
             case "Trending":
                 return (<Trending navigation={navigation}/>)
             case "Bookmark":
@@ -109,18 +93,7 @@ const Index = ({navigation}) => {
     }
     navigation.setOptions({headerRight: SearchButton})
     return (
-        <View style={{flex: 1}}>
-            {/*<Text>*/}
-            {/*    test*/}
-            {/*  /!*</Text>*!/*/}
-            {/*<View style={{height: 50, alignItems: 'center', backgroundColor: "#c9d8c5", flexDirection: 'row'}}>*/}
-            {/*    <View style={{flexDirection: "row",marginLeft:10,marginTop:5, flex:1}}>*/}
-            {/*        <Text style={{fontSize: 20, marginLeft: 0.03 * layout.width}}>{routes[index]['key']}</Text>*/}
-            {/*    </View>*/}
-            {/*    <View style={{flexDirection: "row", marginTop:0}}>*/}
-            {/*        <FontAwesome name={"search"} size={20} style={{marginRight:20}}/>*/}
-            {/*    </View>*/}
-            {/*</View>*/}
+        <SafeAreaViewPlus style={{flex: 1}}>
             <TabView
                 renderTabBar={renderTabBar}
                 navigationState={{index, routes}}
@@ -131,7 +104,7 @@ const Index = ({navigation}) => {
                 }}
                 initialLayout={{width: layout.width}}
             />
-        </View>
+        </SafeAreaViewPlus>
     );
 };
 

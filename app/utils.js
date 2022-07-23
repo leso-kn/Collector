@@ -28,3 +28,10 @@ export const reducer = (data, action) => {
     }
     return newData
 }
+
+export const exists = (data, cmpData) =>{
+    for(const [index, item] of data.entries()){
+        if(item.name === cmpData.name && item.identifyName === cmpData.identifyName) return index
+    }
+    return -1;
+}

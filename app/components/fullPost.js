@@ -15,11 +15,12 @@ const FullPost = (packedProps) => {
     const [hasMore, setHasMore] = useState(true)
     const [comments, dispatch] = useReducer(reducer, [])
     const [sortType, setSortType] = useState(HOT_FIRST)
-    const parentID = useRef(null);
+    const parentRef = useRef({});
 
     useEffect(() => {
         findService(props.url).then(res => {
-            parentID.current = res.getID()
+            parentRef.current.parentID = res.getID()
+            parentRef.current.parentType = res.getType()
             return res.getComments(pn)
         }).then(res => {
             //TODO: show loading when fetching
@@ -35,7 +36,7 @@ const FullPost = (packedProps) => {
         </View>
     )
     const renderFunc = (comment) => {
-        return (<Post navigation={packedProps.navigation} data={comment.item} parentID={parentID.current} type={OTHER_POST} depth={0} url={"biliComment"}/>)
+        return (<Post navigation={packedProps.navigation} data={comment.item} parentType={parentRef.current.parentType} parentID={parentRef.current.parentID} type={OTHER_POST} depth={0} url={"biliComment"}/>)
     }
     return (
         <FlatList data={comments} renderItem={renderFunc} ListFooterComponent={(<View style={{height: 50}}/>)}

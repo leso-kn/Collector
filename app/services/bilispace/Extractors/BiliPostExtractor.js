@@ -115,7 +115,12 @@ export class BiliPostExtractor {
     }
 
     getID() {
-        return this.id
+        switch (this.type){
+            case 2:
+                return this.card.desc.rid_str
+            default:
+                return this.id
+        }
     }
 
     getPreviewReplies() {
@@ -148,6 +153,9 @@ export class BiliPostExtractor {
     }
     getIdentifyName(){
         return this.card.desc.uid
+    }
+    getType(){
+        return this.type
     }
 }
 

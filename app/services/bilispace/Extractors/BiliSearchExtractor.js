@@ -3,19 +3,21 @@ import {requestOption} from "../BiliSpaceService";
 const axios = require("axios");
 
 export class BiliSearchExtractor{
-    results
-    data
+    url
     constructor(url) {
-        return (async () => await axios.get(url, requestOption).then(res => {
-            this.data = res.data.data
-            this.results = res.data.data.result
+        return (async () => {
+            this.url = url
             return this
-        }))() // https://stackoverflow.com/a/50885340
+        })() // https://stackoverflow.com/a/50885340
     }
-    getResults(){
-        return this.results
-    }
-    getHasMore(){
-        return this.data.numPages !== this.data.page
+    async getResults(pn){
+        return await axios.get(this.url.replace("page=0", `page=${pn}`), requestOption).then(res => {
+            let result = res.data.data.result
+            for(let item of result){
+                item.url = "biliUserInfo"
+            }
+            result.hasMore = ()=>res.data.data.numPages !== res.data.data.page
+            return result
+        })
     }
 }

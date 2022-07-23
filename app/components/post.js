@@ -57,7 +57,7 @@ const Post = (props) => {
     })
     useEffect(() => {
         props.parentID && props.type === OTHER_POST && data.replies?.length && pn && findService(props.url, props.id, props.data)
-            .then(res => res.getReplies(pn, props.parentID)).then((res) => {
+            .then(res => res.getReplies(pn, props.parentID, props.parentType)).then((res) => {
                 res.data?.data?.replies?.length && dispatch({
                     field: ["replies"],
                     val: [[...res.data.data.replies]]
@@ -186,7 +186,7 @@ const Post = (props) => {
                                    marginBottom: 7
                                }}></Image>
                     </TouchableOpacity>
-                    <View style={{flex: 1, marginLeft: 8, marginTop: data.subname ? 1 : 6}}>
+                    <View style={{flex: 1, marginLeft: 10, marginTop: data.subname ? 1 : 6}}>
                         <Text style={{color: "black"}}>
                             {data.name}
                         </Text>
@@ -268,7 +268,7 @@ const Post = (props) => {
                     ))}
                 </View>
 
-                <View style={{flexDirection: "row", marginBottom: 10, marginTop: 13}}>
+                <View style={{flexDirection: "row", marginBottom: 10, marginTop: 18}}>
                     <View style={{flex: 1, flexDirection: "row", marginLeft: 15}}>
                         {ifWrapper(data.upvoteNum != null, upvote)}
                         {ifWrapper(data.commentNum && props.type !== OTHER_POST, comment)}

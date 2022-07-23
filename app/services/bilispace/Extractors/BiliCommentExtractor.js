@@ -67,8 +67,9 @@ export class BiliCommentExtractor {
         return this.data.rpid_str
     }
 
-    getReplies(pn, parentID){
-        let requestUrl = commentReplyApiUrl + `${parentID}&type=17&pn=${pn}&root=${this.getID()}`
+    getReplies(pn, parentID, parentType){
+        let requestUrl = commentReplyApiUrl + `${parentID}&type=${parentType===2?11:17}&pn=${pn}&root=${this.getID()}`
+        console.log(requestUrl)
         return axios.get(requestUrl, requestOption)
     }
     getHighLightUrl(){

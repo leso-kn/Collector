@@ -5,7 +5,7 @@ export class BiliChannelInfoExtractor {
     data
 
     constructor(data) {
-        this.data = data.item
+        this.data = data
     }
 
     getInfo(){
