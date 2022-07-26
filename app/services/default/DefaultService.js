@@ -1,8 +1,9 @@
 import {DefaultChannelInfoExtractor} from "./Extractors/DefaultChannelInfoExtractor";
+import {DefaultPostExtractor} from "./Extractors/DefaultPostExtractor";
 
 export const getDefaultService = async (url, id, data) => {
-    if(url === "defaultChannelInfo"){
-        return new DefaultChannelInfoExtractor(data)
+    if(id === "defaultPost"){
+        return new DefaultPostExtractor(data)
     }
     return null
 }

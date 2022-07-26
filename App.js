@@ -14,8 +14,11 @@ import Channel from "./app/components/channel";
 import FullPost from "./app/components/fullPost";
 import {Search} from "./app/components/search";
 import {getTheme} from "./app/findService";
+import {Group} from "./app/components/Group";
+import {LogBox} from "react-native";
 
 const Stack = createNativeStackNavigator();
+LogBox.ignoreAllLogs();
 
 const App = () => {
     return (
@@ -29,6 +32,7 @@ const App = () => {
                 <Stack.Screen name={"Channel"} component={Channel}/>
                 <Stack.Screen name={"FullPost"} component={FullPost}/>
                 <Stack.Screen name={"Search"} component={Search}/>
+                <Stack.Screen name={"Group"} component={Group}/>
             </Stack.Navigator>
         </NavigationContainer>
     );

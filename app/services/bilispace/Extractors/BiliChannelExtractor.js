@@ -1,6 +1,6 @@
 import axios from "axios";
 import {requestOption} from "../BiliSpaceService";
-import {postPageUrl, spaceApiUrl} from "../BiliSpaceLinks";
+import {mobileSpaceUrl, postPageUrl, spaceApiUrl, trendingApiUrl} from "../BiliSpaceLinks";
 
 export class BiliChannelExtractor {
     data
@@ -55,25 +55,29 @@ export class BiliChannelExtractor {
     getHeadImgRatio() {
         return 1 / 6.4
     }
-
-    getPostPageUrl() {
-        return postPageUrl
-    }
-
-    getTargetUrlProperty() {
-        return "post.item.desc.dynamic_id_str"
-    }
-
     getPosts(pn, lastID) {
         let randomID;
         !this.card && (randomID= this.url.split("fake_uid=")[1].split('&')[0])
         return axios.get(this.card ? spaceApiUrl + this.getIdentifyName() + `&offset_dynamic_id=${lastID}`
-            : this.url.replace(randomID, Math.floor(Math.random() * 1000000 + 500000))).then(res => {
-                let result = res.data.data.cards
+            : this.url + `&hot_offset=${lastID}`).then(res => {
+                let result = res.data.data.cards || []
                 result.hasMore = () => res.data.data.has_more
                 result.getLastID = () => res.data.data.cards[res.data.data.cards.length - 1].desc.dynamic_id_str
+                for(let item of result){
+                    item.url = postPageUrl + item.desc.dynamic_id_str
+                    item.getTime = ()=>item.desc.timestamp * 1000
+                }
                 return result
             }
         )
+    }
+    getUrl(){
+        return mobileSpaceUrl + this.getIdentifyName()
+    }
+    getServicePrefix(){
+        return "biliSpace"
+    }
+    getIdentifyID(){
+        return this.getServicePrefix() +  this.getIdentifyName()
     }
 }

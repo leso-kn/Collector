@@ -1,4 +1,4 @@
-import {commentApiUrl, postApiUrl, postPageUrl} from "../BiliSpaceLinks";
+import {commentApiUrl, mobileSpaceUrl, postApiUrl, postPageUrl} from "../BiliSpaceLinks";
 import {shortenLargeNumber} from "../../../utils";
 import {requestOption} from "../BiliSpaceService";
 
@@ -12,9 +12,18 @@ export class BiliPostExtractor {
     forwardCard
     contentCard
 
-    constructor(url, id) {
+    constructor(url, id, data) {
         this.url = url;
         this.id = id;
+        if(data){
+            this.card = data
+            this.type = this.card.desc.type
+            this.contentCard = JSON.parse(this.card.card)
+            if (this.type === 1) {
+                this.forwardCard = JSON.parse(this.contentCard.origin)
+            }
+            return this
+        }
         return (async () => await axios.get(url, requestOption).then(res => {
             this.card = res.data.data.card
             this.type = this.card.desc.type
@@ -76,7 +85,7 @@ export class BiliPostExtractor {
             case 2:
                 return this.contentCard.item.description
             case 8:
-                return this.contentCard.desc
+                return this.contentCard.dynamic
             case 2048:
                 return this.contentCard.vest.content
             default:
@@ -92,23 +101,33 @@ export class BiliPostExtractor {
                     imgList.push({uri: item.img_src})
                 }
                 return imgList
+            case 4200:
+                return [{uri:this.contentCard.cover}]
             default:
                 return ""
         }
     }
 
     getTitle() {
-        return ""
+        switch (this.type){
+            case 4200:
+                return this.contentCard.title
+            default:
+                return ""
+        }
     }
 
     getPubTime() {
-        return new Date(this.card.desc.timestamp * 1000)
+        return this.card.desc.timestamp * 1000
     }
 
-    getRefPostUrl() {
+    getRefPost() {
         switch (this.type) {
             case 1:
-                return postPageUrl + this.card.desc.orig_dy_id_str
+                this.forwardCard.url = postPageUrl + this.card.desc.orig_dy_id_str
+                this.forwardCard.type = this.card.desc.origin.type
+                this.forwardCard.id = this.card.desc.orig_dy_id_str
+                return this.forwardCard
             default:
                 return ""
         }
@@ -126,27 +145,33 @@ export class BiliPostExtractor {
     getPreviewReplies() {
         return null
     }
+    async getComments(pn, sort = 1){
+        return BiliPostExtractor.getCommentsImpl(pn, this.type, this.getID(), sort)
+    }
 
-    async getComments(pn, sort=1) {
+    static async getCommentsImpl(pn, type, id, sort=1) {
         let requestUrl;
-        switch (this.type){
+        switch (type){
             case 2:
-                requestUrl = commentApiUrl + `type=11&oid=${this.card.desc.rid_str}&pn=${pn}&sort=${sort}`
+                requestUrl = commentApiUrl + `type=11&oid=${id}&pn=${pn}&sort=${sort}`
                 break
             case 1:
             case 4:
             case 2048:
-                requestUrl = commentApiUrl + `type=17&oid=${this.id}&pn=${pn}&sort=${sort}`
+                requestUrl = commentApiUrl + `type=17&oid=${id}&pn=${pn}&sort=${sort}`
                 break
             default:
                 return null
         }
+        //console.log(requestUrl)
         return axios.get(requestUrl, requestOption)
     }
     getHighLightUrl(){
         switch (this.type){
             case 8:
                 return this.contentCard.jump_url.replace("bilibili://video/", "https://www.bilibili.com/video/av").split("/?")[0]
+            case 4200:
+                return this.contentCard.slide_link
             default:
                 return ""
         }
@@ -156,6 +181,18 @@ export class BiliPostExtractor {
     }
     getType(){
         return this.type
+    }
+    getServicePrefix(){
+        return "biliSpace"
+    }
+    getIdentifyID(){
+        return this.getServicePrefix() +  this.getID()
+    }
+    getChannelIdentifyID(){
+        return "biliSpace" + this.getIdentifyName()
+    }
+    getChannelUrl(){
+        return mobileSpaceUrl + this.getIdentifyName()
     }
 }
 

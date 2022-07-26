@@ -30,8 +30,19 @@ export const reducer = (data, action) => {
 }
 
 export const exists = (data, cmpData) =>{
+    if(!data || !cmpData)return -1;
     for(const [index, item] of data.entries()){
         if(item.name === cmpData.name && item.identifyName === cmpData.identifyName) return index
     }
     return -1;
+}
+
+export const isBlocked = (data, blockList)=>{
+    for(let channel of blockList.channels){
+        if(data.channelIdentifyID === channel.identifyID)return true
+    }
+    for(let word of blockList.words){
+        if(data.content.includes(word))return true
+    }
+    return false
 }

@@ -3,8 +3,8 @@ import {themeDefault} from "./constants";
 import * as DefaultService from "./services/default/DefaultService";
 
 const availableServices = [
-    BiliSpaceService.getBiliSpaceService,
-    DefaultService.getDefaultService
+    DefaultService.getDefaultService,
+    BiliSpaceService.getBiliSpaceService
 ]
 
 export const findService = async (url, id, data)=>{

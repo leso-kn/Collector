@@ -1,4 +1,4 @@
-import {commentReplyApiUrl} from "../BiliSpaceLinks";
+import {commentReplyApiUrl, mobileSpaceUrl} from "../BiliSpaceLinks";
 import {requestOption} from "../BiliSpaceService";
 import axios from "axios";
 
@@ -48,10 +48,10 @@ export class BiliCommentExtractor {
     }
 
     getPubTime() {
-        return new Date(this.data.ctime * 1000)
+        return this.data.ctime * 1000
     }
 
-    getRefPostUrl() {
+    getRefPost() {
         return null
     }
 
@@ -69,7 +69,6 @@ export class BiliCommentExtractor {
 
     getReplies(pn, parentID, parentType){
         let requestUrl = commentReplyApiUrl + `${parentID}&type=${parentType===2?11:17}&pn=${pn}&root=${this.getID()}`
-        console.log(requestUrl)
         return axios.get(requestUrl, requestOption)
     }
     getHighLightUrl(){
@@ -77,5 +76,20 @@ export class BiliCommentExtractor {
     }
     getIdentifyName(){
         return this.data.mid
+    }
+    getType(){
+        return null
+    }
+    getServicePrefix(){
+        return "biliSpace"
+    }
+    getIdentifyID(){
+        return this.getServicePrefix() +  this.getID()
+    }
+    getChannelIdentifyID(){
+        return "biliSpace" + this.getIdentifyName()
+    }
+    getChannelUrl(){
+        return mobileSpaceUrl + this.getIdentifyName()
     }
 }

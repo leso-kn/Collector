@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
     Button, Dimensions,
     FlatList,
@@ -6,7 +6,7 @@ import {
     ScrollView,
     StatusBar,
     StyleSheet,
-    Text, TouchableNativeFeedback,
+    Text, TouchableNativeFeedback, TouchableOpacity,
     useColorScheme,
     useWindowDimensions,
     View,
@@ -35,6 +35,7 @@ import {Trending} from "./components/Trending";
 import {getTheme} from "./findService";
 import {Subscriptions} from "./components/Subscriptions";
 import SafeAreaViewPlus from "react-native-zy-safe-area-plus";
+import {Bookmarks} from "./components/Bookmarks";
 
 const Bookmark = () => (
     <View style={{flex: 1, backgroundColor: "#FFFFFF"}}/>
@@ -63,9 +64,15 @@ const renderTabBar = props => (
 );
 
 const Index = ({navigation}) => {
+    useEffect(()=>{
+        navigation.setOptions({
+            headerRight: HeaderRightElement
+        })
+    },[])
     const layout = useWindowDimensions();
 
     const [index, setIndex] = React.useState(0);
+    const [randomID, doUpdate] = React.useState(0)
     const [routes] = React.useState([
         {key: 'Feed'},
         {key: 'Subscription'},
@@ -75,23 +82,40 @@ const Index = ({navigation}) => {
     const renderScene = ({route}) => {
         switch (route.key) {
             case "Feed":
-                return (<Feeds navigation={navigation}/>)
+                return (<Feeds navigation={navigation} randomID={randomID}/>)
             case "Subscription":
-                return (<Subscriptions navigation={navigation}/>)
+                return (<Subscriptions navigation={navigation} randomID={randomID}/>)
             case "Trending":
-                return (<Trending navigation={navigation}/>)
+                return (<Trending navigation={navigation}  randomID={randomID}/>)
             case "Bookmark":
-                return (<Bookmark navigation={navigation}/>)
+                return (<Bookmarks navigation={navigation} randomID={randomID}/>)
         }
     };
     const SearchButton = () => {
         return (
-            <TouchableNativeFeedback onPress={()=>navigation.push("Search")}>
-                <FontAwesome name={"search"} size={20}/>
-            </TouchableNativeFeedback>
+            <View>
+                <TouchableNativeFeedback onPress={() => navigation.push("Search")}>
+                    <FontAwesome name={"search"} size={20}/>
+                </TouchableNativeFeedback>
+            </View>
         )
     }
-    navigation.setOptions({headerRight: SearchButton})
+    const RefreshButton = () => {
+        return (
+            <View style={{marginRight: 30}}>
+                <TouchableOpacity onPress={() => doUpdate(Math.random()*1000)}>
+                    <FontAwesome name={"refresh"} size={20}/>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+    const HeaderRightElement = () => {
+        return (<View style={{flexDirection: "row"}}>
+            <RefreshButton/>
+            <SearchButton/>
+        </View>)
+    }
+
     return (
         <SafeAreaViewPlus style={{flex: 1}}>
             <TabView

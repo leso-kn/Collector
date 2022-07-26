@@ -17,4 +17,7 @@ export class DefaultChannelInfoExtractor {
     getIdentifyName(){
         return this.data.identifyName
     }
+    getUrl(){
+        return this.data.url
+    }
 }

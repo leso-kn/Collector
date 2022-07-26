@@ -4,11 +4,16 @@ import {findService} from "../findService";
 import {ChannelInfo} from "./ChannelInfo";
 import {FlatList, Text, View} from "react-native";
 
-export const Channels = React.memo((props) => {
+export const Channels = (props) => {
     const reducer = (state, action) => {
+        if(action.type === "replace"){
+            doUpdate(Math.random()*1000)
+            return [...action.data]
+        }
         return [...state, ...action.data]
     }
     const [pn, setPn] = useState(1)
+    const [randomID, doUpdate] = useState(0)
     const [users, dispatch] = useReducer(reducer, [])
     const refContainer = useRef({})
     useEffect(() => {
@@ -21,8 +26,8 @@ export const Channels = React.memo((props) => {
     }, [pn])
 
     useEffect(()=>{
-       props.data && dispatch({data:props.data})
-    },[])
+       props.data && dispatch({data:props.data, type:"replace"})
+    },[props.randomID])
 
     const renderFunc = (user) => {
         return (<ChannelInfo data={user.item} navigation={props.navigation}/>)
@@ -30,12 +35,14 @@ export const Channels = React.memo((props) => {
     return (
         <View style={{flex: 1}}>
             <FlatList data={users} renderItem={renderFunc} ListFooterComponent={(<View style={{height: 50}}/>)}
+                      keyExtractor={(item,index)=>JSON.stringify(item)+index}
                       onEndReached={() => {
                           refContainer.current.hasMore && setPn(pn + 1)
                       }}
+                      extraData={randomID}
                       onEndReachedThreshold={0.1}
                       ItemSeparatorComponent={() => (<View style={{backgroundColor: "#dad7d7", height: 0.4}}/>)}
             />
         </View>
     )
-})
+}
