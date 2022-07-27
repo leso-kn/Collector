@@ -85,6 +85,7 @@ export class BiliPostExtractor {
             case 2:
                 return this.contentCard.item.description
             case 8:
+            case 64:
                 return this.contentCard.dynamic
             case 2048:
                 return this.contentCard.vest.content
@@ -101,8 +102,8 @@ export class BiliPostExtractor {
                     imgList.push({uri: item.img_src})
                 }
                 return imgList
-            case 4200:
-                return [{uri:this.contentCard.cover}]
+            // case 4200:
+            //     return [{uri:this.contentCard.cover}]
             default:
                 return ""
         }
@@ -136,6 +137,7 @@ export class BiliPostExtractor {
     getID() {
         switch (this.type){
             case 2:
+            case 64:
                 return this.card.desc.rid_str
             default:
                 return this.id
@@ -153,6 +155,7 @@ export class BiliPostExtractor {
         let requestUrl;
         switch (type){
             case 2:
+            case 64:
                 requestUrl = commentApiUrl + `type=11&oid=${id}&pn=${pn}&sort=${sort}`
                 break
             case 1:
@@ -172,6 +175,8 @@ export class BiliPostExtractor {
                 return this.contentCard.jump_url.replace("bilibili://video/", "https://www.bilibili.com/video/av").split("/?")[0]
             case 4200:
                 return this.contentCard.slide_link
+            case 64:
+                return `https://www.bilibili.com/read/cv${this.contentCard.id}`
             default:
                 return ""
         }
