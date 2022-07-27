@@ -63,7 +63,8 @@ const renderTabBar = props => (
 const Index = ({navigation}) => {
     useEffect(()=>{
         navigation.setOptions({
-            headerRight: HeaderRightElement
+            headerRight: HeaderRightElement,
+            title:"Feed"
         })
     },[])
     const layout = useWindowDimensions();
