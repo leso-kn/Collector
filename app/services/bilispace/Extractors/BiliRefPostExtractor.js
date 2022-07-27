@@ -98,7 +98,7 @@ export class BiliRefPostExtractor {
             case 64:
                 return shortenLargeNumber(Number(this.data.stats.view)) + " Views"
             default:
-                return shortenLargeNumber(Number(this.data.item.view)) + " Views"
+                return this.data.item.view && shortenLargeNumber(Number(this.data.item.view)) + " Views"
         }
 
     }
@@ -106,7 +106,7 @@ export class BiliRefPostExtractor {
     getTitle() {
         switch (this.type) {
             case 8:
-            case 64:card.desc.rid_str
+            case 64:
                 return this.data.title
             default:
                 return this.data.item.title

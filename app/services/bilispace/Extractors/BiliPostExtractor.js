@@ -185,7 +185,6 @@ export class BiliPostExtractor {
             default:
                 return null
         }
-        console.log(requestUrl)
         return axios.get(requestUrl, requestOption)
     }
     getHighLightUrl(){
