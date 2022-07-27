@@ -25,7 +25,7 @@ export const Subscriptions = ({navigation, randomID}) => {
                     Groups
                 </Text>
             </View>
-            <FlatList style={{flexGrow: 0}} data={Object.entries(subscriptionData).filter(x => x[0] !== "feeds")}
+            <FlatList style={{flexGrow: 0}} data={subscriptionData && Object.entries(subscriptionData).filter(x => x[0] !== "feeds")}
                       renderItem={data => (
                           <TouchableNativeFeedback onPress={() => navigation.push("Group", {
                               'title': data.item[0],
@@ -81,7 +81,7 @@ export const Subscriptions = ({navigation, randomID}) => {
                     Favourites
                 </Text>
             </View>
-            {ifWrapper(subscriptionData.feeds, <Channels data={subscriptionData.feeds} randomID={randomID}
+            {ifWrapper(subscriptionData?.feeds, <Channels data={subscriptionData?.feeds} randomID={randomID}
                                                          navigation={navigation}/>)}
             <ConfirmDialog
                 title="Add folder"
