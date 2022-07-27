@@ -15,10 +15,4 @@ export const findService = async (url, id, data)=>{
     return availableService
 }
 
-export const getCurrentServiceUrl = ()=>{
-    return BiliSpaceService.serviceUrl
-}
-export const getTheme = ()=>{
-    return themeDefault
-}
 
