@@ -31,10 +31,10 @@ import FullPost from "./components/fullPost";
 import Channel from "./components/channel";
 import {PREVIEW_POST} from "./constants";
 import {Feeds} from "./components/Feeds";
-import {getTheme} from "./findService";
 import {Subscriptions} from "./components/Subscriptions";
 import SafeAreaViewPlus from "react-native-zy-safe-area-plus";
 import {Bookmarks} from "./components/Bookmarks";
+import {getTheme} from "./utils";
 
 const Bookmark = () => (
     <View style={{flex: 1, backgroundColor: "#FFFFFF"}}/>
