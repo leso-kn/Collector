@@ -6,10 +6,12 @@ export class BiliRefPostExtractor {
     data
     type
     rawData
+    rp_id
     constructor(data) {
         this.rawData = data
         this.data = JSON.parse(data.origin)
         this.type = data.type
+        this.rp_id = data.rp_id
         return (async () => this)()
     }
 
@@ -104,7 +106,7 @@ export class BiliRefPostExtractor {
     getTitle() {
         switch (this.type) {
             case 8:
-            case 64:
+            case 64:card.desc.rid_str
                 return this.data.title
             default:
                 return this.data.item.title
@@ -183,7 +185,7 @@ export class BiliRefPostExtractor {
     }
 
     getType() {
-        return this.data.type
+        return this.rawData.item.orig_type
     }
 
     async getComments(pn, sort = 1) {
@@ -191,7 +193,14 @@ export class BiliRefPostExtractor {
     }
 
     getID() {
-        return this.data.id
+        switch (this.type){
+            case 2:
+            case 64:
+                console.log(this.rp_id)
+                return this.rp_id
+            default:
+                return this.rawData.id
+        }
     }
 
     getServicePrefix(){

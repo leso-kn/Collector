@@ -146,6 +146,7 @@ export class BiliPostExtractor {
                 returnCard.url = postPageUrl + this.card.desc.orig_dy_id_str
                 returnCard.type = this.card.desc.origin.type
                 returnCard.id = this.card.desc.orig_dy_id_str
+                returnCard.rp_id = this.card.desc.origin.rid_str
                 return returnCard
             default:
                 return ""
@@ -184,7 +185,7 @@ export class BiliPostExtractor {
             default:
                 return null
         }
-        //console.log(requestUrl)
+        console.log(requestUrl)
         return axios.get(requestUrl, requestOption)
     }
     getHighLightUrl(){
