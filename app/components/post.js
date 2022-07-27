@@ -79,6 +79,7 @@ const Post = React.memo((props) => {
     const [data, dispatch] = useReducer(reducer, {})
     const mounted1 = useRef(true)
     const mounted2 = useRef(true)
+    const mounted3 = useRef(true)
     const block = useRef(false)
     useEffect(() => {
         findService(props.url, props.id, props.data).then(res => {
@@ -118,9 +119,9 @@ const Post = React.memo((props) => {
         setShowLoadMore(data.replies?.length < data.commentNum)
     })
     useEffect(() => {
+        if(!mounted2.current)return
         props.parentID && props.type === OTHER_POST && data.replies?.length && pn && findService(props.url, props.id, props.data)
             .then(res => res.getReplies(pn, props.parentID, props.parentType)).then((res) => {
-                // if(!mounted2.current)return
                 res.data?.data?.replies?.length && dispatch({
                     field: ["replies"],
                     val: [[...data.replies?.length <= 3 ? [] : data.replies, ...res.data.data.replies]]
@@ -130,6 +131,7 @@ const Post = React.memo((props) => {
        return () => mounted2.current = false
     }, [pn])
     useEffect(() => {
+        if(!mounted3.current)return
         if(Object.keys(data).length){
             AsyncStorage.getItem("blocklist").then(res =>{
                 if(!res){
@@ -158,7 +160,7 @@ const Post = React.memo((props) => {
                 setBookmarks(JSON.parse(res))
             })
         }
-
+        return () => mounted3.current = false
     }, [data])
 
     const replies = () => {
@@ -295,17 +297,17 @@ const Post = React.memo((props) => {
                 </View>
                 <View style={{minHeight: 25}}>
                     {ifWrapper(props.type !== OTHER_POST && data.title, titleElement(data))}
-                    <Text numberOfLines={props.type === PREVIEW_POST ? 4 : undefined} ellipsizeMode='tail'
-                          style={{
-                              color: props.type === FIRST_POST ? "gray" : "black",
-                              fontWeight: "400",
-                              marginLeft: 13,
-                              fontSize: 14.5,
-                              marginTop: 10,
-                              width: "95%"
-                          }}>
+                    {data.content ? <Text numberOfLines={props.type === PREVIEW_POST ? 4 : undefined} ellipsizeMode='tail'
+                           style={{
+                               color: props.type === FIRST_POST ? "gray" : "black",
+                               fontWeight: "400",
+                               marginLeft: 13,
+                               fontSize: 14.5,
+                               marginTop: 10,
+                               width: "95%"
+                           }}>
                         {data.content}
-                    </Text>
+                    </Text>:null}
 
                     {ifWrapper(data.images, imagePreview)}
                     {ifWrapper(data.refPost, (
@@ -321,7 +323,8 @@ const Post = React.memo((props) => {
                                         marginLeft: -10,
                                         borderWidth: 0.5,
                                         borderColor: "gray",
-                                        borderRadius: 5
+                                        borderRadius: 5,
+                                        marginTop:10
                                     }}>
                                     <Post depth={0} type={EMBEDDED_POST} url={data.refPost?.url} data={data.refPost}
                                           id={"biliRefPost"}
@@ -338,7 +341,8 @@ const Post = React.memo((props) => {
                                     marginLeft: -10,
                                     borderWidth: 0.5,
                                     borderColor: "gray",
-                                    borderRadius: 5
+                                    borderRadius: 5,
+                                    marginTop:10
                                 }}>
                                 <LinkPreview text={data.highLightUrl}></LinkPreview>
                             </View>
