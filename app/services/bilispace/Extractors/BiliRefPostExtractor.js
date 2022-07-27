@@ -5,10 +5,11 @@ import {mobileSpaceUrl} from "../BiliSpaceLinks";
 export class BiliRefPostExtractor {
     data
     type
-
+    rawData
     constructor(data) {
-        this.data = data
-        this.type = this.data.type
+        this.rawData = data
+        this.data = JSON.parse(data.origin)
+        this.type = data.type
         return (async () => this)()
     }
 
@@ -20,6 +21,10 @@ export class BiliRefPostExtractor {
                 return this.data.user.name
             case 4:
                 return this.data.user.uname
+            case 64:
+                return this.data.author.name
+            default:
+                return this.rawData.user.uname
         }
 
     }
@@ -32,6 +37,10 @@ export class BiliRefPostExtractor {
                 return this.data.user.head_url
             case 4:
                 return this.data.user.face
+            case 64:
+                return this.data.author.face
+            default:
+                return this.rawData.user.face
         }
 
     }
@@ -40,8 +49,10 @@ export class BiliRefPostExtractor {
         switch (this.type) {
             case 8:
                 return this.data.stat.like
+            case 64:
+                return this.data.stats.like
             default:
-                return null
+                return this.data.item.like
         }
     }
 
@@ -49,6 +60,8 @@ export class BiliRefPostExtractor {
         switch (this.type) {
             case 8:
                 return this.data.stat.reply
+            case 64:
+                return this.data.stats.reply
             default:
                 return this.data.item.reply
         }
@@ -58,19 +71,21 @@ export class BiliRefPostExtractor {
         switch (this.type) {
             case 8:
                 return this.data.stat.share
+            case 64:
+                return this.data.stats.share
             default:
-                return null
+                return this.data.item.share
         }
     }
 
     getImages() {
         switch (this.type) {
-            case 8:
-                return null
-            default:
+            case 2:
                 return this.data.item.pictures?.map(x => {
                     return {uri: x.img_src}
                 })
+            default:
+                return null
         }
     }
 
@@ -78,8 +93,10 @@ export class BiliRefPostExtractor {
         switch (this.type) {
             case 8:
                 return shortenLargeNumber(Number(this.data.stat.view)) + " Views"
+            case 64:
+                return shortenLargeNumber(Number(this.data.stats.view)) + " Views"
             default:
-                return null
+                return shortenLargeNumber(Number(this.data.item.view)) + " Views"
         }
 
     }
@@ -87,6 +104,7 @@ export class BiliRefPostExtractor {
     getTitle() {
         switch (this.type) {
             case 8:
+            case 64:
                 return this.data.title
             default:
                 return this.data.item.title
@@ -102,6 +120,8 @@ export class BiliRefPostExtractor {
         switch (this.type) {
             case 8:
                 return this.data.pubdate
+            case 64:
+                return this.data.publish_time
             case 2:
                 return this.data.item.upload_time * 1000
             default:
@@ -116,11 +136,18 @@ export class BiliRefPostExtractor {
     getContent() {
         switch (this.type) {
             case 8:
-                return this.data.desc
+            case 64:
+                return this.data.dynamic
             case 2:
                 return this.data.item.description
             case 4:
+            case 1:
                 return this.data.item.content
+            case 2048:
+                return this.data.vest.content
+            default:
+                return ""
+
         }
     }
 
@@ -128,6 +155,12 @@ export class BiliRefPostExtractor {
         switch (this.type) {
             case 8:
                 return this.data.short_link
+            case 4200:
+                return this.data.slide_link
+            case 64:
+                return `https://www.bilibili.com/read/cv${this.data.id}`
+            case 2048:
+                return this.data.target_url
             default:
                 return null
         }
@@ -137,8 +170,10 @@ export class BiliRefPostExtractor {
         switch (this.type) {
             case 8:
                 return this.data.owner.mid
+            // default:
+            //     return this.data.user.uid
             default:
-                return this.data.user.uid
+                return this.rawData.user.uid
         }
 
     }
