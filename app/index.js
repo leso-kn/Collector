@@ -31,7 +31,6 @@ import FullPost from "./components/fullPost";
 import Channel from "./components/channel";
 import {PREVIEW_POST} from "./constants";
 import {Feeds} from "./components/Feeds";
-import {Trending} from "./components/Trending";
 import {getTheme} from "./findService";
 import {Subscriptions} from "./components/Subscriptions";
 import SafeAreaViewPlus from "react-native-zy-safe-area-plus";
@@ -53,8 +52,6 @@ const renderTabBar = props => (
                         return (<FontAwesome name={"feed"} size={20}/>)
                     case "Subscription":
                         return (<FontAwesome5 name={"user-friends"} size={20}/>)
-                    case "Trending":
-                        return (<MaterialIcons name={"whatshot"} size={22}/>)
                     case "Bookmark":
                         return (<FontAwesome name={"bookmark"} size={20}/>)
                 }
@@ -76,7 +73,6 @@ const Index = ({navigation}) => {
     const [routes] = React.useState([
         {key: 'Feed'},
         {key: 'Subscription'},
-        {key: 'Trending'},
         {key: 'Bookmark'}
     ]);
     const renderScene = ({route}) => {
@@ -85,8 +81,6 @@ const Index = ({navigation}) => {
                 return (<Feeds navigation={navigation} randomID={randomID}/>)
             case "Subscription":
                 return (<Subscriptions navigation={navigation} randomID={randomID}/>)
-            case "Trending":
-                return (<Trending navigation={navigation}  randomID={randomID}/>)
             case "Bookmark":
                 return (<Bookmarks navigation={navigation} randomID={randomID}/>)
         }
