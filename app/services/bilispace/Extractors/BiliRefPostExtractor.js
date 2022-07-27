@@ -196,7 +196,6 @@ export class BiliRefPostExtractor {
         switch (this.type){
             case 2:
             case 64:
-                console.log(this.rp_id)
                 return this.rp_id
             default:
                 return this.rawData.id
