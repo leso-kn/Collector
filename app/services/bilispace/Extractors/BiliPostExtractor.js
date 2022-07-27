@@ -125,10 +125,11 @@ export class BiliPostExtractor {
     getRefPost() {
         switch (this.type) {
             case 1:
-                this.forwardCard.url = postPageUrl + this.card.desc.orig_dy_id_str
-                this.forwardCard.type = this.card.desc.origin.type
-                this.forwardCard.id = this.card.desc.orig_dy_id_str
-                return this.forwardCard
+                let returnCard = {...this.contentCard}
+                returnCard.url = postPageUrl + this.card.desc.orig_dy_id_str
+                returnCard.type = this.card.desc.origin.type
+                returnCard.id = this.card.desc.orig_dy_id_str
+                return returnCard
             default:
                 return ""
         }
@@ -177,6 +178,8 @@ export class BiliPostExtractor {
                 return this.contentCard.slide_link
             case 64:
                 return `https://www.bilibili.com/read/cv${this.contentCard.id}`
+            case 2048:
+                return this.contentCard.target_url
             default:
                 return ""
         }
