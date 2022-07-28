@@ -24,6 +24,7 @@ import {mobileSpaceUrl} from "../services/bilispace/BiliSpaceLinks";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {ConfirmDialog} from "react-native-simple-dialogs";
 import SelectMultiple from "react-native-select-multiple";
+import embeddedPost from "react-facebook/module/EmbeddedPost";
 
 TimeAgo.addLocale(en)
 const timeAgo = new TimeAgo('en-US')
@@ -31,8 +32,8 @@ const colors = [
     "white", "red", "aqua", "green", "coral", "blue", "pink"
 ]
 
-const titleElement = (data)=>(
-    <Text style={{
+const titleElement = (data, type)=>(
+    <Text numberOfLines={[PREVIEW_POST, EMBEDDED_POST].includes(type)?1:undefined} ellipsizeMode='tail' style={{
         fontWeight: "600",
         color: "black",
         marginBottom: -5,
@@ -119,7 +120,7 @@ const Post = React.memo((props) => {
         setShowLoadMore(data.replies?.length < data.commentNum)
     })
     useEffect(() => {
-        if(!mounted2.current)return
+       // if(!mounted2.current)return
         props.parentID && props.type === OTHER_POST && data.replies?.length && pn && findService(props.url, props.id, props.data)
             .then(res => res.getReplies(pn, props.parentID, props.parentType)).then((res) => {
                 res.data?.data?.replies?.length && dispatch({
@@ -240,7 +241,8 @@ const Post = React.memo((props) => {
         marginLeft: props.depth * 5,
         borderLeftColor: colors[props.depth],
         borderStyle: "solid",
-        borderLeftWidth: 2
+        borderLeftWidth: 2,
+        height: props.minHeight
     }
     if(block.current)return null
     return (
@@ -297,7 +299,7 @@ const Post = React.memo((props) => {
                 </View>
                 <View style={{minHeight: 25}}>
                     {ifWrapper(props.type !== OTHER_POST && data.title, titleElement(data))}
-                    {data.content ? <Text numberOfLines={props.type === PREVIEW_POST ? 4 : undefined} ellipsizeMode='tail'
+                    {data.content ? <Text numberOfLines={[PREVIEW_POST, EMBEDDED_POST].includes(props.type) ? 2 : undefined} ellipsizeMode='tail'
                            style={{
                                color: props.type === FIRST_POST ? "gray" : "black",
                                fontWeight: "400",
@@ -344,7 +346,7 @@ const Post = React.memo((props) => {
                                     borderRadius: 5,
                                     marginTop:10
                                 }}>
-                                <LinkPreview text={data.highLightUrl}></LinkPreview>
+                                <LinkPreview text={data.highLightUrl} containerStyle={{height:320}}></LinkPreview>
                             </View>
                         </View>
                     ))}
