@@ -17,17 +17,43 @@ export const Posts = React.memo((props) => {
     const [posts, dispatch] = useReducer(reducer, [])
     const [sortType, setSortType] = useState(HOT_FIRST)
     const [showLoadMore, setShowLoadMore] = useState(0);
+    const requestControl = useRef([])
+    const requestStatus = useRef({expect: 0, get: 0})
+    const tempResultQueue = useRef([])
 
     useEffect(() => {
         for(const [index, url] of props.urls.entries()){
-            if(pn !== 1){
-                if(!refContainer.current.hasMores[index]) continue
+            let currentTime = Math.floor(Date.now()/1000)
+            if(!requestControl.current.length){
+                requestControl.current.push({time: currentTime, count: 1})
             }
-            findService(url).then(res => {
+            else{
+                let lastItem = requestControl.current[requestControl.current.length -1]
+                if(lastItem.time < currentTime){
+                    requestControl.current = []
+                    requestControl.current.push({time: currentTime, count: 1})
+                }
+                else{
+                    lastItem.count >= 5?
+                        requestControl.current.push({time: lastItem.time + 1, count: 1}):
+                        requestControl.current[requestControl.current.length - 1].count += 1
+                }
+            }
+            if(pn !== 1){
+                if(props.fetchMore === false || !refContainer.current.hasMores[index]) continue
+            }
+            requestStatus.current.expect += 1
+            new Promise(r => setTimeout(r, (requestControl.current[requestControl.current.length -1].time - currentTime) * 1000)).then(res=>findService(url)).then(res => {
                 return res.getPosts(pn, refContainer.current.lastIDs?.[index])
             }).then(res => {
+
                 //TODO: show loading when fetching
-                res.length && dispatch({data: res, sort:props.sort})
+                requestStatus.current.get += 1
+                tempResultQueue.current = [...tempResultQueue.current, ...res]
+                if(requestStatus.current.expect === requestStatus.current.get){
+                    requestStatus.current = {expect: 0, get: 0}
+                    tempResultQueue.current.length && dispatch({data: tempResultQueue.current, sort: props.sort})
+                }
                 refContainer.current.hasMores[index] = res.hasMore()
                 refContainer.current.hasMores[index] && (refContainer.current.lastIDs[index] = res.getLastID())
                 !showLoadMore ^ !refContainer.current.hasMores.filter(x=>x).length && setShowLoadMore(refContainer.current.hasMores.filter(x=>x).length)
