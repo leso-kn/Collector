@@ -64,14 +64,14 @@ export const Posts = React.memo((props) => {
     }, [pn])
 
     function renderFunc (post) {
-        return (<Post type={PREVIEW_POST} depth={0} url={post.item.url} data={post.item}
+        return (<Post type={PREVIEW_POST} depth={0} url={post.item.url} data={post.item} minHeight={post.item.getHeight()}
                       navigation={props.navigation}/>)
     }
     return (
         <View style={{ backgroundColor: "gray", height:"100%", flex:1}}>
             <FlatList data={posts} renderItem={renderFunc} 
                       keyExtractor={(item, index)=> {
-                         return item.desc.dynamic_id_str
+                         return item.getIdentifyID()
                       }}
                       onEndReached={()=> {
                           setPn(pn + 1)
@@ -80,7 +80,6 @@ export const Posts = React.memo((props) => {
                       onEndReachedThreshold={0.1}
                       initialNumToRender={5}
                       maxToRenderPerBatch={40}
-                      windowSize={5}
                       bounces={false}
                       ItemSeparatorComponent={() => (<View style={{backgroundColor: "#dad7d7", height: 0.4}}/>)}
             />
