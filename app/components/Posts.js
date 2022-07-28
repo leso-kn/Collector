@@ -4,18 +4,16 @@ import {findService} from "../findService";
 import Post from "./post";
 import {Dimensions, FlatList, Text, TouchableOpacity, View} from "react-native";
 import ifWrapper from "../utils";
-import {DataProvider, LayoutProvider, RecyclerListView} from "recyclerlistview";
-
 const reducer = (state, action) => {
     let result = [...state, ...action.data]
-    if (action.sort)
-        result = result.sort((a, b) => a.getTime() < b.getTime())
+    if(action.sort)
+        result = result.sort((a, b)=>a.getTime() < b.getTime())
     return result
 }
-const {screenWidth} = Dimensions.get('screen');
+const {height} = Dimensions.get('screen');
 export const Posts = React.memo((props) => {
     const [pn, setPn] = useState(1)
-    const refContainer = useRef({hasMores: [], lastIDs: []})
+    const refContainer = useRef({hasMores:[], lastIDs:[]})
     const [posts, dispatch] = useReducer(reducer, [])
     const [sortType, setSortType] = useState(HOT_FIRST)
     const [showLoadMore, setShowLoadMore] = useState(0);
@@ -24,72 +22,69 @@ export const Posts = React.memo((props) => {
     const tempResultQueue = useRef([])
 
     useEffect(() => {
-        for (const [index, url] of props.urls.entries()) {
-            let currentTime = Math.floor(Date.now() / 1000)
-            if (!requestControl.current.length) {
+        for(const [index, url] of props.urls.entries()){
+            let currentTime = Math.floor(Date.now()/1000)
+            if(!requestControl.current.length){
                 requestControl.current.push({time: currentTime, count: 1})
-            } else {
-                let lastItem = requestControl.current[requestControl.current.length - 1]
-                if (lastItem.time < currentTime) {
+            }
+            else{
+                let lastItem = requestControl.current[requestControl.current.length -1]
+                if(lastItem.time < currentTime){
                     requestControl.current = []
                     requestControl.current.push({time: currentTime, count: 1})
-                } else {
-                    lastItem.count >= 5 ?
-                        requestControl.current.push({time: lastItem.time + 1, count: 1}) :
+                }
+                else{
+                    lastItem.count >= 5?
+                        requestControl.current.push({time: lastItem.time + 1, count: 1}):
                         requestControl.current[requestControl.current.length - 1].count += 1
                 }
             }
-            if (pn !== 1) {
-                if (!refContainer.current.hasMores[index]) continue
+            if(pn !== 1){
+                if(!refContainer.current.hasMores[index]) continue
             }
             requestStatus.current.expect += 1
-            new Promise(r => setTimeout(r, (requestControl.current[requestControl.current.length - 1].time - currentTime) * 1000)).then(res => findService(url)).then(res => {
+            new Promise(r => setTimeout(r, (requestControl.current[requestControl.current.length -1].time - currentTime) * 1000)).then(res=>findService(url)).then(res => {
                 return res.getPosts(pn, refContainer.current.lastIDs?.[index])
             }).then(res => {
 
                 //TODO: show loading when fetching
                 requestStatus.current.get += 1
                 tempResultQueue.current = [...tempResultQueue.current, ...res]
-                if (requestStatus.current.expect === requestStatus.current.get) {
+                if(requestStatus.current.expect === requestStatus.current.get){
                     requestStatus.current = {expect: 0, get: 0}
                     tempResultQueue.current.length && dispatch({data: tempResultQueue.current, sort: props.sort})
                     tempResultQueue.current = []
                 }
                 refContainer.current.hasMores[index] = res.hasMore()
                 refContainer.current.hasMores[index] && (refContainer.current.lastIDs[index] = res.getLastID())
-                !showLoadMore ^ !refContainer.current.hasMores.filter(x => x).length && setShowLoadMore(refContainer.current.hasMores.filter(x => x).length)
+                !showLoadMore ^ !refContainer.current.hasMores.filter(x=>x).length && setShowLoadMore(refContainer.current.hasMores.filter(x=>x).length)
             })
         }
 
     }, [pn])
 
-    function renderFunc(type, post, index) {
-        return (
-            <View>
-                <Post type={PREVIEW_POST} depth={0} url={post.item.url} data={post.item}
-                      navigation={props.navigation}/>
-                <View style={{backgroundColor: "#dad7d7", height: 0.4}}/>
-            </View>
-        )
+    function renderFunc (post) {
+        return (<Post type={PREVIEW_POST} depth={0} url={post.item.url} data={post.item}
+                      navigation={props.navigation}/>)
     }
-    const dataProvider = new DataProvider((a, b) => a.desc.dynamic_id_str !== b.desc.dynamic_id_str,
-        index => posts[index].desc.dynamic_id_str)
-    const layoutProvider = new LayoutProvider(i => "1",
-        (type, dim, index) => {
-            const item = dataProvider.getDataForIndex(index)
-            dim.width = screenWidth
-            dim.height = item.height
-        })
     return (
-        <View style={{backgroundColor: "gray", height: "100%", flex: 1}}>
-            <RecyclerListView
-                rowRenderer={renderFunc()}
-                onEndReached={() => {
-                    setPn(pn + 1)
-                }}
-                onEndReachedThreshold={0.1}
+        <View style={{ backgroundColor: "gray", height:"100%", flex:1}}>
+            <FlatList data={posts} renderItem={renderFunc} 
+                      keyExtractor={(item, index)=> {
+                         return item.desc.dynamic_id_str
+                      }}
+                      onEndReached={()=> {
+                          setPn(pn + 1)
+                      }}
+                      removeClippedSubviews={true}
+                      onEndReachedThreshold={0.1}
+                      initialNumToRender={5}
+                      maxToRenderPerBatch={40}
+                      windowSize={5}
+                      bounces={false}
+                      ItemSeparatorComponent={() => (<View style={{backgroundColor: "#dad7d7", height: 0.4}}/>)}
             />
 
         </View>
     )
-}, (x, y) => x.url === y.url)
+}, (x,y)=>x.url === y.url)
