@@ -66,24 +66,6 @@ export class BiliChannelExtractor {
                 result.getLastID = () => res.data.data.cards[res.data.data.cards.length - 1].desc.dynamic_id_str
                 for (let item of result) {
                     item.getIdentifyID = ()=> item.desc.dynamic_id_str
-                    item.getHeight = ()=>{
-                        let init = 148
-                        let type = item.desc.type
-                        let contentCard = JSON.parse(item.card)
-                        let forwardCard
-                        if (type === 1) {
-                            init += 165
-                            forwardCard = JSON.parse(contentCard.origin)
-                            let returnType = item.desc.origin.type
-                            if([8, 64, 2048, 4200].includes(returnType))init += 340
-                            if(returnType === 4200 && forwardCard.title) init += 33
-                            if(returnType === 2 && forwardCard.item.pictures.length) init += 210
-                        }
-                        if([8, 64, 2048, 4200].includes(type))init += 340
-                        if(type === 2 && contentCard.item.pictures.length) init += 210
-                        if(type === 4200 && contentCard.title) init += 33
-                        return init
-                    }
                     item.url = postPageUrl + item.desc.dynamic_id_str
                     item.getTime = () => item.desc.timestamp * 1000
                 }

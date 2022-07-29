@@ -97,7 +97,7 @@ export const Posts = React.memo((props) => {
                     layoutMap.current.set(tempID, {height: e.nativeEvent.layout.height, offset:offsetValue})
                 }
             }
-            } url={post.item.url} data={post.item} minHeight={post.item.getHeight()} height={layoutMap.current.get(post.item.getIdentifyID())?.height > 121?layoutMap.current.get(post.item.getIdentifyID())?.height : undefined}
+            } url={post.item.url} data={post.item} height={layoutMap.current.get(post.item.getIdentifyID())?.height > 121?layoutMap.current.get(post.item.getIdentifyID())?.height : undefined}
                   navigation={props.navigation}/>)
     }
 

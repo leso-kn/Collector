@@ -239,7 +239,6 @@ const Post = React.memo((props) => {
         borderLeftColor: colors[props.depth],
         borderStyle: "solid",
         borderLeftWidth: 2,
-      //  minHeight: props.minHeight,
         height: props.height
     }
     if (block.current) return null
