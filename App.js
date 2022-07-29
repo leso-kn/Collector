@@ -13,12 +13,12 @@ import {NavigationContainer} from "@react-navigation/native";
 import Channel from "./app/components/channel";
 import FullPost from "./app/components/fullPost";
 import {Search} from "./app/components/search";
-import {getTheme} from "./app/findService";
 import {Group} from "./app/components/Group";
 import {LogBox} from "react-native";
+import {getTheme} from "./app/utils";
 
 const Stack = createNativeStackNavigator();
-LogBox.ignoreAllLogs();
+// LogBox.ignoreAllLogs();
 
 const App = () => {
     return (
