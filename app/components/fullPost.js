@@ -1,9 +1,8 @@
 import Post from "./post";
 import React, {useEffect, useReducer, useRef, useState} from 'react';
-import {FlatList, ScrollView, Text, View} from "react-native";
+import {FlatList, View} from "react-native";
 import {FIRST_POST, HOT_FIRST, OLD_FIRST, OTHER_POST} from "../constants";
 import {findService} from "../findService";
-import {Picker} from '@react-native-picker/picker';
 
 const FullPost = (packedProps) => {
     let props = packedProps.route.params

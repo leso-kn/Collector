@@ -1,5 +1,3 @@
-import {requestOption} from "../BiliSpaceService";
-import axios from "axios";
 import {mobileSpaceUrl} from "../BiliSpaceLinks";
 
 export class BiliChannelInfoExtractor {

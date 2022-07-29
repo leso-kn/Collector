@@ -3,11 +3,7 @@ import React, {useCallback, useEffect, useReducer, useRef, useState} from 'react
 import {Text, View, StyleSheet, FlatList, useWindowDimensions, Image} from "react-native";
 import ifWrapper, {reducer} from "../utils";
 import {TabBar, TabView} from "react-native-tab-view";
-import {findService, getTheme} from "../findService";
-import {deviceWidth, HOT_FIRST, PREVIEW_POST} from "../constants";
-import {postPageUrl, searchApiUrl} from "../services/bilispace/BiliSpaceLinks";
-import Post from "./post";
-import {ChannelInfo} from "./ChannelInfo";
+import {searchApiUrl} from "../services/bilispace/BiliSpaceLinks";
 import {Channels} from "./Channels";
 
 export const Search = ({navigation}) => {

@@ -1,5 +1,4 @@
 import * as BiliSpaceService from "./services/bilispace/BiliSpaceService";
-import {themeDefault} from "./constants";
 import * as DefaultService from "./services/default/DefaultService";
 
 const availableServices = [

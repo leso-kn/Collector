@@ -1,44 +1,19 @@
 import React, {useEffect} from 'react';
 import {
-    Button, Dimensions,
-    FlatList,
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    StyleSheet,
-    Text, TouchableNativeFeedback, TouchableOpacity,
-    useColorScheme,
+    TouchableNativeFeedback, TouchableOpacity,
     useWindowDimensions,
     View,
 } from 'react-native';
 
-import FeatherIcon from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
-import {
-    Colors,
-    DebugInstructions,
-    Header,
-    LearnMoreLinks,
-    ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
-import Post from "./components/post";
-import FullPost from "./components/fullPost";
-import Channel from "./components/channel";
-import {PREVIEW_POST} from "./constants";
+import {TabView, TabBar} from 'react-native-tab-view';
 import {Feeds} from "./components/Feeds";
 import {Subscriptions} from "./components/Subscriptions";
 import SafeAreaViewPlus from "react-native-zy-safe-area-plus";
 import {Bookmarks} from "./components/Bookmarks";
 import {getTheme} from "./utils";
-
-const Bookmark = () => (
-    <View style={{flex: 1, backgroundColor: "#FFFFFF"}}/>
-);
 
 const renderTabBar = props => (
     <View style={{paddingBottom: 3, overflow: "hidden"}}>

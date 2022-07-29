@@ -5,7 +5,7 @@ import {
     postApiUrl,
     postPageUrl,
     searchApiUrl,
-    spaceApiUrl, trendingApiUrl,
+    trendingApiUrl,
     userInfoApiUrl
 } from "./BiliSpaceLinks";
 import {BiliCommentExtractor} from "./Extractors/BiliCommentExtractor";
@@ -13,7 +13,6 @@ import {BiliChannelExtractor} from "./Extractors/BiliChannelExtractor";
 import {BiliChannelInfoExtractor} from "./Extractors/BiliChannelInfoExtractor";
 import {BiliSearchExtractor} from "./Extractors/BiliSearchExtractor";
 import {DefaultChannelInfoExtractor} from "../default/Extractors/DefaultChannelInfoExtractor";
-import {DefaultPostExtractor} from "../default/Extractors/DefaultPostExtractor";
 import {BiliRefPostExtractor} from "./Extractors/BiliRefPostExtractor";
 
 const acceptSpaceUrl = url => url.includes()
@@ -36,7 +35,6 @@ export const getBiliSpaceService = async (url, id, data) => {
     } else if (new RegExp(PCSpaceRegUrl).test(url)) {
         id = url.split("/dynamic")[0].split(".com/")[1]
         return new BiliChannelExtractor(userInfoApiUrl + id, id)
-        // return new BiliChannelExtractor(PCSpaceRegUrl.replace(".*", id), id)
     } else if (url.includes(searchApiUrl) && !url.endsWith("&")) {
         return new BiliSearchExtractor(url)
     } else if (url === "biliUserInfo" && data) {

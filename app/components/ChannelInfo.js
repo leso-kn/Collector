@@ -2,7 +2,6 @@ import React, {useEffect, useReducer, useState} from 'react';
 import {Image, Text, TouchableNativeFeedback, View} from "react-native";
 import {findService} from "../findService";
 import {reducer} from "../utils";
-import {mobileSpaceUrl} from "../services/bilispace/BiliSpaceLinks";
 
 export const ChannelInfo = React.memo((props) => {
     const [data, dispatch] = useReducer(reducer, {})

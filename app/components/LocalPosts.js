@@ -1,8 +1,5 @@
-
 import React, {useEffect, useReducer, useRef, useState} from 'react';
-import {HOT_FIRST, PREVIEW_POST} from "../constants";
-import {findService} from "../findService";
-import {ChannelInfo} from "./ChannelInfo";
+import { PREVIEW_POST} from "../constants";
 import {FlatList, Text, View} from "react-native";
 import Post from "./post";
 

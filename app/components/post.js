@@ -1,9 +1,7 @@
 import {
-    Button,
     FlatList,
     Image,
     Text, TextInput,
-    TouchableHighlight,
     TouchableNativeFeedback,
     TouchableOpacity,
     View
@@ -24,7 +22,6 @@ import {mobileSpaceUrl} from "../services/bilispace/BiliSpaceLinks";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {ConfirmDialog} from "react-native-simple-dialogs";
 import SelectMultiple from "react-native-select-multiple";
-import embeddedPost from "react-facebook/module/EmbeddedPost";
 
 TimeAgo.addLocale(en)
 const timeAgo = new TimeAgo('en-US')

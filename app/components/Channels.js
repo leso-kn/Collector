@@ -1,8 +1,7 @@
 import React, {useEffect, useReducer, useRef, useState} from 'react';
-import {HOT_FIRST} from "../constants";
 import {findService} from "../findService";
 import {ChannelInfo} from "./ChannelInfo";
-import {FlatList, Text, View} from "react-native";
+import {FlatList, View} from "react-native";
 
 export const Channels = (props) => {
     const reducer = (state, action) => {

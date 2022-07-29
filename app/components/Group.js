@@ -1,10 +1,8 @@
-import React, {useEffect, useReducer, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Channels} from "./Channels";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {TouchableNativeFeedback, TouchableOpacity, View} from "react-native";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+import {TouchableNativeFeedback, View} from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import {Posts} from "./Posts";
 import {LocalPosts} from "./LocalPosts";
 
 export const Group = ({navigation, route})=>{

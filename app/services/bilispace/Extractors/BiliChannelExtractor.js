@@ -1,8 +1,6 @@
 import axios from "axios";
 import {requestOption} from "../BiliSpaceService";
 import {mobileSpaceUrl, postPageUrl, spaceApiUrl, trendingApiUrl} from "../BiliSpaceLinks";
-import rnTextSize, {TSFontSpecs} from 'react-native-text-size'
-import {Dimensions} from "react-native";
 
 export class BiliChannelExtractor {
     data

@@ -2,8 +2,7 @@ import React, {useEffect, useReducer, useRef, useState} from 'react';
 import {HOT_FIRST, PREVIEW_POST} from "../constants";
 import {findService} from "../findService";
 import Post from "./post";
-import {Dimensions, FlatList, Text, TouchableOpacity, View} from "react-native";
-import ifWrapper from "../utils";
+import {Dimensions, FlatList, View} from "react-native";
 
 const reducer = (state, action) => {
     let result = [...state, ...action.data]

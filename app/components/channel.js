@@ -1,28 +1,19 @@
 import React, {useEffect, useReducer, useRef, useState} from 'react';
 import {
-    Button,
-    Dimensions,
     FlatList,
     Image,
-    LogBox,
-    SafeAreaView,
-    ScrollView,
     Text, TextInput, TouchableNativeFeedback,
     useWindowDimensions,
     View
 } from "react-native";
 import {findService, getTheme} from "../findService";
 import ifWrapper, {exists, reducer} from "../utils";
-import {deviceWidth, HOT_FIRST, OTHER_POST, PREVIEW_POST} from "../constants";
-import AwesomeButton from "react-native-really-awesome-button";
-import {SceneMap, TabBar, TabView} from "react-native-tab-view";
-import Post from "./post";
-import {postPageUrl} from "../services/bilispace/BiliSpaceLinks";
+import {deviceWidth} from "../constants";
+import {TabBar, TabView} from "react-native-tab-view";
 import {Posts} from "./Posts";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {ConfirmDialog} from "react-native-simple-dialogs";
 import SelectMultiple from "react-native-select-multiple";
-import Entypo from "react-native-vector-icons/Entypo";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const ChannelInside = (props) => {

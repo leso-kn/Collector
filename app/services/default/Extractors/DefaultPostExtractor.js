@@ -1,5 +1,4 @@
 import {BiliPostExtractor} from "../../bilispace/Extractors/BiliPostExtractor";
-import {mobileSpaceUrl} from "../../bilispace/BiliSpaceLinks";
 
 export class DefaultPostExtractor{
     data

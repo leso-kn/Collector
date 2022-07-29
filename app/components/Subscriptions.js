@@ -1,4 +1,4 @@
-import React, {useEffect, useReducer, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, Text, TextInput, TouchableNativeFeedback, View} from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';

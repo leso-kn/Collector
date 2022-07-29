@@ -1,4 +1,3 @@
-import {DefaultChannelInfoExtractor} from "./Extractors/DefaultChannelInfoExtractor";
 import {DefaultPostExtractor} from "./Extractors/DefaultPostExtractor";
 
 export const getDefaultService = async (url, id, data) => {
