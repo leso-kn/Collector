@@ -29,7 +29,7 @@ const FullPost = (packedProps) => {
             //TODO: show loading when fetching
           //  alert(JSON.stringify(res.data.data.replies))
             res?.data?.data?.replies?.length && dispatch({data: res.data.data.replies})
-            setHasMore(res?.data?.data?.replies?.length === 20)
+            setHasMore(res?.data?.data?.replies?.length)
         })
     }, [pn])
     const head = (
