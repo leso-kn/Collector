@@ -26,7 +26,7 @@ export class BiliRefPostExtractor {
             case 64:
                 return this.data.author.name
             default:
-                return this.rawData.user.uname
+                return this.rawData.origin_user.info.uname
         }
 
     }
@@ -42,7 +42,7 @@ export class BiliRefPostExtractor {
             case 64:
                 return this.data.author.face
             default:
-                return this.rawData.user.face
+                return this.rawData.origin_user.info.face
         }
 
     }
@@ -172,10 +172,8 @@ export class BiliRefPostExtractor {
         switch (this.type) {
             case 8:
                 return this.data.owner.mid
-            // default:
-            //     return this.data.user.uid
             default:
-                return this.rawData.user.uid
+                return this.rawData.origin_user.info.uid
         }
 
     }
