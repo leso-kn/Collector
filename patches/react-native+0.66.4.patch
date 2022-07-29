@@ -1,0 +1,19 @@
+diff --git a/node_modules/react-native/Libraries/Lists/VirtualizedList.js b/node_modules/react-native/Libraries/Lists/VirtualizedList.js
+index 2648cc3..cfb7201 100644
+--- a/node_modules/react-native/Libraries/Lists/VirtualizedList.js
++++ b/node_modules/react-native/Libraries/Lists/VirtualizedList.js
+@@ -1838,10 +1838,10 @@ class VirtualizedList extends React.PureComponent<Props, State> {
+       return frame;
+     } else {
+       const {getItemLayout} = this.props;
+-      invariant(
+-        !getItemLayout,
+-        'Should not have to estimate frames when a measurement metrics function is provided',
+-      );
++      // invariant(
++      //   !getItemLayout,
++      //   'Should not have to estimate frames when a measurement metrics function is provided',
++      // );
+       return {
+         length: this._averageCellLength,
+         offset: this._averageCellLength * index,
