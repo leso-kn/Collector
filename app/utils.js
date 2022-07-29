@@ -1,3 +1,7 @@
+import * as BiliSpaceService from "./services/bilispace/BiliSpaceService";
+import {themeDefault} from "./constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const ifWrapper = (condition, element) => {
     return condition ? element : null;
 }
@@ -45,4 +49,32 @@ export const isBlocked = (data, blockList)=>{
         if(data.content.includes(word))return true
     }
     return false
+}
+
+export const getCurrentService = async()=>{
+    return await AsyncStorage.getItem("currentService")
+}
+
+export const updateCurrentService = async(name) =>{
+    return AsyncStorage.setItem("currentService", name)
+}
+
+export const AvailableServiceNames = [
+    "BiliSpace"
+]
+
+export const modifyUserServices = async(names) =>{
+    let temp = []
+    for(let item of names){
+        temp.push(item)
+    }
+    AsyncStorage.setItem("userServices", JSON.stringify(temp))
+    getCurrentService().then(res=>!res && updateCurrentService(temp[0]))
+}
+
+export const getCurrentServiceUrl = ()=>{
+    return BiliSpaceService.serviceUrl
+}
+export const getTheme = ()=>{
+    return themeDefault
 }

@@ -1,10 +1,9 @@
 import React, {useEffect, useReducer, useRef, useState} from 'react';
 import {FlatList, Text, TextInput, TouchableNativeFeedback, View} from "react-native";
-import {getTheme} from "../findService";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Channels} from "./Channels";
-import ifWrapper from "../utils";
+import ifWrapper, {getTheme} from "../utils";
 import SafeAreaViewPlus from "react-native-zy-safe-area-plus";
 import {ConfirmDialog} from 'react-native-simple-dialogs';
 
