@@ -32,8 +32,8 @@ const colors = [
     "white", "red", "aqua", "green", "coral", "blue", "pink"
 ]
 
-const titleElement = (data, type)=>(
-    <Text numberOfLines={[PREVIEW_POST, EMBEDDED_POST].includes(type)?1:undefined} ellipsizeMode='tail' style={{
+const titleElement = (data, type) => (
+    <Text numberOfLines={[PREVIEW_POST, EMBEDDED_POST].includes(type) ? 1 : undefined} ellipsizeMode='tail' style={{
         fontWeight: "600",
         color: "black",
         marginBottom: -5,
@@ -44,19 +44,19 @@ const titleElement = (data, type)=>(
         {data.title}
     </Text>
 )
-const upvote =data=> (
+const upvote = data => (
     <View style={{flexDirection: "row"}}>
         <Icon name={"arrowup"} size={20} color={"gray"}/>
         <Text style={{marginLeft: 20, color: "gray", marginRight: 20}}>{data.upvoteNum}</Text>
     </View>
 )
-const comment = data=>(
+const comment = data => (
     <View style={{flexDirection: "row"}}>
         <FeatherIcon name={"message-square"} size={20} color={"gray"}/>
         <Text style={{marginLeft: 20, color: "gray", marginRight: 20}}>{data.commentNum}</Text>
     </View>
 )
-const forward = data=>(
+const forward = data => (
     <View style={{flexDirection: "row"}}>
         <EntypoIcon name={"forward"} size={20} color={"gray"}/>
         <Text style={{marginLeft: 20, color: "gray"}}>{data.repostNum}</Text>
@@ -84,7 +84,7 @@ const Post = React.memo((props) => {
     const block = useRef(false)
     useEffect(() => {
         findService(props.url, props.id, props.data).then(res => {
-           if (!mounted1.current) return
+            if (!mounted1.current) return
             dispatch({
                 "field": [
                     "name", "avatar", "upvoteNum", "commentNum", "repostNum", "images", "prefix", "title", "subname",
@@ -120,7 +120,7 @@ const Post = React.memo((props) => {
         setShowLoadMore(data.replies?.length < data.commentNum)
     })
     useEffect(() => {
-       // if(!mounted2.current)return
+        // if(!mounted2.current)return
         props.parentID && props.type === OTHER_POST && data.replies?.length && pn && findService(props.url, props.id, props.data)
             .then(res => res.getReplies(pn, props.parentID, props.parentType)).then((res) => {
                 res.data?.data?.replies?.length && dispatch({
@@ -129,16 +129,16 @@ const Post = React.memo((props) => {
                 })
                 setShowLoadMore(res.data?.data?.replies?.length === 20)
             })
-       return () => mounted2.current = false
+        return () => mounted2.current = false
     }, [pn])
     useEffect(() => {
-        if(!mounted3.current)return
-        if(Object.keys(data).length){
-            AsyncStorage.getItem("blocklist").then(res =>{
-                if(!res){
-                    AsyncStorage.setItem("blocklist", JSON.stringify({words:[], channels:[]}))
+        if (!mounted3.current) return
+        if (Object.keys(data).length) {
+            AsyncStorage.getItem("blocklist").then(res => {
+                if (!res) {
+                    AsyncStorage.setItem("blocklist", JSON.stringify({words: [], channels: []}))
                 }
-                let tempList = JSON.parse(res) || {words:[], channels:[]}
+                let tempList = JSON.parse(res) || {words: [], channels: []}
                 block.current = isBlocked(data, tempList)
                 setBlocklist(tempList)
                 setSelected(tempList.channels.filter(x => {
@@ -242,82 +242,104 @@ const Post = React.memo((props) => {
         borderLeftColor: colors[props.depth],
         borderStyle: "solid",
         borderLeftWidth: 2,
-        height: props.minHeight
+      //  minHeight: props.minHeight,
+        height: props.height
     }
-    if(block.current)return null
+    if (block.current) return null
     return (
         <TouchableNativeFeedback onPress={() => {
             props.navigation.push("FullPost", {url: props.url, "data": data, id: "defaultPost"})
         }} disabled={props.type !== PREVIEW_POST}>
-            <View style={rootStyle}>
-                <View style={{flexDirection: "row", marginTop: 10, marginLeft: 10, marginBottom: -5}}>
-                    <TouchableOpacity onPress={() => {
-                        props.navigation.push("Channel", {url: mobileSpaceUrl + data.identifyName})
-                    }}>
-                        <Image source={{uri: data.avatar}}
-                               style={{
-                                   marginLeft: 5,
-                                   width: 35,
-                                   height: 35,
-                                   borderRadius: 35,
-                                   marginBottom: 7
-                               }}></Image>
-                    </TouchableOpacity>
-                    <View style={{flex: 1, marginLeft: 10, marginTop: data.subname ? 1 : 6}}>
-                        <Text style={{color: "black"}}>
-                            {data.name}
-                        </Text>
-                        <Text style={{color: "#9d9a9a", marginTop: 0, fontSize: 12, maxWidth: 200}}>
-                            {data.subname}
-                        </Text>
-                    </View>
-                    <View>
-                        {ifWrapper(data.prefix, (
+            <View >
+                <View style={rootStyle} onLayout={props.onLayout}>
+                    <View style={{flexDirection: "row", marginTop: 10, marginLeft: 10, marginBottom: -5}}>
+                        <TouchableOpacity onPress={() => {
+                            props.navigation.push("Channel", {url: mobileSpaceUrl + data.identifyName})
+                        }}>
+                            <Image source={{uri: data.avatar}}
+                                   style={{
+                                       marginLeft: 5,
+                                       width: 35,
+                                       height: 35,
+                                       borderRadius: 35,
+                                       marginBottom: 7
+                                   }}></Image>
+                        </TouchableOpacity>
+                        <View style={{flex: 1, marginLeft: 10, marginTop: data.subname ? 1 : 6}}>
+                            <Text style={{color: "black"}}>
+                                {data.name}
+                            </Text>
+                            <Text style={{color: "#9d9a9a", marginTop: 0, fontSize: 12, maxWidth: 200}}>
+                                {data.subname}
+                            </Text>
+                        </View>
+                        <View>
+                            {ifWrapper(data.prefix, (
+                                <Text style={{
+                                    color: "gray",
+                                    marginRight: 20,
+                                    marginTop: -5,
+                                    fontSize: 11,
+                                    fontWeight: "300",
+                                    textAlign: "right"
+                                }}>
+                                    {data.prefix + "\n"}
+                                </Text>
+                            ))}
+
                             <Text style={{
-                                color: "gray",
+                                color: "black",
                                 marginRight: 20,
-                                marginTop: -5,
-                                fontSize: 11,
+                                marginTop: data.prefix ? -15 : 5,
                                 fontWeight: "300",
+                                fontSize: 13,
                                 textAlign: "right"
                             }}>
-                                {data.prefix + "\n"}
+                                {data.pubtime && timeAgo.format(new Date(data.pubtime))}
                             </Text>
-                        ))}
-
-                        <Text style={{
-                            color: "black",
-                            marginRight: 20,
-                            marginTop: data.prefix ? -15 : 5,
-                            fontWeight: "300",
-                            fontSize: 13,
-                            textAlign: "right"
-                        }}>
-                            {data.pubtime && timeAgo.format(new Date(data.pubtime))}
-                        </Text>
+                        </View>
                     </View>
-                </View>
-                <View style={{minHeight: 25}}>
-                    {ifWrapper(props.type !== OTHER_POST && data.title, titleElement(data))}
-                    {data.content ? <Text numberOfLines={[PREVIEW_POST, EMBEDDED_POST].includes(props.type) ? 2 : undefined} ellipsizeMode='tail'
-                           style={{
-                               color: props.type === FIRST_POST ? "gray" : "black",
-                               fontWeight: "400",
-                               marginLeft: 13,
-                               fontSize: 14.5,
-                               marginTop: 10,
-                               width: "95%"
-                           }}>
-                        {data.content}
-                    </Text>:null}
+                    <View style={{minHeight: 25}}>
+                        {ifWrapper(props.type !== OTHER_POST && data.title, titleElement(data))}
+                        {data.content ?
+                            <Text numberOfLines={[PREVIEW_POST, EMBEDDED_POST].includes(props.type) ? 4 : undefined}
+                                  ellipsizeMode='tail'
+                                  style={{
+                                      color: props.type === FIRST_POST ? "gray" : "black",
+                                      fontWeight: "400",
+                                      marginLeft: 13,
+                                      fontSize: 14.5,
+                                      marginTop: 10,
+                                      width: "95%"
+                                  }}>
+                                {data.content}
+                            </Text> : null}
 
-                    {ifWrapper(data.images, imagePreview)}
-                    {ifWrapper(data.refPost, (
-                        <TouchableOpacity onPress={() => (props.navigation.push("FullPost", {
-                            url: data.refPost?.url,
-                            "data": data.refPost,
-                            id: "biliRefPost"
-                        }))}>
+                        {ifWrapper(data.images, imagePreview)}
+                        {ifWrapper(data.refPost, (
+                            <TouchableOpacity onPress={() => (props.navigation.push("FullPost", {
+                                url: data.refPost?.url,
+                                "data": data.refPost,
+                                id: "biliRefPost"
+                            }))}>
+                                <View style={{justifyContent: "center", alignItems: 'center', marginTop: 10}}>
+                                    <View
+                                        style={{
+                                            width: "85%",
+                                            marginLeft: -10,
+                                            borderWidth: 0.5,
+                                            borderColor: "gray",
+                                            borderRadius: 5,
+                                            marginTop: 10
+                                        }}>
+                                        <Post depth={0} type={EMBEDDED_POST} url={data.refPost?.url} data={data.refPost}
+                                              id={"biliRefPost"}
+                                              navigation={props.navigation}/>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+                        ))}
+                        {ifWrapper(data.highLightUrl, (
                             <View style={{justifyContent: "center", alignItems: 'center', marginTop: 10}}>
                                 <View
                                     style={{
@@ -326,189 +348,171 @@ const Post = React.memo((props) => {
                                         borderWidth: 0.5,
                                         borderColor: "gray",
                                         borderRadius: 5,
-                                        marginTop:10
+                                        marginTop: 10
                                     }}>
-                                    <Post depth={0} type={EMBEDDED_POST} url={data.refPost?.url} data={data.refPost}
-                                          id={"biliRefPost"}
-                                          navigation={props.navigation}/>
+                                    <LinkPreview text={data.highLightUrl} containerStyle={{height: 320}}></LinkPreview>
                                 </View>
                             </View>
-                        </TouchableOpacity>
-                    ))}
-                    {ifWrapper(data.highLightUrl, (
-                        <View style={{justifyContent: "center", alignItems: 'center', marginTop: 10}}>
-                            <View
-                                style={{
-                                    width: "85%",
-                                    marginLeft: -10,
-                                    borderWidth: 0.5,
-                                    borderColor: "gray",
-                                    borderRadius: 5,
-                                    marginTop:10
-                                }}>
-                                <LinkPreview text={data.highLightUrl} containerStyle={{height:320}}></LinkPreview>
-                            </View>
+                        ))}
+                    </View>
+
+                    <View style={{flexDirection: "row", marginBottom: 10, marginTop: 18}}>
+                        <View style={{flex: 1, flexDirection: "row", marginLeft: 15}}>
+                            {ifWrapper(data.upvoteNum != null, upvote(data))}
+                            {ifWrapper(data.commentNum && props.type !== OTHER_POST, comment(data))}
+                            {ifWrapper(data.forwardNum, forward(data))}
                         </View>
-                    ))}
-                </View>
 
-                <View style={{flexDirection: "row", marginBottom: 10, marginTop: 18}}>
-                    <View style={{flex: 1, flexDirection: "row", marginLeft: 15}}>
-                        {ifWrapper(data.upvoteNum != null, upvote(data))}
-                        {ifWrapper(data.commentNum && props.type !== OTHER_POST, comment(data))}
-                        {ifWrapper(data.forwardNum, forward(data))}
+                        <View style={{flexDirection: "row", right: 15}}>
+                            {ifWrapper(data.replies?.length > 0 && props.type === OTHER_POST, replies())}
+                            <TouchableNativeFeedback onPress={() => {
+                                setDialogVisible1(true)
+                            }}>
+                                <FeatherIcon name={"bookmark"} size={20} color={"gray"} style={{marginLeft: 20}}/>
+                            </TouchableNativeFeedback>
+                            <FeatherIcon name={"share-2"} size={20} color={"gray"} style={{marginLeft: 15}}/>
+                            <TouchableNativeFeedback onPress={() => {
+                                setDialogVisible2(true)
+                            }}>
+                                <FeatherIcon name={"trash-2"} size={20} color={"gray"} style={{marginLeft: 15}}/>
+                            </TouchableNativeFeedback>
+                        </View>
                     </View>
 
-                    <View style={{flexDirection: "row", right: 15}}>
-                        {ifWrapper(data.replies?.length > 0 && props.type === OTHER_POST, replies())}
-                        <TouchableNativeFeedback onPress={() => {
-                            setDialogVisible1(true)
-                        }}>
-                            <FeatherIcon name={"bookmark"} size={20} color={"gray"} style={{marginLeft: 20}}/>
-                        </TouchableNativeFeedback>
-                        <FeatherIcon name={"share-2"} size={20} color={"gray"} style={{marginLeft: 15}}/>
-                        <TouchableNativeFeedback onPress={() => {
-                            setDialogVisible2(true)
-                        }}>
-                            <FeatherIcon name={"trash-2"} size={20} color={"gray"} style={{marginLeft: 15}}/>
-                        </TouchableNativeFeedback>
-                    </View>
-                </View>
+                    <ImageView
+                        images={data.images}
+                        imageIndex={0}
+                        visible={visible}
+                        onRequestClose={() => setIsVisible(false)}
+                    />
 
-                <ImageView
-                    images={data.images}
-                    imageIndex={0}
-                    visible={visible}
-                    onRequestClose={() => setIsVisible(false)}
-                />
-
-                {ifWrapper(showReplies, <FlatList keyExtractor={(item, index) => {
-                    return JSON.stringify(item) + index
-                }} extraData={randomID} data={data.replies} renderItem={reply => (
-                    <Post url={"biliComment"} navigation={props.navigation} data={reply.item} type={OTHER_POST}
-                          depth={props.depth + 1}/>)}/>)}
-                {ifWrapper(showReplies && showLoadMore, loadMore)}
-                <ConfirmDialog
-                    title={"Add to"}
-                    visible={dialogVisible1}
-                    onTouchOutside={() => {
-                        setDialogVisible1(false)
-                    }}
-                    myButton={{
-                        title: "New folder",
-                        onPress: () => setDialogVisible(true)
-                    }}
-                    negativeButton={{
-                        title: "Cancel",
-                        onPress: () => {
+                    {ifWrapper(showReplies, <FlatList keyExtractor={(item, index) => {
+                        return JSON.stringify(item) + index
+                    }} extraData={randomID} data={data.replies} renderItem={reply => (
+                        <Post url={"biliComment"} navigation={props.navigation} data={reply.item} type={OTHER_POST}
+                              depth={props.depth + 1}/>)}/>)}
+                    {ifWrapper(showReplies && showLoadMore, loadMore)}
+                    <ConfirmDialog
+                        title={"Add to"}
+                        visible={dialogVisible1}
+                        onTouchOutside={() => {
                             setDialogVisible1(false)
-                        }
-                    }}
-                    positiveButton={{
-                        title: "OK",
-                        onPress: () => {
-                            let newData = {...bookmarks}
-                            for (let item of selected) {
-                                if (newData[item.label].filter(x => x.identifyID === data.identifyID).length > 0) continue
-                                newData[item.label].push(data)
+                        }}
+                        myButton={{
+                            title: "New folder",
+                            onPress: () => setDialogVisible(true)
+                        }}
+                        negativeButton={{
+                            title: "Cancel",
+                            onPress: () => {
+                                setDialogVisible1(false)
                             }
-                            for (let item of Object.entries(bookmarks).filter(x => !selected.filter(y => y.label === x[0]).length)) {
-                                newData[item[0]] = newData[item[0]].filter(x => x.identifyID !== data.identifyID)
+                        }}
+                        positiveButton={{
+                            title: "OK",
+                            onPress: () => {
+                                let newData = {...bookmarks}
+                                for (let item of selected) {
+                                    if (newData[item.label].filter(x => x.identifyID === data.identifyID).length > 0) continue
+                                    newData[item.label].push(data)
+                                }
+                                for (let item of Object.entries(bookmarks).filter(x => !selected.filter(y => y.label === x[0]).length)) {
+                                    newData[item[0]] = newData[item[0]].filter(x => x.identifyID !== data.identifyID)
+                                }
+                                setBookmarks(newData)
+                                AsyncStorage.setItem("bookmarks", JSON.stringify(newData))
+                                setDialogVisible1(false)
                             }
-                            setBookmarks(newData)
-                            AsyncStorage.setItem("bookmarks", JSON.stringify(newData))
-                            setDialogVisible1(false)
-                        }
-                    }}>
-                    <SelectMultiple onSelectionsChange={x => setSelected(x)}
-                                    items={bookmarks ? Object.entries(bookmarks).map(x => x[0]) : []}
-                                    selectedItems={selected}/>
-                </ConfirmDialog>
+                        }}>
+                        <SelectMultiple onSelectionsChange={x => setSelected(x)}
+                                        items={bookmarks ? Object.entries(bookmarks).map(x => x[0]) : []}
+                                        selectedItems={selected}/>
+                    </ConfirmDialog>
 
-                <ConfirmDialog
-                    title="Add folder"
-                    visible={dialogVisible}
-                    onTouchOutside={() => setDialogVisible(false)}
-                    negativeButton={{
-                        title: "Cancel",
-                        onPress: () => {
-                            changeText("")
-                            setDialogVisible(false)
-                        }
-                    }}
-                    positiveButton={{
-                        title: "OK",
-                        onPress: () => {
-                            changeText("")
-                            if (bookmarks[text] !== undefined) {
-                                alert("Name already exists")
-                            } else {
-                                bookmarks[text] = []
-                                setBookmarks(bookmarks)
-                                AsyncStorage.setItem("bookmarks", JSON.stringify(bookmarks))
+                    <ConfirmDialog
+                        title="Add folder"
+                        visible={dialogVisible}
+                        onTouchOutside={() => setDialogVisible(false)}
+                        negativeButton={{
+                            title: "Cancel",
+                            onPress: () => {
+                                changeText("")
                                 setDialogVisible(false)
                             }
-
-                        }
-                    }}>
-                    <View>
-                        <TextInput value={text}
-                                   placeholder={"Folder Name"}
-                                   onChangeText={(value) => changeText(value)}
-                                   style={{borderWidth: 0.3, borderColor: "black", paddingLeft: 10}}/>
-                    </View>
-                </ConfirmDialog>
-                <ConfirmDialog
-                    title="Block"
-                    visible={dialogVisible2}
-                    onTouchOutside={() => setDialogVisible2(false)}
-                    negativeButton={{
-                        title: "Cancel",
-                        onPress: () => {
-                            changeText("")
-                            setDialogVisible2(false)
-                        }
-                    }}
-                    positiveButton={{
-                        title: "OK",
-                        onPress: () => {
-                            let newData = {...blocklist}
-                            if (text) {
-                                if (text in blocklist.words) {
-                                    alert("Word exists")
+                        }}
+                        positiveButton={{
+                            title: "OK",
+                            onPress: () => {
+                                changeText("")
+                                if (bookmarks[text] !== undefined) {
+                                    alert("Name already exists")
                                 } else {
-                                    newData.words.push(text)
+                                    bookmarks[text] = []
+                                    setBookmarks(bookmarks)
+                                    AsyncStorage.setItem("bookmarks", JSON.stringify(bookmarks))
+                                    setDialogVisible(false)
                                 }
+
                             }
-                            if (selected1.length) {
-                                if(newData.channels.filter(x=>x.identifyID === data.channelIdentifyID).length === 0){
-                                    newData.channels.push({
-                                        name: data.name,
-                                        avatar: data.avatar,
-                                        url: data.channelUrl,
-                                        identifyID: data.channelIdentifyID
-                                    })
+                        }}>
+                        <View>
+                            <TextInput value={text}
+                                       placeholder={"Folder Name"}
+                                       onChangeText={(value) => changeText(value)}
+                                       style={{borderWidth: 0.3, borderColor: "black", paddingLeft: 10}}/>
+                        </View>
+                    </ConfirmDialog>
+                    <ConfirmDialog
+                        title="Block"
+                        visible={dialogVisible2}
+                        onTouchOutside={() => setDialogVisible2(false)}
+                        negativeButton={{
+                            title: "Cancel",
+                            onPress: () => {
+                                changeText("")
+                                setDialogVisible2(false)
+                            }
+                        }}
+                        positiveButton={{
+                            title: "OK",
+                            onPress: () => {
+                                let newData = {...blocklist}
+                                if (text) {
+                                    if (text in blocklist.words) {
+                                        alert("Word exists")
+                                    } else {
+                                        newData.words.push(text)
+                                    }
                                 }
+                                if (selected1.length) {
+                                    if (newData.channels.filter(x => x.identifyID === data.channelIdentifyID).length === 0) {
+                                        newData.channels.push({
+                                            name: data.name,
+                                            avatar: data.avatar,
+                                            url: data.channelUrl,
+                                            identifyID: data.channelIdentifyID
+                                        })
+                                    }
+                                } else {
+                                    newData.channels.filter(x => x.identifyID !== data.channelIdentifyID)
+                                }
+                                setBlocklist(newData)
+                                AsyncStorage.setItem("blocklist", JSON.stringify(newData))
+                                changeText("")
+                                setDialogVisible2(false)
                             }
-                            else{
-                                newData.channels.filter(x => x.identifyID !== data.channelIdentifyID)
-                            }
-                            setBlocklist(newData)
-                            AsyncStorage.setItem("blocklist", JSON.stringify(newData))
-                            changeText("")
-                            setDialogVisible2(false)
-                        }
-                    }}>
-                    <View>
-                        <SelectMultiple onSelectionsChange={x => setSelected1(x)}
-                                        items={['Block user', "Create new block word"]}
-                                        selectedItems={selected1}/>
-                        <TextInput value={text}
-                                   placeholder={"word to block"}
-                                   onChangeText={(value) => changeText(value)}
-                                   style={{borderWidth: 0.3, borderColor: "black", paddingLeft: 10}}/>
-                    </View>
-                </ConfirmDialog>
+                        }}>
+                        <View>
+                            <SelectMultiple onSelectionsChange={x => setSelected1(x)}
+                                            items={['Block user', "Create new block word"]}
+                                            selectedItems={selected1}/>
+                            <TextInput value={text}
+                                       placeholder={"word to block"}
+                                       onChangeText={(value) => changeText(value)}
+                                       style={{borderWidth: 0.3, borderColor: "black", paddingLeft: 10}}/>
+                        </View>
+                    </ConfirmDialog>
+                </View>
             </View>
         </TouchableNativeFeedback>
     )
