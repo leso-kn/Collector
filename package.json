@@ -15,6 +15,7 @@
     "@nghinv/react-native-search-bar": "^0.2.0",
     "@react-native-async-storage/async-storage": "^1.17.7",
     "@react-native-picker/picker": "^2.4.2",
+    "@react-navigation/drawer": "^6.4.3",
     "@react-navigation/native": "^6.0.11",
     "@react-navigation/native-stack": "^6.7.0",
     "@react-navigation/stack": "^6.2.2",
