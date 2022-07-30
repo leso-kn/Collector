@@ -1,8 +1,27 @@
 diff --git a/node_modules/@flyerhq/react-native-link-preview/lib/LinkPreview.js b/node_modules/@flyerhq/react-native-link-preview/lib/LinkPreview.js
-index 7ab00a6..d9e3a4f 100644
+index 7ab00a6..f0b8ef6 100644
 --- a/node_modules/@flyerhq/react-native-link-preview/lib/LinkPreview.js
 +++ b/node_modules/@flyerhq/react-native-link-preview/lib/LinkPreview.js
-@@ -77,7 +77,7 @@ export const LinkPreview = React.memo(({ containerStyle, enableAnimation, header
+@@ -57,16 +57,11 @@ export const LinkPreview = React.memo(({ containerStyle, enableAnimation, header
+         const ar = aspectRatio !== null && aspectRatio !== void 0 ? aspectRatio : 1;
+         return oneOf(renderImage, React.createElement(Image, { accessibilityRole: 'image', resizeMode: 'contain', source: { uri: image.url }, style: StyleSheet.flatten([
+                 styles.image,
+-                ar < 1
+-                    ? {
+-                        height: containerWidth,
+-                        minWidth: 170,
+-                        width: containerWidth * ar,
+-                    }
+-                    : {
++                 {
+                         height: containerWidth / ar,
+                         maxHeight: containerWidth,
+                         width: containerWidth,
++                     flex:1
+                     },
+             ]) }))(image);
+     };
+@@ -77,7 +72,7 @@ export const LinkPreview = React.memo(({ containerStyle, enableAnimation, header
                      textContainerStyle,
                  ]) },
                  renderHeaderNode(),
@@ -11,10 +30,20 @@ index 7ab00a6..d9e3a4f 100644
                  ((data === null || data === void 0 ? void 0 : data.description) ||
                      ((data === null || data === void 0 ? void 0 : data.image) &&
                          aspectRatio === 1 &&
-@@ -116,9 +116,11 @@ export const LinkPreview = React.memo(({ containerStyle, enableAnimation, header
+@@ -108,17 +103,19 @@ export const LinkPreview = React.memo(({ containerStyle, enableAnimation, header
+     };
+     const renderTextNode = () => oneOf(renderText, React.createElement(Text, null, text))(text);
+     const renderTitleNode = (title) => {
+-        return oneOf(renderTitle, React.createElement(Text, { numberOfLines: 2, style: styles.title }, title))(title);
++        return oneOf(renderTitle, React.createElement(Text, { numberOfLines: 1, style: styles.title }, title))(title);
+     };
+     return (React.createElement(TouchableWithoutFeedback, { accessibilityRole: 'button', onPress: handlePress, ...touchableWithoutFeedbackProps },
+         React.createElement(View, { onLayout: handleContainerLayout, style: containerStyle }, renderLinkPreviewNode())));
+ });
  const styles = StyleSheet.create({
      description: {
-         marginTop: 4,
+-        marginTop: 4,
++        marginTop: 6,
 +        color:"black"
      },
      header: {
@@ -23,7 +52,7 @@ index 7ab00a6..d9e3a4f 100644
      },
      image: {
          alignSelf: 'center',
-@@ -126,7 +128,7 @@ const styles = StyleSheet.create({
+@@ -126,7 +123,7 @@ const styles = StyleSheet.create({
      },
      metadataContainer: {
          flexDirection: 'row',
@@ -32,7 +61,7 @@ index 7ab00a6..d9e3a4f 100644
      },
      metadataTextContainer: {
          flex: 1,
-@@ -138,11 +140,12 @@ const styles = StyleSheet.create({
+@@ -138,11 +135,13 @@ const styles = StyleSheet.create({
          width: 48,
      },
      textContainer: {
@@ -42,8 +71,22 @@ index 7ab00a6..d9e3a4f 100644
      },
      title: {
          fontWeight: 'bold',
-+        color:"black"
++        color:"black",
++        marginTop:2
      },
  });
  //# sourceMappingURL=LinkPreview.js.map
 \ No newline at end of file
+diff --git a/node_modules/@flyerhq/react-native-link-preview/lib/utils.js b/node_modules/@flyerhq/react-native-link-preview/lib/utils.js
+index c1aff89..50405d9 100644
+--- a/node_modules/@flyerhq/react-native-link-preview/lib/utils.js
++++ b/node_modules/@flyerhq/react-native-link-preview/lib/utils.js
+@@ -146,7 +146,7 @@ export const getPreviewData = async (text, requestTimeout = 5000) => {
+ /* istanbul ignore next */
+ export const getPreviewDataImage = async (url) => {
+     if (!url)
+-        return;
++        url = "https://i.imgur.com/QEMQckD.png"
+     try {
+         const { height, width } = await getImageSize(url);
+         const aspectRatio = width / (height || 1);
