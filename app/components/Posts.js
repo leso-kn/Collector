@@ -119,7 +119,7 @@ export const Posts = React.memo((props) => {
                           return {length: item.height, offset: item.offset, index}
                       }}
                       maxToRenderPerBatch={40}
-                      windowSize={11}
+                      windowSize={6}
                       bounces={false}
                       ItemSeparatorComponent={() => (<View style={{backgroundColor: "#dad7d7", height: 0.4}}/>)}
             />
