@@ -113,10 +113,10 @@ export class DefaultPostExtractor {
     }
 
     getParentID(){
-        return null
+        return this.data.parentID
     }
 
     getParentType(){
-        return null
+        return this.data.parentType
     }
 }

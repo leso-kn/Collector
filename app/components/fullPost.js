@@ -71,6 +71,7 @@ const FullPost = (packedProps) => {
         <View>
             <View style={{marginTop: 5, marginBottom: 10, borderBottomColor: "gray", borderBottomWidth: 0.3}}>
                 <Post type={FIRST_POST} data={props.data} depth={0} url={props.url} id={props.id}
+                      parentID={props.parentID} parentType={props.parentType}
                       navigation={packedProps.navigation}/>
             </View>
         </View>
