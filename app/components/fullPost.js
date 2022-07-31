@@ -29,7 +29,7 @@ const FullPost = (packedProps) => {
             findService(props.url, props.id, props.data)
                 .then(res => res.getReplies(pn, props.parentID, props.parentType)).then((res) => {
                 res?.length && dispatch({data: res})
-                setHasMore(res.hasMore())
+                setHasMore(res?.hasMore())
             })
         }
         else{
@@ -41,7 +41,7 @@ const FullPost = (packedProps) => {
                 //TODO: show loading when fetching
                 //  alert(JSON.stringify(res.data.data.replies))
                 res?.length && dispatch({data: res})
-                setHasMore(res.hasMore())
+                setHasMore(res?.hasMore())
             })
         }
 
