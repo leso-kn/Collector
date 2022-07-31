@@ -1,80 +1,107 @@
 import {BiliPostExtractor} from "../../bilispace/Extractors/BiliPostExtractor";
+import {BiliCommentExtractor} from "../../bilispace/Extractors/BiliCommentExtractor";
 
-export class DefaultPostExtractor{
+export class DefaultPostExtractor {
     data
+
     constructor(data) {
         this.data = data
-        return (async ()=>this)()
+        return (async () => this)()
     }
-    getName(){
+
+    getName() {
         return this.data.name
     }
-    getAvatar(){
+
+    getAvatar() {
         return this.data.avatar
     }
-    getUpvoteNum(){
+
+    getUpvoteNum() {
         return this.data.upvoteNum
     }
-    getCommentNum(){
+
+    getCommentNum() {
         return this.data.commentNum
     }
-    getRepostNum(){
+
+    getRepostNum() {
         return this.data.repostNum
     }
-    getImages(){
+
+    getImages() {
         return this.data.images
     }
-    getPrefix(){
+
+    getPrefix() {
         return this.data.prefix
     }
-    getTitle(){
+
+    getTitle() {
         return this.data.title
     }
-    getSubName(){
+
+    getSubName() {
         return this.data.subname
     }
-    getID(){
+
+    getID() {
         return this.data.id
     }
-    getPubTime(){
+
+    getPubTime() {
         return this.data.pubtime
     }
-    getRefPost(){
+
+    getRefPost() {
         return this.data.refPost
     }
-    getContent(){
+
+    getContent() {
         return this.data.content
     }
-    getHighLightUrl(){
+
+    getHighLightUrl() {
         return this.data.highLightUrl
     }
-    getIdentifyName(){
+
+    getIdentifyName() {
         return this.data.identifyName
     }
-    getPreviewReplies(){
+
+    getPreviewReplies() {
         let result = this.data.replies || []
         result.hasMore = () => this.data.rcount > result.length
-        result.getLastID = () => result[result.length-1].rpid_str
+        result.getLastID = () => result[result.length - 1].rpid_str
         for (let item of result) {
-            item.getIdentifyID = ()=> item.rpid_str
+            item.getIdentifyID = () => item.rpid_str
             item.url = undefined
             item.getTime = () => item.ctime * 1000
         }
         return result
     }
-    getType(){
+
+    getType() {
         return this.data.type
     }
-    async getComments(pn, sort=1){
-       return await BiliPostExtractor.getCommentsImpl(pn, this.getType(), this.getID(), sort)
+
+    async getComments(pn, sort = 1) {
+        return await BiliPostExtractor.getCommentsImpl(pn, this.getType(), this.getID(), sort)
     }
-    getIdentifyID(){
+
+    async getReplies(pn, parentID, parentType) {
+        return await BiliCommentExtractor.getRepliesImpl(pn, parentID, parentType, this.getID())
+    }
+
+    getIdentifyID() {
         return this.data.identifyID
     }
-    getChannelIdentifyID(){
+
+    getChannelIdentifyID() {
         return this.data.channelIdentifyID
     }
-    getChannelUrl(){
+
+    getChannelUrl() {
         return this.data.channelUrl
     }
 }

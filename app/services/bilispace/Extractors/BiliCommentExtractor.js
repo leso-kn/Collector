@@ -76,7 +76,11 @@ export class BiliCommentExtractor {
     }
 
     getReplies(pn, parentID, parentType){
-        let requestUrl = commentReplyApiUrl + `${parentID}&type=${parentType===2?11:17}&pn=${pn}&root=${this.getID()}`
+        return BiliCommentExtractor.getRepliesImpl(pn, parentID, parentType, this.getID())
+    }
+
+    static getRepliesImpl(pn, parentID, parentType, id){
+        let requestUrl = commentReplyApiUrl + `${parentID}&type=${parentType===2?11:17}&pn=${pn}&root=${id}`
         return axios.get(requestUrl, requestOption).then(res=>{
             let result = res.data.data.replies || []
             result.hasMore = () => res.data.data.page.num * res.data.data.page.size < res.data.data.page.count
