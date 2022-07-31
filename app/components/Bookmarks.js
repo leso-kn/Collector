@@ -27,7 +27,7 @@ export const Bookmarks = ({navigation, randomID}) => {
                             height: 100,
                             backgroundColor: "white"
                         }}>
-                            <Text style={{marginTop: 20, marginLeft: 25, fontSize: 18, color: "black"}}>
+                            <Text style={{marginTop: 22, marginLeft: 25, fontSize: 18, color: "black"}}>
                                 {data.item[0]}
                             </Text>
                             <Text style={{marginTop: 10, marginLeft: 25, color:"gray"}}>
