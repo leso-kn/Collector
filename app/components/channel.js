@@ -15,12 +15,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {ConfirmDialog} from "react-native-simple-dialogs";
 import SelectMultiple from "react-native-select-multiple";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import ImageView from "react-native-image-viewing";
 
 const ChannelInside = (props) => {
     const [data, dispatch] = useReducer(reducer, {})
     const layout = useWindowDimensions();
     const [dialogVisible, setDialogVisible] = useState(false)
     const [dialogVisible1, setDialogVisible1] = useState(false)
+    const [showAvatar, setShowAvatar] = useState(false)
     const [text, changeText] = useState("")
     const [index, setIndex] = React.useState(0);
     const [selected, setSelected] = useState()
@@ -83,7 +85,7 @@ const ChannelInside = (props) => {
     }, [])
     useEffect(()=>{
         AsyncStorage.getItem("subscriptionData").then(res => {
-            setSelected(Object.entries(JSON.parse(res)).filter(x=> {
+            setSelected(res && Object.entries(JSON.parse(res)).filter(x=> {
                 let flag = false
                 for(let i of x[1]){
                     flag = flag || (i.identifyID === data.identifyID)
@@ -96,14 +98,16 @@ const ChannelInside = (props) => {
     return (
         <View style={{flex: 1}}>
             <Image source={{uri: data.headImgUrl}}
-                   style={{width: "100%", height: deviceWidth * data.headImgRatio || 0}}
-                   resizeMode={"center"}/>
+                       style={{width: "100%", height: deviceWidth * data.headImgRatio || 0}}
+                       resizeMode={"center"}/>
             <View style={{backgroundColor: "white"}}>
                 <View style={{flexDirection: "row", marginLeft: 10}}>
                     <View style={{flex: 1, flexDirection: "row"}}>
-                        <Image source={{uri: data.avatar}} style={{
-                            width: 80, height: 80, borderRadius: 40, marginTop: -30
-                        }}/>
+                        <TouchableNativeFeedback onPress={()=>setShowAvatar(true)}>
+                            <Image source={{uri: data.avatar}} style={{
+                                width: 80, height: 80, borderRadius: 40, marginTop: -30
+                            }}/>
+                        </TouchableNativeFeedback>
                         <View style={{marginLeft: 10}}>
                             <Text style={{
                                 marginTop: 5,
@@ -206,6 +210,12 @@ const ChannelInside = (props) => {
                 renderScene={renderScene}
                 onIndexChange={setIndex}
                 initialLayout={{width: layout.width}}
+            />
+            <ImageView
+                images={[{uri:data.avatar}]}
+                imageIndex={0}
+                visible={showAvatar}
+                onRequestClose={() => setShowAvatar(false)}
             />
             <ConfirmDialog
                 title={"Add to"}
