@@ -93,9 +93,9 @@ export class BiliCommentExtractor {
         }
         let requestUrl = commentReplyApiUrl + `${parentID}&type=${typeCode}&pn=${pn}&root=${id}`
         return axios.get(requestUrl, requestOption).then(res=>{
-            let result = res.data.data.replies || []
+            let result = res.data.data?.replies || []
             result.hasMore = () => res.data.data.page.num * res.data.data.page.size < res.data.data.page.count
-            result.getLastID = () => res.data.data.replies[res.data.data.replies.length - 1].rpid_str
+            result.getLastID = () => result[result.length - 1].rpid_str
             for (let item of result) {
                 item.getIdentifyID = ()=> item.rpid_str
                 item.id = "biliComment"
