@@ -111,4 +111,12 @@ export class DefaultPostExtractor {
     getChannelUrl() {
         return this.data.channelUrl
     }
+
+    getParentID(){
+        return null
+    }
+
+    getParentType(){
+        return null
+    }
 }

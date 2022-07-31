@@ -89,7 +89,7 @@ const Post = React.memo((props) => {
                 "field": [
                     "name", "avatar", "upvoteNum", "commentNum", "repostNum", "images", "prefix", "title", "subname",
                     "pubtime", "refPost", "content", "replies", "highLightUrl", "identifyName", "id", "type", "identifyID",
-                    "channelIdentifyID", "channelUrl"
+                    "channelIdentifyID", "channelUrl", "parentID", "parentType"
                 ], "val": [
                     res.getName(),
                     res.getAvatar(),
@@ -110,7 +110,9 @@ const Post = React.memo((props) => {
                     res.getType(),
                     res.getIdentifyID(),
                     res.getChannelIdentifyID(),
-                    res.getChannelUrl()
+                    res.getChannelUrl(),
+                    res.getParentID(),
+                    res.getParentType()
                 ]
             })
         })
@@ -206,10 +208,12 @@ const Post = React.memo((props) => {
     if (block.current) return null
     return (
         <TouchableNativeFeedback onPress={() => {
-            let params = {url: props.url, "data": data, id: "defaultPost"}
-            if (props.type === OTHER_POST) {
-                params.parentID = props.parentID
-                params.parentType = props.parentType
+            let params = {
+                url: props.url,
+                "data": data,
+                id: "defaultPost",
+                parentID: props.parentID || data.parentID,
+                parentType: props.parentType || data.parentType
             }
             props.navigation.push("FullPost", params)
         }} disabled={![PREVIEW_POST, OTHER_POST].includes(props.type)}>
@@ -371,7 +375,11 @@ const Post = React.memo((props) => {
                                 let newData = {...bookmarks}
                                 for (let item of selected) {
                                     if (newData[item.label].filter(x => x.identifyID === data.identifyID).length > 0) continue
-                                    newData[item.label].push(data)
+                                    newData[item.label].push({
+                                        ...data,
+                                        parentID: data.parentID,
+                                        parentType: data.parentType
+                                    })
                                 }
                                 for (let item of Object.entries(bookmarks).filter(x => !selected.filter(y => y.label === x[0]).length)) {
                                     newData[item[0]] = newData[item[0]].filter(x => x.identifyID !== data.identifyID)

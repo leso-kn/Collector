@@ -204,6 +204,8 @@ export class BiliPostExtractor {
                 item.getIdentifyID = ()=> item.rpid_str
                 item.url = "biliComment"
                 item.getTime = () => item.ctime * 1000
+                item.parentID = item.oid
+                item.parentType = type
             }
             return result
         })
@@ -252,6 +254,13 @@ export class BiliPostExtractor {
             }
             return result
         })
+    }
+    getParentID(){
+        return null
+    }
+
+    getParentType(){
+        return null
     }
 }
 

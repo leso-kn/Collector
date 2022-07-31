@@ -218,4 +218,11 @@ export class BiliRefPostExtractor {
     getChannelUrl(){
         return mobileSpaceUrl + this.getIdentifyName()
     }
+    getParentID(){
+        return null
+    }
+
+    getParentType(){
+        return null
+    }
 }

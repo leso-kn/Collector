@@ -92,7 +92,6 @@ export class BiliCommentExtractor {
                 typeCode = 17
         }
         let requestUrl = commentReplyApiUrl + `${parentID}&type=${typeCode}&pn=${pn}&root=${id}`
-        console.log(requestUrl)
         return axios.get(requestUrl, requestOption).then(res=>{
             let result = res.data.data.replies || []
             result.hasMore = () => res.data.data.page.num * res.data.data.page.size < res.data.data.page.count
@@ -125,5 +124,12 @@ export class BiliCommentExtractor {
     }
     getChannelUrl(){
         return mobileSpaceUrl + this.getIdentifyName()
+    }
+    getParentID(){
+        return this.data.parentID
+    }
+
+    getParentType(){
+        return  this.data.parentType
     }
 }
