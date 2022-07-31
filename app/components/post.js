@@ -12,7 +12,7 @@ import ImageView from "react-native-image-viewing";
 import FastImage from 'react-native-fast-image'
 import Icon from 'react-native-vector-icons/AntDesign';
 import FeatherIcon from 'react-native-vector-icons/Feather';
-import {isBlocked, reducer} from "../utils"
+import {isBlocked, reducer, shortenLargeNumber} from "../utils"
 import {LinkPreview} from '@flyerhq/react-native-link-preview'
 import {FIRST_POST, PREVIEW_POST, OTHER_POST, EMBEDDED_POST, deviceWidth} from "../constants";
 import {findService} from "../findService";
@@ -42,7 +42,7 @@ const titleElement = (data, type) => (
 const upvote = data => (
     <View style={{flexDirection: "row", marginRight: 10}}>
         <Icon name={"arrowup"} size={20} color={"gray"}/>
-        <Text style={{marginLeft: 15, color: "gray", marginRight: 15}}>{data.upvoteNum}</Text>
+        <Text style={{marginLeft: 15, color: "gray", marginRight: 15}}>{shortenLargeNumber(data.upvoteNum)}</Text>
     </View>
 )
 const comment = data => (
@@ -50,7 +50,7 @@ const comment = data => (
         <View style={{marginTop:0.5}}>
             <FeatherIcon name={"message-square"} size={20} color={"gray"}/>
         </View>
-        <Text style={{marginLeft: 15, color: "gray", marginRight: 15}}>{data.commentNum}</Text>
+        <Text style={{marginLeft: 15, color: "gray", marginRight: 15}}>{shortenLargeNumber(data.commentNum)}</Text>
     </View>
 )
 const forward = data => (
@@ -58,7 +58,7 @@ const forward = data => (
         <View style={{marginTop:0.6, marginLeft:0}}>
             <FeatherIcon name={"repeat"} size={16.5} color={"gray"} style={{fontWeight:"600"}}/>
         </View>
-        <Text style={{marginLeft: 15, color: "gray"}}>{data.repostNum}</Text>
+        <Text style={{marginLeft: 15, color: "gray"}}>{shortenLargeNumber(data.repostNum)}</Text>
     </View>
 )
 const Post = React.memo((props) => {
