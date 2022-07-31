@@ -82,7 +82,12 @@ export class BiliPostExtractor {
     }
 
     getCommentNum() {
-        return this.card.desc.comment
+        switch (this.type){
+            case 8:
+                return this.contentCard.stat.reply
+            default:
+                return this.card.desc.comment
+        }
     }
 
     getRepostNum() {
@@ -158,6 +163,8 @@ export class BiliPostExtractor {
             case 2:
             case 64:
                 return this.card.desc.rid_str
+            case 8:
+                return this.card.desc.rid
             default:
                 return this.id
         }
@@ -171,20 +178,24 @@ export class BiliPostExtractor {
     }
 
     static async getCommentsImpl(pn, type, id, sort=1) {
-        let requestUrl;
+        let requestUrl, typeCode;
         switch (type){
             case 2:
             case 64:
-                requestUrl = commentApiUrl + `type=11&oid=${id}&pn=${pn}&sort=${sort}`
+                typeCode = 11
                 break
             case 1:
             case 4:
             case 2048:
-                requestUrl = commentApiUrl + `type=17&oid=${id}&pn=${pn}&sort=${sort}`
+                typeCode = 17
+                break
+            case 8:
+                typeCode = 1
                 break
             default:
                 return null
         }
+        requestUrl = commentApiUrl + `type=${typeCode}&oid=${id}&pn=${pn}&sort=${sort}`
         return axios.get(requestUrl, requestOption).then(res=>{
             let result = res.data.data.replies || []
             result.hasMore = () => res.data.data.page.num * res.data.data.page.size < res.data.data.page.count

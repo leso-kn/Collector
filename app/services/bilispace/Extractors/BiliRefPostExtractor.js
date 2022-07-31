@@ -195,6 +195,8 @@ export class BiliRefPostExtractor {
             case 2:
             case 64:
                 return this.rp_id
+            case 8:
+                return this.data.aid
             default:
                 return this.rawData.id
         }
