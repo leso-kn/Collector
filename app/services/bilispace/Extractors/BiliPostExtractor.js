@@ -202,7 +202,7 @@ export class BiliPostExtractor {
             result.getLastID = () => res.data.data.replies[res.data.data.replies.length - 1].rpid_str
             for (let item of result) {
                 item.getIdentifyID = ()=> item.rpid_str
-                item.url = "biliComment"
+                item.id = "biliComment"
                 item.getTime = () => item.ctime * 1000
                 item.parentID = item.oid
                 item.parentType = type

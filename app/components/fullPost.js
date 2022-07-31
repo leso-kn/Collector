@@ -1,6 +1,6 @@
 import Post from "./post";
 import React, {useEffect, useReducer, useRef, useState} from 'react';
-import {FlatList, View} from "react-native";
+import {FlatList, Text, TouchableNativeFeedback, View} from "react-native";
 import {deviceWidth, FIRST_POST, HOT_FIRST, OLD_FIRST, OTHER_POST} from "../constants";
 import {findService} from "../findService";
 
@@ -27,6 +27,17 @@ const FullPost = (packedProps) => {
 
     useEffect(() => {
         if (props.parentID) {
+            packedProps.navigation.setOptions({
+                headerRight: ()=>(
+                    <TouchableNativeFeedback onPress={()=>packedProps.navigation.push("FullPost", {url: props.url})}>
+                        <View>
+                            <Text>
+                                Origin Post
+                            </Text>
+                        </View>
+                    </TouchableNativeFeedback>
+                )
+            })
             findService(props.url, props.id, props.data)
                 .then(res => res.getReplies(pn, props.parentID, props.parentType)).then((res) => {
                 res?.length && dispatch({data: res})
@@ -81,7 +92,7 @@ const FullPost = (packedProps) => {
                       parentID={props.type === "reposts" ? undefined : parentRef.current.parentID}
                       height={layoutMap.current.get(comment.item.getIdentifyID())?.
                           height > 121 ? layoutMap.current.get(comment.item.getIdentifyID())?.height : undefined}
-                      type={OTHER_POST} depth={0} url={comment.item.url}/>)
+                      type={OTHER_POST} depth={0} url={props.url || comment.item.url} id={comment.item.id}/>)
     }
 
     return (

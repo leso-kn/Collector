@@ -378,7 +378,8 @@ const Post = React.memo((props) => {
                                     newData[item.label].push({
                                         ...data,
                                         parentID: data.parentID,
-                                        parentType: data.parentType
+                                        parentType: data.parentType,
+                                        url: props.url
                                     })
                                 }
                                 for (let item of Object.entries(bookmarks).filter(x => !selected.filter(y => y.label === x[0]).length)) {

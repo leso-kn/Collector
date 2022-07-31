@@ -22,12 +22,13 @@ export const getBiliSpaceService = async (url, id, data) => {
     if (url.includes(postPageUrl)) {
         if(id === "biliRefPost")
             return new BiliRefPostExtractor(data)
+        if (id === "biliComment" && data) {
+            return new BiliCommentExtractor(data)
+        }
         id = url.split(postPageUrl)[1].split("?")[0]
         return new BiliPostExtractor(postApiUrl + id, id, data);
     } else if(url.includes("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/unlogin_dynamics?")){
         return new BiliChannelExtractor(url)
-    } else if (url === "biliComment" && data) {
-        return new BiliCommentExtractor(data)
     } else if (url.includes(mobileSpaceUrl)) {
         if(data)return new DefaultChannelInfoExtractor(data)
         id = url.split(mobileSpaceUrl)[1].split("?")[0]
