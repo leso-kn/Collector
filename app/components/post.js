@@ -16,7 +16,7 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import {isBlocked, reducer} from "../utils"
 import {LinkPreview} from '@flyerhq/react-native-link-preview'
-import {FIRST_POST, PREVIEW_POST, OTHER_POST, EMBEDDED_POST} from "../constants";
+import {FIRST_POST, PREVIEW_POST, OTHER_POST, EMBEDDED_POST, deviceWidth} from "../constants";
 import {findService} from "../findService";
 import {mobileSpaceUrl} from "../services/bilispace/BiliSpaceLinks";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -79,6 +79,7 @@ const Post = React.memo((props) => {
     const mounted2 = useRef(true)
     const mounted3 = useRef(true)
     const block = useRef(false)
+    const layoutMap = useRef(new Map())
     useEffect(() => {
         findService(props.url, props.id, props.data).then(res => {
             if (!mounted1.current) return
@@ -120,11 +121,11 @@ const Post = React.memo((props) => {
         // if(!mounted2.current)return
         props.parentID && props.type === OTHER_POST && data.replies?.length && pn && findService(props.url, props.id, props.data)
             .then(res => res.getReplies(pn, props.parentID, props.parentType)).then((res) => {
-                res.data?.data?.replies?.length && dispatch({
+                res.length && dispatch({
                     field: ["replies"],
-                    val: [[...data.replies?.length <= 3 ? [] : data.replies, ...res.data.data.replies]]
+                    val: [[...data.replies?.length <= 3 ? [] : data.replies, ...res]]
                 })
-                setShowLoadMore(res.data?.data?.replies?.length === 20)
+                setShowLoadMore(res.hasMore())
             })
         return () => mounted2.current = false
     }, [pn])
@@ -382,11 +383,38 @@ const Post = React.memo((props) => {
                         onRequestClose={() => setIsVisible(false)}
                     />
 
-                    {showReplies ? <FlatList keyExtractor={(item, index) => {
-                        return JSON.stringify(item) + index
-                    }} extraData={randomID} data={data.replies} renderItem={reply => (
-                        <Post url={"biliComment"} navigation={props.navigation} data={reply.item} type={OTHER_POST}
-                              depth={props.depth + 1}/>)}/> : null}
+                    {showReplies ?
+                        <FlatList
+                            keyExtractor={(item) => {
+                                return item.getIdentifyID()
+                            }}
+                            data={data.replies}
+                            renderItem={reply => (
+                                <Post url={"biliComment"} navigation={props.navigation} data={reply.item}
+                                      type={OTHER_POST}
+                                      onLayout={e=>{
+                                          if(e.nativeEvent.layout.width !== deviceWidth)return
+                                          let tempID = reply.item.getIdentifyID()
+                                          let item = layoutMap.current.get(tempID)
+                                          if(!item || (item && item.height < e.nativeEvent.layout.height)){
+                                              let offsetValue = 0
+                                              for(let i of layoutMap.current){
+                                                  if(i[0] === tempID)break
+                                                  offsetValue += i[1].height+0.4
+                                              }
+                                              layoutMap.current.set(tempID, {height: e.nativeEvent.layout.height, offset:offsetValue})
+                                          }
+                                      }}
+                                      depth={props.depth + 1}/>)}
+                            removeClippedSubviews={true}
+                            getItemLayout={(data, index)=>{
+                                let item = layoutMap.current.get(data[index].getIdentifyID())
+                                if(!item)return undefined
+                                return {length: item.height, offset: item.offset, index}
+                            }}
+                            maxToRenderPerBatch={20}
+                            windowSize={11}
+                        /> : null}
                     {showReplies && showLoadMore ? loadMore : null}
                     <ConfirmDialog
                         title={"Add to"}
