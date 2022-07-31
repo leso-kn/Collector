@@ -112,7 +112,6 @@ const Post = React.memo((props) => {
         return () => mounted1.current = false
     }, [])
     useEffect(() => {
-        if (!mounted3.current) return
         if (Object.keys(data).length) {
             AsyncStorage.getItem("blocklist").then(res => {
                 if (!res) {
