@@ -28,7 +28,7 @@ const FullPost = (packedProps) => {
         if(props.parentID){
             findService(props.url, props.id, props.data)
                 .then(res => res.getReplies(pn, props.parentID, props.parentType)).then((res) => {
-                res.length && dispatch({data: res})
+                res?.length && dispatch({data: res})
                 setHasMore(res.hasMore())
             })
         }
@@ -40,7 +40,7 @@ const FullPost = (packedProps) => {
             }).then(res => {
                 //TODO: show loading when fetching
                 //  alert(JSON.stringify(res.data.data.replies))
-                res.length && dispatch({data: res})
+                res?.length && dispatch({data: res})
                 setHasMore(res.hasMore())
             })
         }
@@ -80,7 +80,6 @@ const FullPost = (packedProps) => {
                   extraData={randomID}
                   keyExtractor={x => x.getIdentifyID()}
                   onEndReached={() => {
-                      console.log(pn)
                       hasMore && setPn(pn + 1)
                   }}
                   onEndReachedThreshold={0.1}

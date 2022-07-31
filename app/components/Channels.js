@@ -19,7 +19,7 @@ export const Channels = (props) => {
         !props.data && findService(props.url).then(res=> {
             return res.getResults(pn)
         }).then(res => {
-            res.length && dispatch({data: res})
+            res?.length && dispatch({data: res})
             refContainer.current.hasMore = res.hasMore()
         })
     }, [pn])
