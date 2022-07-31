@@ -52,7 +52,15 @@ export class DefaultPostExtractor{
         return this.data.identifyName
     }
     getPreviewReplies(){
-        return this.data.replies
+        let result = this.data.replies || []
+        result.hasMore = () => this.data.rcount > result.length
+        result.getLastID = () => result[result.length-1].rpid_str
+        for (let item of result) {
+            item.getIdentifyID = ()=> item.rpid_str
+            item.url = undefined
+            item.getTime = () => item.ctime * 1000
+        }
+        return result
     }
     getType(){
         return this.data.type

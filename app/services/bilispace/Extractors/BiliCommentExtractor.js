@@ -1,4 +1,4 @@
-import {commentReplyApiUrl, mobileSpaceUrl} from "../BiliSpaceLinks";
+import {commentReplyApiUrl, mobileSpaceUrl, postPageUrl} from "../BiliSpaceLinks";
 import {requestOption} from "../BiliSpaceService";
 import axios from "axios";
 
@@ -60,7 +60,15 @@ export class BiliCommentExtractor {
     }
 
     getPreviewReplies() {
-        return this.data.replies?this.data.replies:[]
+        let result = this.data.replies || []
+        result.hasMore = () => this.data.rcount > result.length
+        result.getLastID = () => result[result.length-1].rpid_str
+        for (let item of result) {
+            item.getIdentifyID = ()=> item.rpid_str
+            item.url = undefined
+            item.getTime = () => item.ctime * 1000
+        }
+        return result
     }
 
     getID() {
@@ -69,7 +77,17 @@ export class BiliCommentExtractor {
 
     getReplies(pn, parentID, parentType){
         let requestUrl = commentReplyApiUrl + `${parentID}&type=${parentType===2?11:17}&pn=${pn}&root=${this.getID()}`
-        return axios.get(requestUrl, requestOption)
+        return axios.get(requestUrl, requestOption).then(res=>{
+            let result = res.data.data.replies || []
+            result.hasMore = () => res.data.data.page.num * res.data.data.page.size < res.data.data.page.count
+            result.getLastID = () => res.data.data.replies[res.data.data.replies.length - 1].rpid_str
+            for (let item of result) {
+                item.getIdentifyID = ()=> item.rpid_str
+                item.url = undefined
+                item.getTime = () => item.ctime * 1000
+            }
+            return result
+        })
     }
     getHighLightUrl(){
         return ""
