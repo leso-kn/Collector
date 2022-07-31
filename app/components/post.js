@@ -54,7 +54,7 @@ const comment = data => (
     </View>
 )
 const forward = (data, url, navigation) => (
-    <TouchableNativeFeedback onPress={() => {
+    <TouchableOpacity onPress={() => {
         navigation.push("FullPost", {url: url, "data": data, id: "defaultPost", type: "reposts"})
     }}>
         <View style={{flexDirection: "row"}}>
@@ -63,7 +63,7 @@ const forward = (data, url, navigation) => (
             </View>
             <Text style={{marginLeft: 15, color: "gray"}}>{shortenLargeNumber(data.repostNum)}</Text>
         </View>
-    </TouchableNativeFeedback>
+    </TouchableOpacity>
 )
 const Post = React.memo((props) => {
     const [visible, setIsVisible] = useState(false);

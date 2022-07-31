@@ -1,6 +1,6 @@
 import Post from "./post";
 import React, {useEffect, useReducer, useRef, useState} from 'react';
-import {FlatList, Text, TouchableNativeFeedback, View} from "react-native";
+import {FlatList, Text, TouchableNativeFeedback, TouchableOpacity, View} from "react-native";
 import {deviceWidth, FIRST_POST, HOT_FIRST, OLD_FIRST, OTHER_POST} from "../constants";
 import {findService} from "../findService";
 
@@ -29,13 +29,13 @@ const FullPost = (packedProps) => {
         if (props.parentID) {
             packedProps.navigation.setOptions({
                 headerRight: ()=>(
-                    <TouchableNativeFeedback onPress={()=>packedProps.navigation.push("FullPost", {url: props.url})}>
+                    <TouchableOpacity onPress={()=>packedProps.navigation.push("FullPost", {url: props.url})}>
                         <View>
                             <Text>
                                 Origin Post
                             </Text>
                         </View>
-                    </TouchableNativeFeedback>
+                    </TouchableOpacity>
                 )
             })
             findService(props.url, props.id, props.data)
