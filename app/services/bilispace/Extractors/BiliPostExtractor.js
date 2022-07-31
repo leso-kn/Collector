@@ -1,4 +1,4 @@
-import {commentApiUrl, mobileSpaceUrl, postApiUrl, postPageUrl} from "../BiliSpaceLinks";
+import {commentApiUrl, mobileSpaceUrl, postPageUrl, repostApiUrl} from "../BiliSpaceLinks";
 import {shortenLargeNumber} from "../../../utils";
 import {requestOption} from "../BiliSpaceService";
 
@@ -202,7 +202,7 @@ export class BiliPostExtractor {
             result.getLastID = () => res.data.data.replies[res.data.data.replies.length - 1].rpid_str
             for (let item of result) {
                 item.getIdentifyID = ()=> item.rpid_str
-                item.url = undefined
+                item.url = "biliComment"
                 item.getTime = () => item.ctime * 1000
             }
             return result
@@ -239,6 +239,19 @@ export class BiliPostExtractor {
     }
     getChannelUrl(){
         return mobileSpaceUrl + this.getIdentifyName()
+    }
+    static async getRepostsImpl(lastID, id){
+        return axios.get(repostApiUrl + id + (lastID?`&offset=${lastID}`:""), requestOption).then(res=>{
+            let result = res.data.data.items || []
+            result.hasMore = () => res.data.data.has_more
+            result.getLastID = () => res.data.data.offset
+            for (let item of result) {
+                item.getIdentifyID = ()=> item.desc.dynamic_id_str
+                item.url = postPageUrl + item.desc.dynamic_id_str
+                item.getTime = () => item.desc.timestamp*1000
+            }
+            return result
+        })
     }
 }
 

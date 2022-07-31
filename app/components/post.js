@@ -46,20 +46,24 @@ const upvote = data => (
     </View>
 )
 const comment = data => (
-    <View style={{flexDirection: "row", marginRight:10}}>
-        <View style={{marginTop:0.5}}>
+    <View style={{flexDirection: "row", marginRight: 10}}>
+        <View style={{marginTop: 0.5}}>
             <FeatherIcon name={"message-square"} size={20} color={"gray"}/>
         </View>
         <Text style={{marginLeft: 15, color: "gray", marginRight: 15}}>{shortenLargeNumber(data.commentNum)}</Text>
     </View>
 )
-const forward = data => (
-    <View style={{flexDirection: "row"}}>
-        <View style={{marginTop:0.6, marginLeft:0}}>
-            <FeatherIcon name={"repeat"} size={16.5} color={"gray"} style={{fontWeight:"600"}}/>
+const forward = (data, url, navigation) => (
+    <TouchableNativeFeedback onPress={() => {
+        navigation.push("FullPost", {url: url, "data": data, id: "defaultPost", type: "reposts"})
+    }}>
+        <View style={{flexDirection: "row"}}>
+            <View style={{marginTop: 0.6, marginLeft: 0}}>
+                <FeatherIcon name={"repeat"} size={16.5} color={"gray"} style={{fontWeight: "600"}}/>
+            </View>
+            <Text style={{marginLeft: 15, color: "gray"}}>{shortenLargeNumber(data.repostNum)}</Text>
         </View>
-        <Text style={{marginLeft: 15, color: "gray"}}>{shortenLargeNumber(data.repostNum)}</Text>
-    </View>
+    </TouchableNativeFeedback>
 )
 const Post = React.memo((props) => {
     const [visible, setIsVisible] = useState(false);
@@ -275,7 +279,7 @@ const Post = React.memo((props) => {
                             </Text> : null}
 
                         {data.images ? imagePreview : null}
-                        {data.refPost ? (
+                        {props.type !== OTHER_POST && data.refPost ? (
                             <TouchableOpacity onPress={() => (props.navigation.push("FullPost", {
                                 url: data.refPost?.url,
                                 "data": data.refPost,
@@ -319,23 +323,24 @@ const Post = React.memo((props) => {
                         <View style={{flex: 1, flexDirection: "row", marginLeft: 15}}>
                             {data.upvoteNum || data.upvoteNum === 0 ? upvote(data) : null}
                             {data.commentNum ? comment(data) : null}
-                            {data.repostNum ? forward(data) : null}
+                            {data.repostNum ? forward(data, props.url, props.navigation) : null}
                         </View>
 
-                        {props.type !== EMBEDDED_POST?<View style={{flexDirection: "row", right: 15, marginTop: -1.05}}>
-                            {/*{props.type === FIRST_POST ?<FeatherIcon name={"corner-up-left"} size={20} color={"gray"} style={{marginLeft: 20}}/>:null}*/}
-                            <TouchableNativeFeedback onPress={() => {
-                                setDialogVisible1(true)
-                            }}>
-                                <FeatherIcon name={"bookmark"} size={20} color={"gray"} style={{marginLeft: 15}}/>
-                            </TouchableNativeFeedback>
-                            <FeatherIcon name={"share-2"} size={20} color={"gray"} style={{marginLeft: 10}}/>
-                            <TouchableNativeFeedback onPress={() => {
-                                setDialogVisible2(true)
-                            }}>
-                                <FeatherIcon name={"trash-2"} size={20} color={"gray"} style={{marginLeft: 10}}/>
-                            </TouchableNativeFeedback>
-                        </View>:null}
+                        {props.type !== EMBEDDED_POST ?
+                            <View style={{flexDirection: "row", right: 15, marginTop: -1.05}}>
+                                {/*{props.type === FIRST_POST ?<FeatherIcon name={"corner-up-left"} size={20} color={"gray"} style={{marginLeft: 20}}/>:null}*/}
+                                <TouchableNativeFeedback onPress={() => {
+                                    setDialogVisible1(true)
+                                }}>
+                                    <FeatherIcon name={"bookmark"} size={20} color={"gray"} style={{marginLeft: 15}}/>
+                                </TouchableNativeFeedback>
+                                <FeatherIcon name={"share-2"} size={20} color={"gray"} style={{marginLeft: 10}}/>
+                                <TouchableNativeFeedback onPress={() => {
+                                    setDialogVisible2(true)
+                                }}>
+                                    <FeatherIcon name={"trash-2"} size={20} color={"gray"} style={{marginLeft: 10}}/>
+                                </TouchableNativeFeedback>
+                            </View> : null}
                     </View>
 
                     <ImageView

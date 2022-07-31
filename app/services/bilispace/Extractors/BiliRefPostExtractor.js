@@ -190,6 +190,10 @@ export class BiliRefPostExtractor {
         return BiliPostExtractor.getCommentsImpl(pn, this.getType(), this.getID(), sort)
     }
 
+    async getReposts(lastID){
+        return BiliPostExtractor.getRepostsImpl(lastID, this.getID())
+    }
+
     getID() {
         switch (this.type){
             case 2:

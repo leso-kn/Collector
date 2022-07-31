@@ -7,12 +7,13 @@ import {findService} from "../findService";
 const FullPost = (packedProps) => {
     let props = packedProps.route.params
     const parentRef = useRef({IDList: []});
+    const lastID = useRef(0)
     const reducer = (state, action) => {
         // console.log(JSON.stringify(state.map(x=>x.member.uname+" " +x.content.message)) + "state"+ state.length)
         // console.log(JSON.stringify(action.data.map(x=>x.member.uname+" " +x.content.message)) + "action" + action.data.length)
         let result = [...state]
-        for(let item of action.data){
-           if(result.map(x=>x.getIdentifyID()).includes(item.getIdentifyID())) continue
+        for (let item of action.data) {
+            if (result.map(x => x.getIdentifyID()).includes(item.getIdentifyID())) continue
             result.push(item)
         }
         return result
@@ -25,14 +26,22 @@ const FullPost = (packedProps) => {
     const layoutMap = useRef(new Map())
 
     useEffect(() => {
-        if(props.parentID){
+        if (props.parentID) {
             findService(props.url, props.id, props.data)
                 .then(res => res.getReplies(pn, props.parentID, props.parentType)).then((res) => {
                 res?.length && dispatch({data: res})
                 setHasMore(res?.hasMore())
             })
-        }
-        else{
+        } else if (props.type === "reposts") {
+            packedProps.navigation.setOptions({
+                title: "Reposts"
+            })
+            findService(props.url, props.id, props.data).then(res => res.getReposts(lastID.current)).then(res => {
+                res?.length && dispatch({data: res})
+                setHasMore(res?.hasMore())
+                lastID.current = res.getLastID()
+            })
+        } else {
             findService(props.url, props.id, props.data).then(res => {
                 parentRef.current.parentID = res.getID()
                 parentRef.current.parentType = res.getType()
@@ -68,9 +77,11 @@ const FullPost = (packedProps) => {
                 }
                 layoutMap.current.set(tempID, {height: e.nativeEvent.layout.height, offset: offsetValue})
             }
-        }} data={comment.item} parentType={parentRef.current.parentType} parentID={parentRef.current.parentID}
-                      height={layoutMap.current.get(comment.item.getIdentifyID())?.height > 121?layoutMap.current.get(comment.item.getIdentifyID())?.height : undefined}
-                      type={OTHER_POST} depth={0} url={"biliComment"}/>)
+        }} data={comment.item} parentType={props.type === "reposts" ? undefined : parentRef.current.parentType}
+                      parentID={props.type === "reposts" ? undefined : parentRef.current.parentID}
+                      height={layoutMap.current.get(comment.item.getIdentifyID())?.
+                          height > 121 ? layoutMap.current.get(comment.item.getIdentifyID())?.height : undefined}
+                      type={OTHER_POST} depth={0} url={comment.item.url}/>)
     }
 
     return (
@@ -83,9 +94,9 @@ const FullPost = (packedProps) => {
                       hasMore && setPn(pn + 1)
                   }}
                   onEndReachedThreshold={0.1}
-                  getItemLayout={(data, index)=>{
+                  getItemLayout={(data, index) => {
                       let item = layoutMap.current.get(data[index].getIdentifyID())
-                      if(!item)return undefined
+                      if (!item) return undefined
                       return {length: item.height, offset: item.offset, index}
                   }}
                   maxToRenderPerBatch={50}

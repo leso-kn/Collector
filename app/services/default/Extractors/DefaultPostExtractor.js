@@ -3,8 +3,11 @@ import {BiliCommentExtractor} from "../../bilispace/Extractors/BiliCommentExtrac
 
 export class DefaultPostExtractor {
     data
-
-    constructor(data) {
+    id
+    url
+    constructor(url, id, data) {
+        this.url = url
+        this.id = id
         this.data = data
         return (async () => this)()
     }
@@ -91,6 +94,10 @@ export class DefaultPostExtractor {
 
     async getReplies(pn, parentID, parentType) {
         return await BiliCommentExtractor.getRepliesImpl(pn, parentID, parentType, this.getID())
+    }
+
+    async getReposts(lastID){
+        return BiliPostExtractor.getRepostsImpl(lastID, this.url.split(".com/")[1])
     }
 
     getIdentifyID() {
