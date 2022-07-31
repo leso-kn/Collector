@@ -1,5 +1,4 @@
 import {
-    FlatList,
     Image,
     Text, TextInput,
     TouchableNativeFeedback,
@@ -13,7 +12,6 @@ import ImageView from "react-native-image-viewing";
 import FastImage from 'react-native-fast-image'
 import Icon from 'react-native-vector-icons/AntDesign';
 import FeatherIcon from 'react-native-vector-icons/Feather';
-import EntypoIcon from 'react-native-vector-icons/Entypo';
 import {isBlocked, reducer} from "../utils"
 import {LinkPreview} from '@flyerhq/react-native-link-preview'
 import {FIRST_POST, PREVIEW_POST, OTHER_POST, EMBEDDED_POST, deviceWidth} from "../constants";
@@ -42,21 +40,25 @@ const titleElement = (data, type) => (
     </Text>
 )
 const upvote = data => (
-    <View style={{flexDirection: "row"}}>
+    <View style={{flexDirection: "row", marginRight: 10}}>
         <Icon name={"arrowup"} size={20} color={"gray"}/>
-        <Text style={{marginLeft: 20, color: "gray", marginRight: 20}}>{data.upvoteNum}</Text>
+        <Text style={{marginLeft: 15, color: "gray", marginRight: 15}}>{data.upvoteNum}</Text>
     </View>
 )
 const comment = data => (
-    <View style={{flexDirection: "row"}}>
-        <FeatherIcon name={"message-square"} size={20} color={"gray"}/>
-        <Text style={{marginLeft: 20, color: "gray", marginRight: 20}}>{data.commentNum}</Text>
+    <View style={{flexDirection: "row", marginRight:10}}>
+        <View style={{marginTop:0.5}}>
+            <FeatherIcon name={"message-square"} size={20} color={"gray"}/>
+        </View>
+        <Text style={{marginLeft: 15, color: "gray", marginRight: 15}}>{data.commentNum}</Text>
     </View>
 )
 const forward = data => (
     <View style={{flexDirection: "row"}}>
-        <EntypoIcon name={"forward"} size={20} color={"gray"}/>
-        <Text style={{marginLeft: 20, color: "gray"}}>{data.repostNum}</Text>
+        <View style={{marginTop:0.6, marginLeft:0}}>
+            <FeatherIcon name={"repeat"} size={16.5} color={"gray"} style={{fontWeight:"600"}}/>
+        </View>
+        <Text style={{marginLeft: 15, color: "gray"}}>{data.repostNum}</Text>
     </View>
 )
 const Post = React.memo((props) => {
@@ -74,7 +76,6 @@ const Post = React.memo((props) => {
     const [blocklist, setBlocklist] = useState()
     const [data, dispatch] = useReducer(reducer, {})
     const mounted1 = useRef(true)
-    const mounted2 = useRef(true)
     const mounted3 = useRef(true)
     const block = useRef(false)
     useEffect(() => {
@@ -318,22 +319,23 @@ const Post = React.memo((props) => {
                         <View style={{flex: 1, flexDirection: "row", marginLeft: 15}}>
                             {data.upvoteNum || data.upvoteNum === 0 ? upvote(data) : null}
                             {data.commentNum ? comment(data) : null}
-                            {data.forwardNum ? forward(data) : null}
+                            {data.repostNum ? forward(data) : null}
                         </View>
 
-                        <View style={{flexDirection: "row", right: 15}}>
+                        {props.type !== EMBEDDED_POST?<View style={{flexDirection: "row", right: 15, marginTop: -1.05}}>
+                            {/*{props.type === FIRST_POST ?<FeatherIcon name={"corner-up-left"} size={20} color={"gray"} style={{marginLeft: 20}}/>:null}*/}
                             <TouchableNativeFeedback onPress={() => {
                                 setDialogVisible1(true)
                             }}>
-                                <FeatherIcon name={"bookmark"} size={20} color={"gray"} style={{marginLeft: 20}}/>
+                                <FeatherIcon name={"bookmark"} size={20} color={"gray"} style={{marginLeft: 15}}/>
                             </TouchableNativeFeedback>
-                            <FeatherIcon name={"share-2"} size={20} color={"gray"} style={{marginLeft: 15}}/>
+                            <FeatherIcon name={"share-2"} size={20} color={"gray"} style={{marginLeft: 10}}/>
                             <TouchableNativeFeedback onPress={() => {
                                 setDialogVisible2(true)
                             }}>
-                                <FeatherIcon name={"trash-2"} size={20} color={"gray"} style={{marginLeft: 15}}/>
+                                <FeatherIcon name={"trash-2"} size={20} color={"gray"} style={{marginLeft: 10}}/>
                             </TouchableNativeFeedback>
-                        </View>
+                        </View>:null}
                     </View>
 
                     <ImageView
