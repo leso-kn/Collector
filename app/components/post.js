@@ -400,7 +400,7 @@ const Post = React.memo((props) => {
                                               let offsetValue = 0
                                               for(let i of layoutMap.current){
                                                   if(i[0] === tempID)break
-                                                  offsetValue += i[1].height+0.4
+                                                  offsetValue += i[1].height
                                               }
                                               layoutMap.current.set(tempID, {height: e.nativeEvent.layout.height, offset:offsetValue})
                                           }
