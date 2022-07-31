@@ -1,0 +1,25 @@
+diff --git a/node_modules/react-native-simple-dialogs/src/ConfirmDialog.js b/node_modules/react-native-simple-dialogs/src/ConfirmDialog.js
+index 0e5e26f..420404e 100644
+--- a/node_modules/react-native-simple-dialogs/src/ConfirmDialog.js
++++ b/node_modules/react-native-simple-dialogs/src/ConfirmDialog.js
+@@ -114,7 +114,7 @@ class ConfirmDialog extends Component {
+     }
+ 
+     renderButtons() {
+-        const { negativeButton, positiveButton } = this.props;
++        const {myButton, negativeButton, positiveButton } = this.props;
+ 
+         const containerStyle = OS === 'ios' ?
+             { flexDirection: "row" } :
+@@ -132,6 +132,11 @@ class ConfirmDialog extends Component {
+             <View>
+                 <View style={dividerHoriStyle}></View>
+                 <View style={containerStyle}>
++                    {this.renderButton(myButton, false)}
++                    <View style={dividerVertStyle}></View>
++                    <View style={dividerVertStyle}></View>
++                    <View style={dividerVertStyle}></View>
++                    <View style={dividerVertStyle}></View>
+                     {this.renderButton(negativeButton, false)}
+                     <View style={dividerVertStyle}></View>
+                     {this.renderButton(positiveButton, true)}
