@@ -11,7 +11,7 @@ export const Bookmarks = ({navigation, randomID}) => {
     useEffect(() => {
         AsyncStorage.getItem("bookmarks").then(res => {
             if (!res) {
-                AsyncStorage.setItem("bookmarks", JSON.stringify([]))
+                AsyncStorage.setItem("bookmarks", JSON.stringify({"Default folder": []}))
             }
             setBookmarks(JSON.parse(res) || [])
         })
