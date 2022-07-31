@@ -185,7 +185,17 @@ export class BiliPostExtractor {
             default:
                 return null
         }
-        return axios.get(requestUrl, requestOption)
+        return axios.get(requestUrl, requestOption).then(res=>{
+            let result = res.data.data.replies || []
+            result.hasMore = () => res.data.data.page.num * res.data.data.page.size < res.data.data.page.count
+            result.getLastID = () => res.data.data.replies[res.data.data.replies.length - 1].rpid_str
+            for (let item of result) {
+                item.getIdentifyID = ()=> item.rpid_str
+                item.url = undefined
+                item.getTime = () => item.ctime * 1000
+            }
+            return result
+        })
     }
     getHighLightUrl(){
         switch (this.type){
