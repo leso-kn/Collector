@@ -100,6 +100,8 @@ export class BiliCommentExtractor {
                 item.getIdentifyID = ()=> item.rpid_str
                 item.id = "biliComment"
                 item.getTime = () => item.ctime * 1000
+                item.parentID = "biliComment"
+                item.parentType = null
             }
             return result
         })
