@@ -64,10 +64,8 @@ const Post = React.memo((props) => {
     const [selected, setSelected] = useState()
     const [bookmarks, setBookmarks] = useState()
     const [mode, setMode] = useState(0)
-    const [showReplies, setShowReplies] = useState(0);
     const [showLoadMore, setShowLoadMore] = useState(0);
     const [selected1, setSelected1] = useState()
-    const [randomID, doUpdate] = useState(0)
     const [dialogVisible, setDialogVisible] = useState(false)
     const [dialogVisible1, setDialogVisible1] = useState(false)
     const [text, changeText] = useState("")
@@ -79,7 +77,6 @@ const Post = React.memo((props) => {
     const mounted2 = useRef(true)
     const mounted3 = useRef(true)
     const block = useRef(false)
-    const layoutMap = useRef(new Map())
     useEffect(() => {
         findService(props.url, props.id, props.data).then(res => {
             if (!mounted1.current) return
@@ -115,21 +112,6 @@ const Post = React.memo((props) => {
         return () => mounted1.current = false
     }, [])
     useEffect(() => {
-        setShowLoadMore(data.replies?.length < data.commentNum)
-    })
-    useEffect(() => {
-        // if(!mounted2.current)return
-        props.parentID && props.type === OTHER_POST && data.replies?.length && pn && findService(props.url, props.id, props.data)
-            .then(res => res.getReplies(pn, props.parentID, props.parentType)).then((res) => {
-                res.length && dispatch({
-                    field: ["replies"],
-                    val: [[...data.replies?.length <= 3 ? [] : data.replies, ...res]]
-                })
-                setShowLoadMore(res.hasMore())
-            })
-        return () => mounted2.current = false
-    }, [pn])
-    useEffect(() => {
         if (!mounted3.current) return
         if (Object.keys(data).length) {
             AsyncStorage.getItem("blocklist").then(res => {
@@ -161,31 +143,6 @@ const Post = React.memo((props) => {
         }
         return () => mounted3.current = false
     }, [data])
-
-    const replies = () => {
-        const downElement = (
-            <TouchableOpacity onPress={() => {
-                setMode(1)
-                setShowReplies(1)
-            }}>
-                <View style={{flexDirection: "row"}}>
-                    <Icon name={"down"} size={20} color={"gray"}/>
-                    <Text style={{marginLeft: 5, marginTop: 0, color: "gray"}}>{"+" + data.commentNum}</Text>
-                </View>
-            </TouchableOpacity>
-        )
-        const upElement = (
-            <TouchableOpacity onPress={() => {
-                setMode(0)
-                setShowReplies(0)
-            }}>
-                <View style={{flexDirection: "row"}}>
-                    <Icon name={"up"} size={20} color={"gray"}/>
-                </View>
-            </TouchableOpacity>
-        )
-        return mode ? upElement : downElement
-    }
 
     const imagePreview = (
         <TouchableNativeFeedback onPress={() => {
@@ -245,8 +202,13 @@ const Post = React.memo((props) => {
     if (block.current) return null
     return (
         <TouchableNativeFeedback onPress={() => {
-            props.navigation.push("FullPost", {url: props.url, "data": data, id: "defaultPost"})
-        }} disabled={props.type !== PREVIEW_POST}>
+            let params = {url: props.url, "data": data, id: "defaultPost"}
+            if (props.type === OTHER_POST) {
+                params.parentID = props.parentID
+                params.parentType = props.parentType
+            }
+            props.navigation.push("FullPost", params)
+        }} disabled={![PREVIEW_POST, OTHER_POST].includes(props.type)}>
             <View>
                 <View style={rootStyle} onLayout={props.onLayout}>
                     <View style={{flexDirection: "row", marginTop: 10, marginLeft: 10, marginBottom: -5}}>
@@ -355,13 +317,12 @@ const Post = React.memo((props) => {
 
                     <View style={{flexDirection: "row", marginBottom: 10, marginTop: 18}}>
                         <View style={{flex: 1, flexDirection: "row", marginLeft: 15}}>
-                            {data.upvoteNum !== null ? upvote(data) : null}
-                            {data.commentNum && props.type !== OTHER_POST ? comment(data) : null}
+                            {data.upvoteNum || data.upvoteNum === 0 ? upvote(data) : null}
+                            {data.commentNum ? comment(data) : null}
                             {data.forwardNum ? forward(data) : null}
                         </View>
 
                         <View style={{flexDirection: "row", right: 15}}>
-                            {data.replies?.length > 0 && props.type === OTHER_POST ? replies() : null}
                             <TouchableNativeFeedback onPress={() => {
                                 setDialogVisible1(true)
                             }}>
@@ -382,40 +343,6 @@ const Post = React.memo((props) => {
                         visible={visible}
                         onRequestClose={() => setIsVisible(false)}
                     />
-
-                    {showReplies ?
-                        <FlatList
-                            keyExtractor={(item) => {
-                                return item.getIdentifyID()
-                            }}
-                            data={data.replies}
-                            renderItem={reply => (
-                                <Post url={"biliComment"} navigation={props.navigation} data={reply.item}
-                                      type={OTHER_POST}
-                                      onLayout={e=>{
-                                          if(e.nativeEvent.layout.width !== deviceWidth)return
-                                          let tempID = reply.item.getIdentifyID()
-                                          let item = layoutMap.current.get(tempID)
-                                          if(!item || (item && item.height < e.nativeEvent.layout.height)){
-                                              let offsetValue = 0
-                                              for(let i of layoutMap.current){
-                                                  if(i[0] === tempID)break
-                                                  offsetValue += i[1].height
-                                              }
-                                              layoutMap.current.set(tempID, {height: e.nativeEvent.layout.height, offset:offsetValue})
-                                          }
-                                      }}
-                                      depth={props.depth + 1}/>)}
-                            removeClippedSubviews={true}
-                            getItemLayout={(data, index)=>{
-                                let item = layoutMap.current.get(data[index].getIdentifyID())
-                                if(!item)return undefined
-                                return {length: item.height, offset: item.offset, index}
-                            }}
-                            maxToRenderPerBatch={20}
-                            windowSize={11}
-                        /> : null}
-                    {showReplies && showLoadMore ? loadMore : null}
                     <ConfirmDialog
                         title={"Add to"}
                         visible={dialogVisible1}

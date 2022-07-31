@@ -25,16 +25,27 @@ const FullPost = (packedProps) => {
     const layoutMap = useRef(new Map())
 
     useEffect(() => {
-        findService(props.url, props.id, props.data).then(res => {
-            parentRef.current.parentID = res.getID()
-            parentRef.current.parentType = res.getType()
-            return res.getComments(pn)
-        }).then(res => {
-            //TODO: show loading when fetching
-            //  alert(JSON.stringify(res.data.data.replies))
-            res.length && dispatch({data: res})
-            setHasMore(res.hasMore())
-        })
+        if(props.parentID){
+            findService(props.url, props.id, props.data)
+                .then(res => res.getReplies(pn, props.parentID, props.parentType)).then((res) => {
+                res.length && dispatch({data: res})
+                setHasMore(res.hasMore())
+            })
+        }
+        else{
+            findService(props.url, props.id, props.data).then(res => {
+                parentRef.current.parentID = res.getID()
+                parentRef.current.parentType = res.getType()
+                return res.getComments(pn)
+            }).then(res => {
+                //TODO: show loading when fetching
+                //  alert(JSON.stringify(res.data.data.replies))
+                res.length && dispatch({data: res})
+                setHasMore(res.hasMore())
+            })
+        }
+
+
     }, [pn])
     const head = (
         <View>
