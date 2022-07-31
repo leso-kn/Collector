@@ -2,10 +2,6 @@ import * as BiliSpaceService from "./services/bilispace/BiliSpaceService";
 import {themeDefault} from "./constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const ifWrapper = (condition, element) => {
-    return condition ? element : null;
-}
-
 export function shortenLargeNumber(num, digits) {
     var units = ['k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'],
         decimal;
@@ -22,8 +18,6 @@ export function shortenLargeNumber(num, digits) {
 }
 
 // const forWrapper = (ti)
-
-export default ifWrapper;
 
 export const reducer = (data, action) => {
     let newData = {...data}

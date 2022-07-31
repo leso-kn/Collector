@@ -1,7 +1,7 @@
 import SearchBar from '@nghinv/react-native-search-bar';
 import React, {useCallback, useEffect, useReducer, useRef, useState} from 'react';
 import {Text, View, StyleSheet, FlatList, useWindowDimensions, Image} from "react-native";
-import ifWrapper, {reducer} from "../utils";
+import {reducer} from "../utils";
 import {TabBar, TabView} from "react-native-tab-view";
 import {searchApiUrl} from "../services/bilispace/BiliSpaceLinks";
 import {Channels} from "./Channels";
@@ -67,7 +67,7 @@ export const Search = ({navigation}) => {
 
         return (
             <View style={{flex: 1}}>
-                {ifWrapper(searchWord, (
+                {searchWord? (
                     <TabView
                         renderTabBar={renderTabBar}
                         navigationState={{index, routes}}
@@ -75,7 +75,7 @@ export const Search = ({navigation}) => {
                         onIndexChange={setIndex}
                         initialLayout={{width: layout.width}}
                     />
-                ))}
+                ):null}
 
             </View>
 

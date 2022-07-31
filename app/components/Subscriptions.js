@@ -3,7 +3,7 @@ import {FlatList, Text, TextInput, TouchableNativeFeedback, View} from "react-na
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Channels} from "./Channels";
-import ifWrapper, {getTheme} from "../utils";
+import {getTheme} from "../utils";
 import SafeAreaViewPlus from "react-native-zy-safe-area-plus";
 import {ConfirmDialog} from 'react-native-simple-dialogs';
 
@@ -24,7 +24,8 @@ export const Subscriptions = ({navigation, randomID}) => {
                     Groups
                 </Text>
             </View>
-            <FlatList style={{flexGrow: 0}} data={subscriptionData && Object.entries(subscriptionData).filter(x => x[0] !== "feeds")}
+            <FlatList style={{flexGrow: 0}}
+                      data={subscriptionData && Object.entries(subscriptionData).filter(x => x[0] !== "feeds")}
                       renderItem={data => (
                           <TouchableNativeFeedback onPress={() => navigation.push("Group", {
                               'title': data.item[0],
@@ -80,8 +81,8 @@ export const Subscriptions = ({navigation, randomID}) => {
                     Favourites
                 </Text>
             </View>
-            {ifWrapper(subscriptionData?.feeds, <Channels data={subscriptionData?.feeds} randomID={randomID}
-                                                         navigation={navigation}/>)}
+            {subscriptionData?.feeds ? <Channels data={subscriptionData?.feeds} randomID={randomID}
+                                                 navigation={navigation}/> : null}
             <ConfirmDialog
                 title="Add folder"
                 visible={dialogVisible}

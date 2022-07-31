@@ -7,7 +7,7 @@ import {
     View
 } from "react-native";
 import {findService, getTheme} from "../findService";
-import ifWrapper, {exists, reducer} from "../utils";
+import {exists, reducer} from "../utils";
 import {deviceWidth} from "../constants";
 import {TabBar, TabView} from "react-native-tab-view";
 import {Posts} from "./Posts";
@@ -163,8 +163,8 @@ const ChannelInside = (props) => {
                     marginRight: 5
                 }}>
                     <Text style={{color: "gray", fontSize: 13}}>{data.info || "No description provided"}</Text>
-                    {ifWrapper(data.additionalData, (
-                        <Text style={{fontSize: 11, color: "#504d4d", marginTop: 5}}>{data.additionalText}</Text>))}
+                    {data.additionalData? (
+                        <Text style={{fontSize: 11, color: "#504d4d", marginTop: 5}}>{data.additionalText}</Text>):null}
                 </View>
                 <View style={{flexDirection: "row", marginBottom: 10, marginTop: 10}}>
                     <View style={{

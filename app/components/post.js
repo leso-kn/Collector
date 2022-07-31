@@ -14,7 +14,7 @@ import FastImage from 'react-native-fast-image'
 import Icon from 'react-native-vector-icons/AntDesign';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
-import ifWrapper, {isBlocked, reducer} from "../utils"
+import {isBlocked, reducer} from "../utils"
 import {LinkPreview} from '@flyerhq/react-native-link-preview'
 import {FIRST_POST, PREVIEW_POST, OTHER_POST, EMBEDDED_POST} from "../constants";
 import {findService} from "../findService";
@@ -246,7 +246,7 @@ const Post = React.memo((props) => {
         <TouchableNativeFeedback onPress={() => {
             props.navigation.push("FullPost", {url: props.url, "data": data, id: "defaultPost"})
         }} disabled={props.type !== PREVIEW_POST}>
-            <View >
+            <View>
                 <View style={rootStyle} onLayout={props.onLayout}>
                     <View style={{flexDirection: "row", marginTop: 10, marginLeft: 10, marginBottom: -5}}>
                         <TouchableOpacity onPress={() => {
@@ -270,7 +270,7 @@ const Post = React.memo((props) => {
                             </Text>
                         </View>
                         <View>
-                            {ifWrapper(data.prefix, (
+                            {data.prefix ? (
                                 <Text style={{
                                     color: "gray",
                                     marginRight: 20,
@@ -281,7 +281,7 @@ const Post = React.memo((props) => {
                                 }}>
                                     {data.prefix + "\n"}
                                 </Text>
-                            ))}
+                            ) : null}
 
                             <Text style={{
                                 color: "black",
@@ -296,7 +296,7 @@ const Post = React.memo((props) => {
                         </View>
                     </View>
                     <View style={{minHeight: 25}}>
-                        {ifWrapper(props.type !== OTHER_POST && data.title, titleElement(data))}
+                        {props.type !== OTHER_POST && data.title ? titleElement(data) : null}
                         {data.content ?
                             <Text numberOfLines={[PREVIEW_POST, EMBEDDED_POST].includes(props.type) ? 4 : undefined}
                                   ellipsizeMode='tail'
@@ -311,8 +311,8 @@ const Post = React.memo((props) => {
                                 {data.content}
                             </Text> : null}
 
-                        {ifWrapper(data.images, imagePreview)}
-                        {ifWrapper(data.refPost, (
+                        {data.images ? imagePreview : null}
+                        {data.refPost ? (
                             <TouchableOpacity onPress={() => (props.navigation.push("FullPost", {
                                 url: data.refPost?.url,
                                 "data": data.refPost,
@@ -334,8 +334,8 @@ const Post = React.memo((props) => {
                                     </View>
                                 </View>
                             </TouchableOpacity>
-                        ))}
-                        {ifWrapper(data.highLightUrl, (
+                        ) : null}
+                        {data.highLightUrl ? (
                             <View style={{justifyContent: "center", alignItems: 'center', marginTop: 10}}>
                                 <View
                                     style={{
@@ -349,18 +349,18 @@ const Post = React.memo((props) => {
                                     <LinkPreview text={data.highLightUrl} containerStyle={{height: 320}}></LinkPreview>
                                 </View>
                             </View>
-                        ))}
+                        ) : null}
                     </View>
 
                     <View style={{flexDirection: "row", marginBottom: 10, marginTop: 18}}>
                         <View style={{flex: 1, flexDirection: "row", marginLeft: 15}}>
-                            {ifWrapper(data.upvoteNum != null, upvote(data))}
-                            {ifWrapper(data.commentNum && props.type !== OTHER_POST, comment(data))}
-                            {ifWrapper(data.forwardNum, forward(data))}
+                            {data.upvoteNum !== null ? upvote(data) : null}
+                            {data.commentNum && props.type !== OTHER_POST ? comment(data) : null}
+                            {data.forwardNum ? forward(data) : null}
                         </View>
 
                         <View style={{flexDirection: "row", right: 15}}>
-                            {ifWrapper(data.replies?.length > 0 && props.type === OTHER_POST, replies())}
+                            {data.replies?.length > 0 && props.type === OTHER_POST ? replies() : null}
                             <TouchableNativeFeedback onPress={() => {
                                 setDialogVisible1(true)
                             }}>
@@ -382,12 +382,12 @@ const Post = React.memo((props) => {
                         onRequestClose={() => setIsVisible(false)}
                     />
 
-                    {ifWrapper(showReplies, <FlatList keyExtractor={(item, index) => {
+                    {showReplies ? <FlatList keyExtractor={(item, index) => {
                         return JSON.stringify(item) + index
                     }} extraData={randomID} data={data.replies} renderItem={reply => (
                         <Post url={"biliComment"} navigation={props.navigation} data={reply.item} type={OTHER_POST}
-                              depth={props.depth + 1}/>)}/>)}
-                    {ifWrapper(showReplies && showLoadMore, loadMore)}
+                              depth={props.depth + 1}/>)}/> : null}
+                    {showReplies && showLoadMore ? loadMore : null}
                     <ConfirmDialog
                         title={"Add to"}
                         visible={dialogVisible1}
