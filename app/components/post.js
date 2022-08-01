@@ -2,7 +2,7 @@ import {
     Image,
     Text, TextInput,
     TouchableNativeFeedback,
-    TouchableOpacity,
+    TouchableOpacity, TouchableWithoutFeedback,
     View
 } from "react-native";
 import React, {useEffect, useReducer, useRef, useState} from 'react';
@@ -152,7 +152,7 @@ const Post = React.memo((props) => {
     }, [data])
 
     const imagePreview = (
-        <TouchableNativeFeedback onPress={() => {
+        <TouchableWithoutFeedback onPress={() => {
             setIsVisible(true)
         }}>
             <View>
@@ -176,7 +176,7 @@ const Post = React.memo((props) => {
                         <MaterialIcons name={"photo-library"} size={20} color={"white"} />
                     </View> : null}
             </View>
-        </TouchableNativeFeedback>
+        </TouchableWithoutFeedback>
     )
 
     const loadMore = (
