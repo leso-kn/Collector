@@ -93,6 +93,7 @@ export class DefaultPostExtractor {
     }
 
     async getReplies(pn, parentID, parentType) {
+        if(parentID === "biliComment")return null
         return await BiliCommentExtractor.getRepliesImpl(pn, parentID, parentType, this.getID())
     }
 
