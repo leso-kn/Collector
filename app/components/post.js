@@ -172,7 +172,7 @@ const Post = React.memo((props) => {
                     resizeMode={props.type === FIRST_POST ? FastImage.resizeMode.center : FastImage.resizeMode.cover}
                 />
                 {data.images?.length > 1 ?
-                    <View style={{position: "absolute", left:30, top:20, backgroundColor:"black"}}>
+                    <View style={{position: "absolute", left:30, top:22, backgroundColor:"black"}}>
                         <MaterialIcons name={"photo-library"} size={20} color={"white"} />
                     </View> : null}
             </View>
