@@ -377,8 +377,8 @@ const Post = React.memo((props) => {
                                     if (newData[item.label].filter(x => x.identifyID === data.identifyID).length > 0) continue
                                     newData[item.label].push({
                                         ...data,
-                                        parentID: data.parentID,
-                                        parentType: data.parentType,
+                                        parentID: props.parentID || data.parentID,
+                                        parentType: props.parentType || data.parentType ,
                                         url: props.url
                                     })
                                 }
