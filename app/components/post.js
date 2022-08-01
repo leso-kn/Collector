@@ -22,6 +22,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {ConfirmDialog} from "react-native-simple-dialogs";
 import SelectMultiple from "react-native-select-multiple";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import {Dirs, FileSystem} from 'react-native-file-access';
 
 TimeAgo.addLocale(en)
 const timeAgo = new TimeAgo('en-US')
@@ -372,10 +373,22 @@ const Post = React.memo((props) => {
                                     {`${imageIndex + 1}/${data.images.length}`}
                                 </Text>
                                 <View style={{marginRight: 20, marginTop: 0}}>
-                                    <TouchableOpacity onPress={() => getBase64FromUrl(data.images[imageIndex].uri).then(res=>Share.open({
-                                        title: "Share image",
-                                        url: res,
-                                    })) }>
+                                    <TouchableOpacity
+                                        onPress={() => getBase64FromUrl(data.images[imageIndex].uri).then(res => Share.open({
+                                            title: "Share image",
+                                            url: res,
+                                        }))}>
+                                        <MaterialIcons name={"share"} size={21} color={"white"}/>
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={{marginRight: 20, marginTop: 0}}>
+                                    <TouchableOpacity
+                                        onPress={() => getBase64FromUrl(data.images[imageIndex].uri).then(res => {
+                                                res = res.split("data:image/png;base64,")[1]
+                                                let path = `/${data.channelIdentifyID + "-" + imageIndex}.png`
+                                                return FileSystem.writeFile(Dirs.CacheDir + path, res, "base64").then(res => path)
+                                            }
+                                        ).then(path => FileSystem.cpExternal(Dirs.CacheDir + path, path, "images"))}>
                                         <MaterialIcons name={"file-download"} size={21} color={"white"}/>
                                     </TouchableOpacity>
                                 </View>
