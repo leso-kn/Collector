@@ -23,6 +23,7 @@ import {ConfirmDialog} from "react-native-simple-dialogs";
 import SelectMultiple from "react-native-select-multiple";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import {Dirs, FileSystem} from 'react-native-file-access';
+import {showMessage} from "react-native-flash-message";
 
 TimeAgo.addLocale(en)
 const timeAgo = new TimeAgo('en-US')
@@ -386,9 +387,16 @@ const Post = React.memo((props) => {
                                         onPress={() => getBase64FromUrl(data.images[imageIndex].uri).then(res => {
                                                 res = res.split("data:image/png;base64,")[1]
                                                 let path = `/${data.channelIdentifyID + "-" + imageIndex}.png`
-                                                return FileSystem.writeFile(Dirs.CacheDir + path, res, "base64").then(res => path)
+                                                return FileSystem.exists(Dirs.SDCardDir + "/Pictures/Collector")
+                                                    .then(res => !res && FileSystem.mkdir(Dirs.SDCardDir + "/Pictures/Collector"))
+                                                    .then(FileSystem.writeFile(Dirs.CacheDir + path, res, "base64")).then(res => path)
                                             }
-                                        ).then(path => FileSystem.cpExternal(Dirs.CacheDir + path, path, "images"))}>
+                                        ).then(path => FileSystem.cp(Dirs.CacheDir + path, Dirs.SDCardDir + "/Pictures/Collector" + path)).then(res=>showMessage({
+                                            message: "Success",
+                                            type: "success",
+                                            style:{justifyContent:"center", alignItems:"center",marginTop:-3},
+                                            statusBarHeight:0,
+                                        }))}>
                                         <MaterialIcons name={"file-download"} size={21} color={"white"}/>
                                     </TouchableOpacity>
                                 </View>
