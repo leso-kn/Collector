@@ -6,13 +6,14 @@ import {
     View
 } from "react-native";
 import React, {useEffect, useReducer, useRef, useState} from 'react';
+import Share from 'react-native-share';
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
 import ImageView from "react-native-image-viewing";
 import FastImage from 'react-native-fast-image'
 import Icon from 'react-native-vector-icons/AntDesign';
 import FeatherIcon from 'react-native-vector-icons/Feather';
-import {isBlocked, reducer, shortenLargeNumber} from "../utils"
+import {getBase64FromUrl, isBlocked, reducer, shortenLargeNumber} from "../utils"
 import {LinkPreview} from '@flyerhq/react-native-link-preview'
 import {FIRST_POST, PREVIEW_POST, OTHER_POST, EMBEDDED_POST, deviceWidth} from "../constants";
 import {findService} from "../findService";
@@ -172,8 +173,8 @@ const Post = React.memo((props) => {
                     resizeMode={props.type === FIRST_POST ? FastImage.resizeMode.center : FastImage.resizeMode.cover}
                 />
                 {data.images?.length > 1 ?
-                    <View style={{position: "absolute", left:30, top:22, backgroundColor:"black"}}>
-                        <MaterialIcons name={"photo-library"} size={20} color={"white"} />
+                    <View style={{position: "absolute", left: 30, top: 22, backgroundColor: "black"}}>
+                        <MaterialIcons name={"photo-library"} size={20} color={"white"}/>
                     </View> : null}
             </View>
         </TouchableWithoutFeedback>
@@ -358,6 +359,28 @@ const Post = React.memo((props) => {
                         images={data.images}
                         imageIndex={0}
                         visible={visible}
+                        FooterComponent={({imageIndex}) => (
+                            <View style={{flexDirection: "row"}}>
+                                <Text style={{
+                                    color: "white",
+                                    flex: 1,
+                                    marginLeft: 25,
+                                    marginBottom: 20,
+                                    fontSize: 18,
+                                    fontWeight: "500"
+                                }}>
+                                    {`${imageIndex + 1}/${data.images.length}`}
+                                </Text>
+                                <View style={{marginRight: 20, marginTop: 0}}>
+                                    <TouchableOpacity onPress={() => getBase64FromUrl(data.images[imageIndex].uri).then(res=>Share.open({
+                                        title: "Share image",
+                                        url: res,
+                                    })) }>
+                                        <MaterialIcons name={"file-download"} size={21} color={"white"}/>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        )}
                         onRequestClose={() => setIsVisible(false)}
                     />
                     <ConfirmDialog

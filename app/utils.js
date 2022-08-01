@@ -72,3 +72,16 @@ export const getCurrentServiceUrl = ()=>{
 export const getTheme = ()=>{
     return themeDefault
 }
+
+export const getBase64FromUrl = async (url) => {
+    const data = await fetch(url);
+    let blob = await data.blob();
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => {
+            const base64data = reader.result;
+            resolve(base64data);
+        }
+    }).then(res=>res.replace(new RegExp(":.*;"), ":image/png;"));
+}
