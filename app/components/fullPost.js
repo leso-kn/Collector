@@ -93,7 +93,7 @@ const FullPost = (packedProps) => {
                       parentID={props.type === "reposts" ? undefined : parentRef.current.parentID}
                       height={layoutMap.current.get(comment.item.getIdentifyID())?.
                           height > 121 ? layoutMap.current.get(comment.item.getIdentifyID())?.height : undefined}
-                      type={OTHER_POST} depth={0} url={props.url || comment.item.url} id={comment.item.id}/>)
+                      type={OTHER_POST} depth={0} url={comment.item.url || props.url} id={comment.item.id}/>)
     }
 
     return (
