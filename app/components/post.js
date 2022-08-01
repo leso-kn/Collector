@@ -20,6 +20,7 @@ import {mobileSpaceUrl} from "../services/bilispace/BiliSpaceLinks";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {ConfirmDialog} from "react-native-simple-dialogs";
 import SelectMultiple from "react-native-select-multiple";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 TimeAgo.addLocale(en)
 const timeAgo = new TimeAgo('en-US')
@@ -154,21 +155,27 @@ const Post = React.memo((props) => {
         <TouchableNativeFeedback onPress={() => {
             setIsVisible(true)
         }}>
-            <FastImage
-                style={{
-                    height: 200,
-                    width: "90%",
-                    marginLeft: 16,
-                    marginTop: 10,
-                    borderRadius: 10,
-                    marginBottom: 0
-                }}
-                source={{
-                    uri: data.images && data.images[0].uri,
-                    priority: FastImage.priority.normal,
-                }}
-                resizeMode={props.type === FIRST_POST ? FastImage.resizeMode.center : FastImage.resizeMode.cover}
-            />
+            <View>
+                <FastImage
+                    style={{
+                        height: 200,
+                        width: "90%",
+                        marginLeft: 16,
+                        marginTop: 10,
+                        borderRadius: 10,
+                        marginBottom: 0
+                    }}
+                    source={{
+                        uri: data.images && data.images[0].uri,
+                        priority: FastImage.priority.normal,
+                    }}
+                    resizeMode={props.type === FIRST_POST ? FastImage.resizeMode.center : FastImage.resizeMode.cover}
+                />
+                {data.images?.length > 1 ?
+                    <View style={{position: "absolute", left:30, top:20, backgroundColor:"black"}}>
+                        <MaterialIcons name={"photo-library"} size={20} color={"white"} />
+                    </View> : null}
+            </View>
         </TouchableNativeFeedback>
     )
 
@@ -378,7 +385,7 @@ const Post = React.memo((props) => {
                                     newData[item.label].push({
                                         ...data,
                                         parentID: props.parentID || data.parentID,
-                                        parentType: props.parentType || data.parentType ,
+                                        parentType: props.parentType || data.parentType,
                                         url: props.url
                                     })
                                 }
