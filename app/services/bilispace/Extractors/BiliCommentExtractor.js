@@ -97,7 +97,7 @@ export class BiliCommentExtractor {
             result.hasMore = () => res.data.data.page.num * res.data.data.page.size < res.data.data.page.count
             result.getLastID = () => result[result.length - 1].rpid_str
             for (let item of result) {
-                item.getIdentifyID = ()=> item.rpid_str
+                item.getIdentifyID = ()=> "biliSpace" + item.rpid_str
                 item.id = "biliComment"
                 item.getTime = () => item.ctime * 1000
                 item.parentID = "biliComment"

@@ -221,7 +221,6 @@ export class BiliRefPostExtractor {
     getParentID(){
         return null
     }
-
     getParentType(){
         return null
     }

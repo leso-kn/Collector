@@ -201,7 +201,7 @@ export class BiliPostExtractor {
             result.hasMore = () => res.data.data.page.num * res.data.data.page.size < res.data.data.page.count
             result.getLastID = () => result[result.length - 1].rpid_str
             for (let item of result) {
-                item.getIdentifyID = ()=> item.rpid_str
+                item.getIdentifyID = ()=> "biliSpace" +  item.rpid_str
                 item.id = "biliComment"
                 item.getTime = () => item.ctime * 1000
                 item.parentID = item.oid
@@ -248,7 +248,7 @@ export class BiliPostExtractor {
             result.hasMore = () => res.data.data.has_more
             result.getLastID = () => res.data.data.offset
             for (let item of result) {
-                item.getIdentifyID = ()=> item.desc.dynamic_id_str
+                item.getIdentifyID = ()=> "biliSpace" + item.desc.dynamic_id_str
                 item.url = postPageUrl + item.desc.dynamic_id_str
                 item.getTime = () => item.desc.timestamp*1000
             }
