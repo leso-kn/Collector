@@ -1,10 +1,10 @@
 import SearchBar from '@nghinv/react-native-search-bar';
-import React, {useCallback, useEffect, useReducer, useRef, useState} from 'react';
-import {Text, View, StyleSheet, FlatList, useWindowDimensions, Image} from "react-native";
-import {reducer} from "../utils";
+import React, {useCallback, useEffect, useState} from 'react';
+import {View, StyleSheet, FlatList} from "react-native";
 import {TabBar, TabView} from "react-native-tab-view";
 import {searchApiUrl} from "../services/bilispace/BiliSpaceLinks";
 import {Channels} from "./Channels";
+import {deviceWidth} from "../constants";
 
 export const Search = ({navigation}) => {
     const [searchWord, setSearchWord] = useState("")
@@ -40,9 +40,6 @@ export const Search = ({navigation}) => {
         )
     }
     const SearchResult = (props) => {
-        const [data, dispatch] = useReducer(reducer, {})
-        const layout = useWindowDimensions();
-
         const [index, setIndex] = React.useState(0);
         const [routes] = React.useState([
             {key: 'users', title: "Channels"},
@@ -67,18 +64,16 @@ export const Search = ({navigation}) => {
 
         return (
             <View style={{flex: 1}}>
-                {searchWord? (
+                {searchWord ? (
                     <TabView
                         renderTabBar={renderTabBar}
                         navigationState={{index, routes}}
                         renderScene={renderScene}
                         onIndexChange={setIndex}
-                        initialLayout={{width: layout.width}}
+                        initialLayout={{width: deviceWidth}}
                     />
-                ):null}
-
+                ) : null}
             </View>
-
         )
     }
     useEffect(() => navigation.setOptions({headerTitle: SearchInside}), [])

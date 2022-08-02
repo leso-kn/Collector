@@ -3,10 +3,9 @@ import {
     FlatList,
     Image,
     Text, TextInput, TouchableNativeFeedback,
-    useWindowDimensions,
     View
 } from "react-native";
-import {findService, getTheme} from "../findService";
+import {findService} from "../findService";
 import {exists, reducer} from "../utils";
 import {deviceWidth} from "../constants";
 import {TabBar, TabView} from "react-native-tab-view";
@@ -19,7 +18,6 @@ import ImageView from "react-native-image-viewing";
 
 const ChannelInside = (props) => {
     const [data, dispatch] = useReducer(reducer, {})
-    const layout = useWindowDimensions();
     const [dialogVisible, setDialogVisible] = useState(false)
     const [dialogVisible1, setDialogVisible1] = useState(false)
     const [showAvatar, setShowAvatar] = useState(false)
@@ -209,7 +207,7 @@ const ChannelInside = (props) => {
                 navigationState={{index, routes}}
                 renderScene={renderScene}
                 onIndexChange={setIndex}
-                initialLayout={{width: layout.width}}
+                initialLayout={{width: deviceWidth}}
             />
             <ImageView
                 images={[{uri:data.avatar}]}

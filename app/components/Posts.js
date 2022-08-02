@@ -1,8 +1,8 @@
 import React, {useEffect, useReducer, useRef, useState} from 'react';
-import {HOT_FIRST, PREVIEW_POST} from "../constants";
+import {deviceWidth, HOT_FIRST, PREVIEW_POST} from "../constants";
 import {findService} from "../findService";
 import Post from "./post";
-import {Dimensions, FlatList, View} from "react-native";
+import {FlatList, View} from "react-native";
 
 const reducer = (state, action) => {
     let result = [...state]
@@ -14,7 +14,6 @@ const reducer = (state, action) => {
         result = result.sort((a, b) => a.getTime() < b.getTime())
     return result
 }
-const {width} = Dimensions.get('screen');
 export const Posts = React.memo((props) => {
     const [pn, setPn] = useState(1)
     const refContainer = useRef({hasMores: [], lastIDs: [], notFetch: {}})
@@ -89,7 +88,7 @@ export const Posts = React.memo((props) => {
     function renderFunc(post) {
         return (
             <Post type={PREVIEW_POST} depth={0} onLayout={e=>{
-                if(e.nativeEvent.layout.width !== width)return
+                if(e.nativeEvent.layout.width !== deviceWidth)return
                 let tempID = post.item.getIdentifyID()
                 let item = layoutMap.current.get(tempID)
                 if(!item || (item && item.height < e.nativeEvent.layout.height)){
