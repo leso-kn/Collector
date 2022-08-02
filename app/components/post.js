@@ -396,7 +396,7 @@ const Post = React.memo((props) => {
                                     <TouchableOpacity
                                         onPress={() => getBase64FromUrl(data.images[imageIndex].uri).then(res => {
                                                 res = res.split("data:image/png;base64,")[1]
-                                                let path = `/${data.channelIdentifyID + "-" + imageIndex}.png`
+                                                let path = `/${data.identifyID + "-" + imageIndex}.png`
                                                 return FileSystem.exists(Dirs.SDCardDir + "/Pictures/Collector")
                                                     .then(res => !res && FileSystem.mkdir(Dirs.SDCardDir + "/Pictures/Collector"))
                                                     .then(FileSystem.writeFile(Dirs.CacheDir + path, res, "base64")).then(res => path)
