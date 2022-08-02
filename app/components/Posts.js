@@ -61,7 +61,7 @@ export const Posts = React.memo((props) => {
                     }))
                     for (let item in tempResultPool.current) {
                         for (let i = 0; i < tempResultPool.current[item].length; i++) {
-                            if (tempResultPool.current[item][i].getTime() >= lastTime) {
+                            if (tempResultPool.current[item][i].getTime() >= lastTime || !props.sort) {
                                 tempResultQueue.current.push(tempResultPool.current[item][i])
                             } else {
                                 tempResultPool.current[item] = tempResultPool.current[item].slice(i)
