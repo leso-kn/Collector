@@ -5,7 +5,11 @@ import Post from "./post";
 import {Dimensions, FlatList, View} from "react-native";
 
 const reducer = (state, action) => {
-    let result = [...state, ...action.data]
+    let result = [...state]
+    for (let item of action.data) {
+        if (result.map(x => x.getIdentifyID()).includes(item.getIdentifyID())) continue
+        result.push(item)
+    }
     if (action.sort)
         result = result.sort((a, b) => a.getTime() < b.getTime())
     return result
