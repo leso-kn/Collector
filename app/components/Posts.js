@@ -87,20 +87,21 @@ export const Posts = React.memo((props) => {
 
     function renderFunc(post) {
         return (
-            <Post type={PREVIEW_POST} depth={0} onLayout={e=>{
-                if(e.nativeEvent.layout.width !== deviceWidth)return
+            <Post type={PREVIEW_POST} depth={0} onLayout={e => {
+                if (e.nativeEvent.layout.width !== deviceWidth) return
                 let tempID = post.item.getIdentifyID()
                 let item = layoutMap.current.get(tempID)
-                if(!item || (item && item.height < e.nativeEvent.layout.height)){
+                if (!item || (item && item.height < e.nativeEvent.layout.height)) {
                     let offsetValue = 0
-                    for(let i of layoutMap.current){
-                        if(i[0] === tempID)break
-                        offsetValue += i[1].height+0.4
+                    for (let i of layoutMap.current) {
+                        if (i[0] === tempID) break
+                        offsetValue += i[1].height + 0.4
                     }
-                    layoutMap.current.set(tempID, {height: e.nativeEvent.layout.height, offset:offsetValue})
+                    layoutMap.current.set(tempID, {height: e.nativeEvent.layout.height, offset: offsetValue})
                 }
             }
-            } url={post.item.url} data={post.item} height={layoutMap.current.get(post.item.getIdentifyID())?.height > 121?layoutMap.current.get(post.item.getIdentifyID())?.height : undefined}
+            } url={post.item.url} data={post.item}
+                  height={layoutMap.current.get(post.item.getIdentifyID())?.height > 121 ? layoutMap.current.get(post.item.getIdentifyID())?.height : undefined}
                   navigation={props.navigation}/>)
     }
 
@@ -116,9 +117,9 @@ export const Posts = React.memo((props) => {
                       removeClippedSubviews={true}
                       onEndReachedThreshold={0.1}
                       initialNumToRender={5}
-                      getItemLayout={(data, index)=>{
+                      getItemLayout={(data, index) => {
                           let item = layoutMap.current.get(data[index].getIdentifyID())
-                          if(!item)return undefined
+                          if (!item) return undefined
                           return {length: item.height, offset: item.offset, index}
                       }}
                       maxToRenderPerBatch={40}
