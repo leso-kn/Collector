@@ -9,6 +9,7 @@ import {Group} from "./app/components/Group";
 import {getTheme} from "./app/utils";
 import FlashMessage from "react-native-flash-message";
 import {Home} from "./app/components/Home";
+import {Trending} from "./app/components/Trending";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +25,7 @@ const App = () => {
                 <Stack.Screen name={"FullPost"} component={FullPost}/>
                 <Stack.Screen name={"Search"} component={Search}/>
                 <Stack.Screen name={"Group"} component={Group}/>
+                <Stack.Screen name={"Trending"} component={Trending}/>
             </Stack.Navigator>
             <FlashMessage position="top"/>
         </NavigationContainer>

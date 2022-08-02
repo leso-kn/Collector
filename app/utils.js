@@ -17,8 +17,6 @@ export function shortenLargeNumber(num, digits) {
     return num;
 }
 
-// const forWrapper = (ti)
-
 export const reducer = (data, action) => {
     let newData = {...data}
     for (let i = 0; i < action.field.length; i++) {
@@ -69,6 +67,11 @@ export const modifyUserServices = async(names) =>{
 export const getCurrentServiceUrl = ()=>{
     return BiliSpaceService.serviceUrl
 }
+
+export const getCurrentServiceIcon = ()=>{
+    return require("../assets/logos/BiliSpaceIcon.png")
+}
+
 export const getTheme = ()=>{
     return themeDefault
 }
