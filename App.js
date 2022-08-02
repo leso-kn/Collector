@@ -8,6 +8,7 @@ import {Search} from "./app/components/search";
 import {Group} from "./app/components/Group";
 import {getTheme} from "./app/utils";
 import FlashMessage from "react-native-flash-message";
+import {Home} from "./app/components/Home";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,9 +19,7 @@ const App = () => {
                 headerStyle: {backgroundColor: getTheme().color, elevation: 0},
                 animation: "fade"
             }}>
-                <Stack.Screen name="Home" component={Index} options={{
-                    headerShadowVisible: false
-                }}/>
+                <Stack.Screen name={"Home"} component={Home}/>
                 <Stack.Screen name={"Channel"} component={Channel}/>
                 <Stack.Screen name={"FullPost"} component={FullPost}/>
                 <Stack.Screen name={"Search"} component={Search}/>

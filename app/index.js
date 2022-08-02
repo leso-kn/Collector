@@ -83,7 +83,7 @@ const Index = ({navigation}) => {
         )
     }
     const HeaderRightElement = () => {
-        return (<View style={{flexDirection: "row"}}>
+        return (<View style={{flexDirection: "row", marginRight:20}}>
             <RefreshButton/>
             <SearchButton/>
         </View>)
