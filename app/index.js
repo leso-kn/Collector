@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import {
+    DevSettings,
     TouchableNativeFeedback, TouchableOpacity,
     useWindowDimensions,
     View,
@@ -14,6 +15,7 @@ import {Subscriptions} from "./components/Subscriptions";
 import SafeAreaViewPlus from "react-native-zy-safe-area-plus";
 import {Bookmarks} from "./components/Bookmarks";
 import {getTheme} from "./utils";
+import RNRestart from "react-native-restart";
 
 const renderTabBar = props => (
     <View style={{paddingBottom: 3, overflow: "hidden"}}>
@@ -70,10 +72,11 @@ const Index = ({navigation}) => {
             </View>
         )
     }
+    //only work in production
     const RefreshButton = () => {
         return (
             <View style={{marginRight: 30}}>
-                <TouchableOpacity onPress={() => doUpdate(Math.random()*1000)}>
+                <TouchableOpacity onPress={()=>RNRestart.Restart()}>
                     <FontAwesome name={"refresh"} size={20}/>
                 </TouchableOpacity>
             </View>
