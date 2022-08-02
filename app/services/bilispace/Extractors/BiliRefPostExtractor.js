@@ -54,7 +54,7 @@ export class BiliRefPostExtractor {
             case 64:
                 return this.data.stats.like
             default:
-                return this.data.item.like
+                return this.data.item?.like
         }
     }
 
@@ -65,7 +65,7 @@ export class BiliRefPostExtractor {
             case 64:
                 return this.data.stats.reply
             default:
-                return this.data.item.reply
+                return this.data.item?.reply
         }
     }
 
@@ -76,7 +76,7 @@ export class BiliRefPostExtractor {
             case 64:
                 return this.data.stats.share
             default:
-                return this.data.item.share
+                return this.data.item?.share
         }
     }
 
@@ -98,7 +98,7 @@ export class BiliRefPostExtractor {
             case 64:
                 return shortenLargeNumber(Number(this.data.stats.view)) + " Views"
             default:
-                return this.data.item.view && shortenLargeNumber(Number(this.data.item.view)) + " Views"
+                return this.data.item?.view && shortenLargeNumber(Number(this.data.item?.view)) + " Views"
         }
 
     }
@@ -109,7 +109,7 @@ export class BiliRefPostExtractor {
             case 64:
                 return this.data.title
             default:
-                return this.data.item.title
+                return this.data.item?.title
         }
 
     }
@@ -125,9 +125,9 @@ export class BiliRefPostExtractor {
             case 64:
                 return this.data.publish_time
             case 2:
-                return this.data.item.upload_time * 1000
+                return this.data.item?.upload_time * 1000
             default:
-                return this.data.item.timestamp * 1000
+                return this.data.item?.timestamp * 1000
         }
     }
 
@@ -141,10 +141,10 @@ export class BiliRefPostExtractor {
             case 64:
                 return this.data.dynamic
             case 2:
-                return this.data.item.description
+                return this.data.item?.description
             case 4:
             case 1:
-                return this.data.item.content
+                return this.data.item?.content
             case 2048:
                 return this.data.vest.content
             default:
