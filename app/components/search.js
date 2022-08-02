@@ -58,7 +58,8 @@ export const Search = ({navigation}) => {
         const renderScene = ({route}) => {
             switch (route.key) {
                 case 'users':
-                    return <Channels url={getCurrentServiceUrl().getSearchUrl(searchWord)} navigation={props.navigation}/>
+                    return <Channels url={getCurrentServiceUrl().getSearchUrl(searchWord)}
+                                     navigation={props.navigation}/>
                 case "posts":
                     return <Posts navigation={props.navigation}
                                   urls={[getCurrentServiceUrl().getSearchPostUrl(searchWord.split("@")[0], searchWord.split("@")[1])]}/>
@@ -76,11 +77,18 @@ export const Search = ({navigation}) => {
                         initialLayout={{width: deviceWidth}}
                     />
                 ) : (
-                    <View style={{ justifyContent:"center", alignItems:"center", marginTop:20}}>
-                        <Text style={{textAlign:"center"}}>
-                            {'To search contents inside a channel, input \n\n[My channel name]@[search word]' +
-                            '\n\n e.g. Arch Linux@open source' +
-                            '\n\n This query will search "open source" in channel "Arch Linux"'}
+                    <View style={{justifyContent: "center", alignItems: "center", marginTop: 20}}>
+                        <Text style={{textAlign: "center"}}>
+                            {'To search contents inside a channel, input \n\n[ID]@[search word]' +
+                                "\n\ne.g. 12345678@open source" +
+                                '\n\n This query will search "open source" in a channel whose ID is 12345678' +
+                                "\n\nAlternatively, you can input[Channel Name]@[search word]" +
+                                '\n\ne.g. Arch Linux@open source' +
+                                '\n\nThis query will search "open source" in the channel "Arch Linux"' +
+                                "\n\n\nNote:\nBoth or neither or one of these ways work, depending on the service." +
+                                "\n\nSome service only support one of them, so that the other is implemented by doing pre-search to convert one to the other." +
+                                " In this case, the first value of the pre-search is used."
+                            }
                         </Text>
                     </View>
                 )}
