@@ -175,8 +175,18 @@ const Post = React.memo((props) => {
                     resizeMode={props.type === FIRST_POST ? FastImage.resizeMode.center : FastImage.resizeMode.cover}
                 />
                 {data.images?.length > 1 ?
-                    <View style={{position: "absolute", left: 30, top: 22, backgroundColor: "black"}}>
-                        <MaterialIcons name={"photo-library"} size={20} color={"white"}/>
+                    <View style={{
+                        position: "absolute",
+                        left: 30,
+                        top: 22,
+                        borderRadius: 12,
+                        width: 24,
+                        height: 24,
+                        alignItems:"center",
+                        justifyContent:"center",
+                        backgroundColor: "black"
+                    }}>
+                        <MaterialIcons name={"photo-library"} size={18} color={"white"}/>
                     </View> : null}
             </View>
         </TouchableWithoutFeedback>
@@ -391,11 +401,11 @@ const Post = React.memo((props) => {
                                                     .then(res => !res && FileSystem.mkdir(Dirs.SDCardDir + "/Pictures/Collector"))
                                                     .then(FileSystem.writeFile(Dirs.CacheDir + path, res, "base64")).then(res => path)
                                             }
-                                        ).then(path => FileSystem.cp(Dirs.CacheDir + path, Dirs.SDCardDir + "/Pictures/Collector" + path)).then(res=>showMessage({
+                                        ).then(path => FileSystem.cp(Dirs.CacheDir + path, Dirs.SDCardDir + "/Pictures/Collector" + path)).then(res => showMessage({
                                             message: "Success",
                                             type: "success",
-                                            style:{justifyContent:"center", alignItems:"center",marginTop:-3},
-                                            statusBarHeight:0,
+                                            style: {justifyContent: "center", alignItems: "center", marginTop: -3},
+                                            statusBarHeight: 0,
                                         }))}>
                                         <MaterialIcons name={"file-download"} size={21} color={"white"}/>
                                     </TouchableOpacity>
