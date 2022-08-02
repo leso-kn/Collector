@@ -81,7 +81,7 @@ export const Subscriptions = ({navigation, randomID}) => {
                     Favourites
                 </Text>
             </View>
-            {subscriptionData?.feeds ? <Channels data={subscriptionData?.feeds} randomID={randomID}
+            {subscriptionData?.feeds ? <Channels data={subscriptionData?.feeds} randomID={Math.random()*1000}
                                                  navigation={navigation}/> : null}
             <ConfirmDialog
                 title="Add folder"

@@ -56,13 +56,13 @@ export const Group = ({navigation, route})=>{
         case "bookmarks":
             return (
                 <LocalPosts data={data?.[route.params.title]}
-                          randomID={Math.random()}
+                          randomID={Math.random()*1000}
                           navigation={navigation}/>
             )
         case "subscriptionData":
             return (
                 <Channels data={data?.[route.params.title]}
-                          randomID={Math.random()}
+                          randomID={Math.random()*1000}
                           navigation={navigation}/>
             )
     }
