@@ -1,6 +1,6 @@
 import SearchBar from '@nghinv/react-native-search-bar';
 import React, {useCallback, useEffect, useState} from 'react';
-import {View, StyleSheet, FlatList} from "react-native";
+import {View, StyleSheet, FlatList, Text} from "react-native";
 import {TabBar, TabView} from "react-native-tab-view";
 import {searchApiUrl} from "../services/bilispace/BiliSpaceLinks";
 import {Channels} from "./Channels";
@@ -43,6 +43,7 @@ export const Search = ({navigation}) => {
         const [index, setIndex] = React.useState(0);
         const [routes] = React.useState([
             {key: 'users', title: "Channels"},
+            {key: "posts", title: "Posts"}
         ]);
 
         const renderTabBar = props => (
@@ -58,7 +59,7 @@ export const Search = ({navigation}) => {
                 case 'users':
                     return <Channels url={searchApiUrl + `${searchWord}&page=0`} navigation={props.navigation}/>
                 default:
-                    return null;
+                    return <View/>
             }
         };
 
@@ -72,7 +73,15 @@ export const Search = ({navigation}) => {
                         onIndexChange={setIndex}
                         initialLayout={{width: deviceWidth}}
                     />
-                ) : null}
+                ) : (
+                    <View style={{ justifyContent:"center", alignItems:"center", marginTop:20}}>
+                        <Text style={{textAlign:"center"}}>
+                            {'To search contents inside a channel, input \n\n[My channel name]@[search word]' +
+                            '\n\n e.g. Arch Linux@open source' +
+                            '\n\n This query will search "open source" in channel "Arch Linux"'}
+                        </Text>
+                    </View>
+                )}
             </View>
         )
     }
