@@ -9,3 +9,4 @@ export const userInfoApiUrl = "https://api.bilibili.com/x/web-interface/card?pho
 export const searchApiUrl = "https://api.bilibili.com/x/web-interface/search/type?search_type=bili_user&keyword="
 export const trendingApiUrl = "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/unlogin_dynamics?fake_uid=1093762"
 export const repostApiUrl = "https://api.vc.bilibili.com/dynamic_repost/v1/dynamic_repost/repost_detail?dynamic_id="
+export const searchPostApiUrl = "https://api.bilibili.com/x/space/dynamic/search?ps=30&mid="

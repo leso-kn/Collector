@@ -1,4 +1,5 @@
 import {requestOption} from "../BiliSpaceService";
+import {postPageUrl, searchApiUrl} from "../BiliSpaceLinks";
 
 const axios = require("axios");
 
@@ -17,6 +18,23 @@ export class BiliSearchExtractor{
                 item.url = "biliUserInfo"
             }
             result.hasMore = ()=>res.data.data.numPages !== res.data.data.page
+            return result
+        })
+    }
+    async getPosts(pn){
+        let channelName = this.url.split("mid=")[1].split("&keyword=")[0]
+        return axios.get(searchApiUrl + channelName, requestOption).then(res=>{
+            console.log(this.url.replace(channelName, res.data.data.result[0].mid) + `&pn=${pn}`)
+            return axios.get(this.url.replace(channelName, res.data.data.result[0].mid) + `&pn=${pn}`)
+        }).then(res=>{
+            let result = res.data.data.cards || []
+            result.hasMore = () => res.data.data.has_more
+            result.getLastID = () => res.data.data.cards[res.data.data.cards.length - 1].desc.dynamic_id_str
+            for (let item of result) {
+                item.getIdentifyID = ()=> "biliSpace" + item.desc.dynamic_id_str
+                item.url = postPageUrl + item.desc.dynamic_id_str
+                item.getTime = () => item.desc.timestamp * 1000
+            }
             return result
         })
     }

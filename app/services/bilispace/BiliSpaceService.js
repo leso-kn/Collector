@@ -4,7 +4,7 @@ import {
     PCSpaceRegUrl,
     postApiUrl,
     postPageUrl,
-    searchApiUrl,
+    searchApiUrl, searchPostApiUrl,
     trendingApiUrl,
     userInfoApiUrl
 } from "./BiliSpaceLinks";
@@ -38,6 +38,8 @@ export const getBiliSpaceService = async (url, id, data) => {
         return new BiliChannelExtractor(userInfoApiUrl + id, id)
     } else if (url.includes(searchApiUrl) && !url.endsWith("&")) {
         return new BiliSearchExtractor(url)
+    }else if(url.includes(searchPostApiUrl)){
+        return new BiliSearchExtractor(url)
     } else if (url === "biliUserInfo" && data) {
         return new BiliChannelInfoExtractor(data)
     }
@@ -50,6 +52,9 @@ export const requestOption = {
 export const BiliHeadImgHeightPercentage = 1 / 6.4
 
 export const serviceUrl = {
-    searchUrl: searchApiUrl,
-    getTrendingUrl: ()=>trendingApiUrl.replace("1093762",  Math.floor(Math.random()*1000000 + 500000))
+    getSearchUrl:(query)=>searchApiUrl + `${query}&page=0`,
+    getTrendingUrl: ()=>trendingApiUrl.replace("1093762",  Math.floor(Math.random()*1000000 + 500000)),
+    getSearchPostUrl: (user, query)=> {
+        return searchPostApiUrl + user + `&keyword=${query}`
+    }
 }
