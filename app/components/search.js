@@ -2,9 +2,10 @@ import SearchBar from '@nghinv/react-native-search-bar';
 import React, {useCallback, useEffect, useState} from 'react';
 import {View, StyleSheet, FlatList, Text} from "react-native";
 import {TabBar, TabView} from "react-native-tab-view";
-import {searchApiUrl} from "../services/bilispace/BiliSpaceLinks";
 import {Channels} from "./Channels";
 import {deviceWidth} from "../constants";
+import {Posts} from "./Posts";
+import {getCurrentServiceUrl} from "../utils";
 
 export const Search = ({navigation}) => {
     const [searchWord, setSearchWord] = useState("")
@@ -57,9 +58,10 @@ export const Search = ({navigation}) => {
         const renderScene = ({route}) => {
             switch (route.key) {
                 case 'users':
-                    return <Channels url={searchApiUrl + `${searchWord}&page=0`} navigation={props.navigation}/>
-                default:
-                    return <View/>
+                    return <Channels url={getCurrentServiceUrl().getSearchUrl(searchWord)} navigation={props.navigation}/>
+                case "posts":
+                    return <Posts navigation={props.navigation}
+                                  urls={[getCurrentServiceUrl().getSearchPostUrl(searchWord.split("@")[0], searchWord.split("@")[1])]}/>
             }
         };
 
