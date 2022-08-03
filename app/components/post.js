@@ -531,12 +531,13 @@ const Post = React.memo((props) => {
                         }}>
                         <View>
                             <SelectMultiple onSelectionsChange={x => setSelected1(x)}
-                                            items={['Block user', "Create new block word"]}
+                                            // items={['Block user', "Create new block word"]}
+                                            items={['Block user']}
                                             selectedItems={selected1}/>
-                            <TextInput value={text}
-                                       placeholder={"word to block"}
-                                       onChangeText={(value) => changeText(value)}
-                                       style={{borderWidth: 0.3, borderColor: "black", paddingLeft: 10}}/>
+                            {/*<TextInput value={text}*/}
+                            {/*           placeholder={"word to block"}*/}
+                            {/*           onChangeText={(value) => changeText(value)}*/}
+                            {/*           style={{borderWidth: 0.3, borderColor: "black", paddingLeft: 10}}/>*/}
                         </View>
                     </ConfirmDialog>
                 </View>
