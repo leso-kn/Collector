@@ -38,6 +38,8 @@ export const Drawer = (props) => {
             </View>
             {trendings}
             <View style={{backgroundColor: "#dad7d7", height: 0.4}}/>
+            <DrawerItem label={"Block Users"}
+                        onPress={()=>props.navigation.push("Group", { title: "Block Users", type:"blocklist"})}/>
             <DrawerItem
                 label="Help"
                 onPress={() => alert(1)}

@@ -10,9 +10,16 @@ export const Group = ({navigation, route})=>{
     const [data, setData] = useState()
     const [randomID, doUpdate] = useState(Math.random()*1000)
     useEffect(() => {
-        AsyncStorage.getItem(route.params.key).then(res => {
-            setData(JSON.parse(res))
-        })
+        if(route.params.type === "blocklist"){
+            AsyncStorage.getItem("blocklist").then(res => {
+                setData(JSON.parse(res)?.channels)
+            })
+        }
+        else{
+            AsyncStorage.getItem(route.params.key).then(res => {
+                setData(JSON.parse(res))
+            })
+        }
     },[randomID])
     useEffect(()=>{
         navigation.setOptions({
@@ -24,12 +31,12 @@ export const Group = ({navigation, route})=>{
     const HeaderRightElement = () => {
         return (<View style={{flexDirection: "row"}}>
             <RefreshButton/>
-            <DeleteButton/>
+            {route.params.type==="blocklist"?null:<DeleteButton/>}
         </View>)
     }
     const DeleteButton = () => {
         return (
-            <View style={{marginTop:-2, marginRight: -2}}>
+            <View style={{marginTop:-2, marginRight: -2, marginLeft: 25}}>
                 <TouchableNativeFeedback onPress={() => {
                     AsyncStorage.getItem(route.params.key).then(res=>{
                         let newData = {...JSON.parse(res)}
@@ -45,23 +52,29 @@ export const Group = ({navigation, route})=>{
     }
     const RefreshButton = () => {
         return (
-            <View style={{marginRight: 25}}>
+            <View style={{}}>
                 <TouchableOpacity onPress={() => doUpdate(Math.random()*1000)}>
                     <FontAwesome name={"refresh"} size={20}/>
                 </TouchableOpacity>
             </View>
         )
     }
-    switch (route.params.key){
-        case "bookmarks":
+    switch (route.params.type){
+        case "posts":
             return (
                 <LocalPosts data={data?.[route.params.title]}
                           randomID={Math.random()*1000}
                           navigation={navigation}/>
             )
-        case "subscriptionData":
+        case "channels":
             return (
                 <Channels data={data?.[route.params.title]}
+                          randomID={Math.random()*1000}
+                          navigation={navigation}/>
+            )
+        case "blocklist":
+            return (
+                <Channels data={data}
                           randomID={Math.random()*1000}
                           navigation={navigation}/>
             )

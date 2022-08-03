@@ -29,7 +29,8 @@ export const Subscriptions = ({navigation, randomID}) => {
                       renderItem={data => (
                           <TouchableNativeFeedback onPress={() => navigation.push("Group", {
                               'title': data.item[0],
-                              key: "subscriptionData"
+                              key: "subscriptionData",
+                              type:"channels"
                           })}>
                               <View style={{
                                   marginBottom: 10,

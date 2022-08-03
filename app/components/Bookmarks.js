@@ -20,7 +20,7 @@ export const Bookmarks = ({navigation, randomID}) => {
         <View>
             <FlatList data={bookmarks && Object.entries(bookmarks)} renderItem={data => {
                 return (
-                    <TouchableNativeFeedback onPress={()=>navigation.push("Group", {title: data.item[0], key: "bookmarks"})}>
+                    <TouchableNativeFeedback onPress={()=>navigation.push("Group", {title: data.item[0], key: "bookmarks", type:"posts"})}>
                         <View style={{
                             marginLeft: 10,
                             marginRight: 10,
