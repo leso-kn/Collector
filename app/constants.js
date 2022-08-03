@@ -15,6 +15,7 @@ export const themeDefault = {
     borderColor:"black",
     backgroundColor: "white",
     navigationTheme: DefaultTheme,
+    tabBarColor: "#2196f3"
 }
 export const darkTheme = {
     color: "#121212",
@@ -27,5 +28,5 @@ export const darkTheme = {
     buttonBackgroundColor: "#bb86fc",
     navigationTheme: DarkTheme,
     tabBarColor:"#121212",
-    backgroundColor: "black"
+    backgroundColor: "black",
 }

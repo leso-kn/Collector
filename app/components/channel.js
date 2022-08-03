@@ -16,6 +16,8 @@ import {ConfirmDialog} from "react-native-simple-dialogs";
 import SelectMultiple from "react-native-select-multiple";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import ImageView from "react-native-image-viewing";
+import checkbox from "../../assets/icon-checkbox-modified.png";
+import checkboxChecked from "../../assets/icon-checkbox-checked-modified.png";
 
 const ChannelInside = (props) => {
     const [data, dispatch] = useReducer(reducer, {})
@@ -242,6 +244,9 @@ const ChannelInside = (props) => {
                 onRequestClose={() => setShowAvatar(false)}
             />
             <ConfirmDialog
+                dialogStyle={{backgroundColor: getTheme().postBackGroundColor}}
+                titleStyle={{color: getTheme().textColor}}
+                contentStyle={{color: getTheme().postBackGroundColor}}
                 title={"Add to"}
                 visible={dialogVisible1}
                 onTouchOutside={() => {
@@ -249,16 +254,19 @@ const ChannelInside = (props) => {
                 }}
                 myButton={{
                     title: "New folder",
+                    titleStyle: {color: getTheme().buttonColor, opacity: getTheme().buttonOpacity},
                     onPress: () => setDialogVisible(true)
                 }}
                 negativeButton={{
                     title: "Cancel",
+                    titleStyle: {color: getTheme().buttonColor, opacity: getTheme().buttonOpacity},
                     onPress: () => {
                         setDialogVisible1(false)
                     }
                 }}
                 positiveButton={{
                     title: "OK",
+                    titleStyle: {color: getTheme().buttonColor, opacity: getTheme().buttonOpacity},
                     onPress: () => {
                         let newData = {...subscriptionData}
                         for (let item of selected) {
@@ -274,16 +282,23 @@ const ChannelInside = (props) => {
                     }
                 }}>
                 <SelectMultiple onSelectionsChange={x => setSelected(x)}
+                                rowStyle={{backgroundColor: getTheme().postBackGroundColor}}
+                                checkboxSource={checkbox}
+                                selectedCheckboxSource={checkboxChecked}
                                 items={subscriptionData ? Object.entries(subscriptionData).filter(x => x[0] !== 'feeds').map(x => x[0]) : []}
                                 selectedItems={selected}/>
             </ConfirmDialog>
 
             <ConfirmDialog
+                dialogStyle={{backgroundColor: getTheme().postBackGroundColor}}
+                titleStyle={{color: getTheme().textColor}}
+                contentStyle={{color: getTheme().postBackGroundColor}}
                 title="Add folder"
                 visible={dialogVisible}
                 onTouchOutside={() => setDialogVisible(false)}
                 negativeButton={{
                     title: "Cancel",
+                    titleStyle: {color: getTheme().buttonColor, opacity: getTheme().buttonOpacity},
                     onPress: () => {
                         changeText("")
                         setDialogVisible(false)
@@ -291,6 +306,7 @@ const ChannelInside = (props) => {
                 }}
                 positiveButton={{
                     title: "OK",
+                    titleStyle: {color: getTheme().buttonColor, opacity: getTheme().buttonOpacity},
                     onPress: () => {
                         changeText("")
                         if (subscriptionData[text] !== undefined) {
@@ -308,7 +324,7 @@ const ChannelInside = (props) => {
                     <TextInput value={text}
                                placeholder={"Folder Name"}
                                onChangeText={(value) => changeText(value)}
-                               style={{borderWidth: 0.3, borderColor: "black", paddingLeft: 10}}/>
+                               style={{borderWidth: 0.3, borderColor: getTheme().borderColor, paddingLeft: 10}}/>
                 </View>
             </ConfirmDialog>
         </View>
