@@ -86,6 +86,7 @@ const Post = React.memo((props) => {
     const mounted1 = useRef(true)
     const mounted3 = useRef(true)
     const block = useRef(false)
+    const renderCounter = useRef(0)
     useEffect(() => {
         findService(props.url, props.id, props.data).then(res => {
             if (!mounted1.current) return
@@ -129,7 +130,10 @@ const Post = React.memo((props) => {
                     AsyncStorage.setItem("blocklist", JSON.stringify({words: [], channels: []}))
                 }
                 let tempList = JSON.parse(res) || {words: [], channels: []}
-                block.current = isBlocked(data, tempList)
+                if(!renderCounter.current){
+                    block.current = isBlocked(data, tempList) // refreshing layout will confuse the layout map and cause bug
+                }
+                renderCounter.current ++
                 setBlocklist(tempList)
                 setSelected(tempList.channels.filter(x => {
                     return x.identifyID === data.channelIdentifyID
