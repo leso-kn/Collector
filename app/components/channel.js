@@ -1,5 +1,6 @@
 import React, {useEffect, useReducer, useRef, useState} from 'react';
 import {
+    Button,
     FlatList,
     Image,
     Text, TextInput, TouchableNativeFeedback,
@@ -30,6 +31,7 @@ const ChannelInside = (props) => {
     ]);
     const [subscriptionData, setSubscriptionData] = useState(null)
     const followed = exists(subscriptionData?.feeds, data)
+    const [block, setBlock] = useState(false)
 
     const Friends = () => {
         return (
@@ -57,8 +59,9 @@ const ChannelInside = (props) => {
     };
 
     useEffect(() => {
-
-           findService(props.url).then(res => {
+        let identifyID
+        findService(props.url).then(res => {
+            identifyID = res.getIdentifyID()
             dispatch({
                 field: [
                     "name", "headImgUrl", "avatar", "likeNum", "fanNum", "identifyName",
@@ -79,29 +82,51 @@ const ChannelInside = (props) => {
                     res.getIdentifyID()
                 ]
             })
+        }).then(res => AsyncStorage.getItem("blocklist")).then(res => {
+            if (!res) {
+                AsyncStorage.setItem("blocklist", JSON.stringify({words: [], channels: []}))
+            }
+            let tempList = JSON.parse(res) || {words: [], channels: []}
+            setBlock(tempList.channels.map(x => x.identifyID).includes(identifyID))
         })
     }, [])
-    useEffect(()=>{
+    useEffect(() => {
         AsyncStorage.getItem("subscriptionData").then(res => {
-            setSelected(res && Object.entries(JSON.parse(res)).filter(x=> {
+            setSelected(res && Object.entries(JSON.parse(res)).filter(x => {
                 let flag = false
-                for(let i of x[1]){
+                for (let i of x[1]) {
                     flag = flag || (i.identifyID === data.identifyID)
                 }
                 return flag && x[0] !== 'feeds'
-            }).map(x=>{return {label: x[0], value: x[0]}}))
+            }).map(x => {
+                return {label: x[0], value: x[0]}
+            }))
             setSubscriptionData(JSON.parse(res))
         })
-    },[data])
-    return (
+    }, [data])
+    return block?(
+        <View style={{justifyContent:"center", alignItems:"center"}}>
+            <Text style={{fontSize:20, fontWeight:"600", marginVertical:40}}>
+                This user has been blocked
+            </Text>
+            <Button title={"Remove from blocklist"}  onPress={()=> {
+                AsyncStorage.getItem("blocklist").then(res => {
+                    let temp = JSON.parse(res)
+                    temp.channels = temp.channels.filter(x => x.identifyID !== data.identifyID)
+                    AsyncStorage.setItem("blocklist", JSON.stringify(temp))
+                })
+                props.navigation.pop()
+            }}/>
+        </View>
+    ) :(
         <View style={{flex: 1}}>
             <Image source={{uri: data.headImgUrl}}
-                       style={{width: "100%", height: deviceWidth * data.headImgRatio || 0}}
-                       resizeMode={"center"}/>
+                   style={{width: "100%", height: deviceWidth * data.headImgRatio || 0}}
+                   resizeMode={"center"}/>
             <View style={{backgroundColor: "white"}}>
                 <View style={{flexDirection: "row", marginLeft: 10}}>
                     <View style={{flex: 1, flexDirection: "row"}}>
-                        <TouchableNativeFeedback onPress={()=>setShowAvatar(true)}>
+                        <TouchableNativeFeedback onPress={() => setShowAvatar(true)}>
                             <Image source={{uri: data.avatar}} style={{
                                 width: 80, height: 80, borderRadius: 40, marginTop: -30
                             }}/>
@@ -116,8 +141,8 @@ const ChannelInside = (props) => {
                             <Text style={{marginTop: 2, fontSize: 12, color: "gray"}}>{"@" + data.identifyName}</Text>
                         </View>
                     </View>
-                    <TouchableNativeFeedback onPress={()=>setDialogVisible1(true)}>
-                        <View style={{marginRight: 10, marginTop:8}}>
+                    <TouchableNativeFeedback onPress={() => setDialogVisible1(true)}>
+                        <View style={{marginRight: 10, marginTop: 8}}>
                             <MaterialIcons name={"playlist-add"} size={25}/>
                         </View>
                     </TouchableNativeFeedback>
@@ -125,7 +150,7 @@ const ChannelInside = (props) => {
                         style={{marginRight: 0}}
                         onPress={() => {
                             let newData = {...subscriptionData}
-                            if(!newData.feeds){
+                            if (!newData.feeds) {
                                 newData.feeds = []
                             }
                             if (followed === -1) {
@@ -165,8 +190,9 @@ const ChannelInside = (props) => {
                     marginRight: 5
                 }}>
                     <Text style={{color: "gray", fontSize: 13}}>{data.info || "No description provided"}</Text>
-                    {data.additionalData? (
-                        <Text style={{fontSize: 11, color: "#504d4d", marginTop: 5}}>{data.additionalText}</Text>):null}
+                    {data.additionalData ? (
+                        <Text
+                            style={{fontSize: 11, color: "#504d4d", marginTop: 5}}>{data.additionalText}</Text>) : null}
                 </View>
                 <View style={{flexDirection: "row", marginBottom: 10, marginTop: 10}}>
                     <View style={{
@@ -210,7 +236,7 @@ const ChannelInside = (props) => {
                 initialLayout={{width: deviceWidth}}
             />
             <ImageView
-                images={[{uri:data.avatar}]}
+                images={[{uri: data.avatar}]}
                 imageIndex={0}
                 visible={showAvatar}
                 onRequestClose={() => setShowAvatar(false)}
@@ -222,8 +248,8 @@ const ChannelInside = (props) => {
                     setDialogVisible1(false)
                 }}
                 myButton={{
-                    title:"New folder",
-                    onPress:()=>setDialogVisible(true)
+                    title: "New folder",
+                    onPress: () => setDialogVisible(true)
                 }}
                 negativeButton={{
                     title: "Cancel",
@@ -235,20 +261,20 @@ const ChannelInside = (props) => {
                     title: "OK",
                     onPress: () => {
                         let newData = {...subscriptionData}
-                        for(let item of selected){
-                            if(newData[item.label].filter(x=>x.identifyID === data.identifyID).length > 0)continue
+                        for (let item of selected) {
+                            if (newData[item.label].filter(x => x.identifyID === data.identifyID).length > 0) continue
                             newData[item.label].push(data)
                         }
-                        for(let item of Object.entries(subscriptionData).filter(x=>x[0]!=='feeds' && !selected.filter(y=>y.label ===x[0]).length)){
-                            newData[item[0]] = newData[item[0]].filter(x=>x.identifyID !== data.identifyID)
+                        for (let item of Object.entries(subscriptionData).filter(x => x[0] !== 'feeds' && !selected.filter(y => y.label === x[0]).length)) {
+                            newData[item[0]] = newData[item[0]].filter(x => x.identifyID !== data.identifyID)
                         }
                         setSubscriptionData(newData)
                         AsyncStorage.setItem("subscriptionData", JSON.stringify(newData))
                         setDialogVisible1(false)
                     }
                 }}>
-                <SelectMultiple onSelectionsChange={x=>setSelected(x)}
-                                items={subscriptionData?Object.entries(subscriptionData).filter(x=>x[0]!=='feeds').map(x=>x[0]):[]}
+                <SelectMultiple onSelectionsChange={x => setSelected(x)}
+                                items={subscriptionData ? Object.entries(subscriptionData).filter(x => x[0] !== 'feeds').map(x => x[0]) : []}
                                 selectedItems={selected}/>
             </ConfirmDialog>
 
