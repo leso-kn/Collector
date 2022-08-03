@@ -15,7 +15,7 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
     return (
-        <NavigationContainer>
+        <NavigationContainer theme={getTheme().navigationTheme}>
             <Stack.Navigator screenOptions={{
                 headerStyle: {backgroundColor: getTheme().color, elevation: 0},
                 animation: "fade"

@@ -20,7 +20,7 @@ export const Subscriptions = ({navigation, randomID}) => {
     return (
         <SafeAreaViewPlus>
             <View style={{height: 50, backgroundColor: getTheme().color, marginTop: 0}}>
-                <Text style={{marginLeft: 15, fontSize: 19, color: "black", fontWeight: "500", marginTop: 10}}>
+                <Text style={{marginLeft: 15, fontSize: 19, color:getTheme().textColor,  fontWeight: "500", marginTop: 10}}>
                     Groups
                 </Text>
             </View>
@@ -39,15 +39,16 @@ export const Subscriptions = ({navigation, randomID}) => {
                                   minWidth: 100,
                                   alignItems: "center",
                                   justifyContent: "center",
-                                  backgroundColor: "white"
+                                  borderWidth:0.2,
+                                  borderColor:"gray",
                               }}>
                                   <Text style={{
-                                      color: "black",
                                       fontSize: 15,
                                       marginTop: 0,
                                       fontWeight: "500",
                                       marginLeft: 20,
-                                      marginRight: 20
+                                      marginRight: 20,
+                                      color:getTheme().textColor,
                                   }}>
                                       {`${data.item[0]}`}
                                   </Text>
@@ -68,7 +69,8 @@ export const Subscriptions = ({navigation, randomID}) => {
                               width: 80,
                               alignItems: "center",
                               justifyContent: "center",
-                              backgroundColor: "white"
+                              borderWidth:0.2,
+                              borderColor:"gray"
                           }}>
                               <TouchableNativeFeedback onPress={() => setDialogVisible(true)}>
                                   <Ionicons name={"add-circle"} size={25}/>
@@ -78,7 +80,7 @@ export const Subscriptions = ({navigation, randomID}) => {
                       ItemSeparatorComponent={() => (<View style={{width: 10}}/>)}
             />
             <View style={{height: 50, backgroundColor: getTheme().color}}>
-                <Text style={{marginLeft: 15, fontSize: 19, color: "black", fontWeight: "500", marginTop: 10}}>
+                <Text style={{marginLeft: 15, fontSize: 19,color:getTheme().textColor, fontWeight: "500", marginTop: 11}}>
                     Favourites
                 </Text>
             </View>
@@ -86,9 +88,13 @@ export const Subscriptions = ({navigation, randomID}) => {
                                                  navigation={navigation}/> : null}
             <ConfirmDialog
                 title="Add folder"
+                dialogStyle={{backgroundColor: getTheme().postBackGroundColor}}
+                titleStyle={{color: getTheme().textColor}}
+                contentStyle={{color: getTheme().postBackGroundColor}}
                 visible={dialogVisible}
                 onTouchOutside={() => setDialogVisible(false)}
                 negativeButton={{
+                    titleStyle: {color: getTheme().buttonColor, opacity: getTheme().buttonOpacity},
                     title: "NO",
                     onPress: () => {
                         changeText("")
@@ -97,8 +103,8 @@ export const Subscriptions = ({navigation, randomID}) => {
                 }}
                 positiveButton={{
                     title: "OK",
+                    titleStyle: {color: getTheme().buttonColor, opacity: getTheme().buttonOpacity},
                     onPress: () => {
-
                         if (subscriptionData[text] !== undefined) {
                             alert("Name already exists")
                         } else {
@@ -114,7 +120,7 @@ export const Subscriptions = ({navigation, randomID}) => {
                     <TextInput value={text}
                                placeholder={"Folder Name"}
                                onChangeText={(value) => changeText(value)}
-                               style={{borderWidth: 0.3, borderColor: "black", paddingLeft: 10}}/>
+                               style={{borderWidth: 0.3, borderColor: getTheme().borderColor, paddingLeft: 10}}/>
                 </View>
             </ConfirmDialog>
 

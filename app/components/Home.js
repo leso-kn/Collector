@@ -15,6 +15,7 @@ export const Home = ({navigation})=>{
             drawerContent={(props)=><Drawer {...props}/>}
             screenOptions={{
                 headerStyle: {backgroundColor: getTheme().color, elevation: 0},
+                headerTintColor: getTheme().buttonColor,
                 animation: "fade"
             }}>
             <HomeTab.Screen name="Index" component={Index} options={{

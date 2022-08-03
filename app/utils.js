@@ -1,6 +1,7 @@
 import * as BiliSpaceService from "./services/bilispace/BiliSpaceService";
-import {themeDefault} from "./constants";
+import {darkTheme, themeDefault} from "./constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {Appearance} from "react-native";
 
 export function shortenLargeNumber(num, digits) {
     var units = ['k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'],
@@ -73,6 +74,9 @@ export const getCurrentServiceIcon = ()=>{
 }
 
 export const getTheme = ()=>{
+    if(Appearance.getColorScheme() === "dark"){
+        return darkTheme
+    }
     return themeDefault
 }
 

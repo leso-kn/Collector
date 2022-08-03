@@ -13,7 +13,7 @@ import ImageView from "react-native-image-viewing";
 import FastImage from 'react-native-fast-image'
 import Icon from 'react-native-vector-icons/AntDesign';
 import FeatherIcon from 'react-native-vector-icons/Feather';
-import {getBase64FromUrl, isBlocked, reducer, shortenLargeNumber} from "../utils"
+import {getBase64FromUrl, getTheme, isBlocked, reducer, shortenLargeNumber} from "../utils"
 import {LinkPreview} from '@flyerhq/react-native-link-preview'
 import {FIRST_POST, PREVIEW_POST, OTHER_POST, EMBEDDED_POST, deviceWidth} from "../constants";
 import {findService} from "../findService";
@@ -24,17 +24,16 @@ import SelectMultiple from "react-native-select-multiple";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import {Dirs, FileSystem} from 'react-native-file-access';
 import {showMessage} from "react-native-flash-message";
+import checkbox from "../../assets/icon-checkbox-modified.png"
+import checkboxChecked from "../../assets/icon-checkbox-checked-modified.png"
 
 TimeAgo.addLocale(en)
 const timeAgo = new TimeAgo('en-US')
-const colors = [
-    "white", "red", "aqua", "green", "coral", "blue", "pink"
-]
 
 const titleElement = (data, type) => (
     <Text numberOfLines={[PREVIEW_POST, EMBEDDED_POST].includes(type) ? 1 : undefined} ellipsizeMode='tail' style={{
         fontWeight: "600",
-        color: "black",
+        color: getTheme().textColor,
         marginBottom: -5,
         fontSize: 16.5,
         marginLeft: 13,
@@ -190,37 +189,11 @@ const Post = React.memo((props) => {
         </TouchableWithoutFeedback>
     )
 
-    const loadMore = (
-        <View style={{
-            marginLeft: (props.depth + 1) * 5,
-            borderLeftColor: colors[props.depth + 1],
-            borderStyle: "solid",
-            borderLeftWidth: 0,
-            marginBottom: 0,
-            marginTop: -5,
-            height: 35,
-            alignItems: "center",
-            justifyContent: "center"
-        }}>
-            <TouchableOpacity onPress={() => {
-                showLoadMore && setPn(pn + 1)
-            }}>
-                <Text style={{color: "black"}}>
-                    {/*TODO:multi-language*/}
-                    Load More
-                </Text>
-            </TouchableOpacity>
-        </View>
-    )
     const rootStyle = {
-        backgroundColor: "#FFFFFF",
+        backgroundColor:getTheme().postBackGroundColor,
         borderRadius: 0,
         marginTop: 0,
         marginBottom: 0,
-        marginLeft: props.depth * 5,
-        borderLeftColor: colors[props.depth],
-        borderStyle: "solid",
-        borderLeftWidth: 2,
         height: props.height
     }
     return (
@@ -250,7 +223,7 @@ const Post = React.memo((props) => {
                                    }}></Image>
                         </TouchableOpacity>
                         <View style={{flex: 1, marginLeft: 10, marginTop: data.subname ? 1 : 6}}>
-                            <Text style={{color: "black"}}>
+                            <Text style={{color: getTheme().textColor}}>
                                 {data.name}
                             </Text>
                             <Text style={{color: "#9d9a9a", marginTop: 0, fontSize: 12, maxWidth: 200}}>
@@ -272,7 +245,7 @@ const Post = React.memo((props) => {
                             ) : null}
 
                             <Text style={{
-                                color: "black",
+                                color: getTheme().textColor,
                                 marginRight: 20,
                                 marginTop: data.prefix ? -15 : 5,
                                 fontWeight: "300",
@@ -292,7 +265,7 @@ const Post = React.memo((props) => {
                                 <Text numberOfLines={[PREVIEW_POST, EMBEDDED_POST].includes(props.type) ? 4 : undefined}
                                       ellipsizeMode='tail'
                                       style={{
-                                          color: props.type === FIRST_POST ? "gray" : "black",
+                                          color: props.type === FIRST_POST ? "gray" : getTheme().textColor,
                                           fontWeight: "400",
                                           marginLeft: 13,
                                           fontSize: 14.5,
@@ -416,6 +389,9 @@ const Post = React.memo((props) => {
                         onRequestClose={() => setIsVisible(false)}
                     />
                     <ConfirmDialog
+                        dialogStyle={{backgroundColor: getTheme().postBackGroundColor}}
+                        titleStyle={{color: getTheme().textColor}}
+                        contentStyle={{color: getTheme().postBackGroundColor}}
                         title={"Add to"}
                         visible={dialogVisible1}
                         onTouchOutside={() => {
@@ -423,16 +399,19 @@ const Post = React.memo((props) => {
                         }}
                         myButton={{
                             title: "New folder",
-                            onPress: () => setDialogVisible(true)
+                            onPress: () => setDialogVisible(true),
+                            titleStyle: {color: getTheme().buttonColor, opacity: getTheme().buttonOpacity}
                         }}
                         negativeButton={{
                             title: "Cancel",
                             onPress: () => {
                                 setDialogVisible1(false)
-                            }
+                            },
+                            titleStyle: {color: getTheme().buttonColor, opacity: getTheme().buttonOpacity}
                         }}
                         positiveButton={{
                             title: "OK",
+                            titleStyle: {color: getTheme().buttonColor, opacity: getTheme().buttonOpacity},
                             onPress: () => {
                                 let newData = {...bookmarks}
                                 for (let item of selected) {
@@ -453,16 +432,23 @@ const Post = React.memo((props) => {
                             }
                         }}>
                         <SelectMultiple onSelectionsChange={x => setSelected(x)}
+                                        rowStyle={{backgroundColor: getTheme().postBackGroundColor}}
+                                        checkboxSource={checkbox}
+                                        selectedCheckboxSource={checkboxChecked}
                                         items={bookmarks ? Object.entries(bookmarks).map(x => x[0]) : []}
                                         selectedItems={selected}/>
                     </ConfirmDialog>
 
                     <ConfirmDialog
+                        dialogStyle={{backgroundColor: getTheme().postBackGroundColor}}
+                        titleStyle={{color: getTheme().textColor}}
+                        contentStyle={{color: getTheme().postBackGroundColor}}
                         title="Add folder"
                         visible={dialogVisible}
                         onTouchOutside={() => setDialogVisible(false)}
                         negativeButton={{
                             title: "Cancel",
+                            titleStyle: {color: getTheme().buttonColor, opacity: getTheme().buttonOpacity},
                             onPress: () => {
                                 changeText("")
                                 setDialogVisible(false)
@@ -470,6 +456,7 @@ const Post = React.memo((props) => {
                         }}
                         positiveButton={{
                             title: "OK",
+                            titleStyle: {color: getTheme().buttonColor, opacity: getTheme().buttonOpacity},
                             onPress: () => {
                                 changeText("")
                                 if (bookmarks[text] !== undefined) {
@@ -487,14 +474,18 @@ const Post = React.memo((props) => {
                             <TextInput value={text}
                                        placeholder={"Folder Name"}
                                        onChangeText={(value) => changeText(value)}
-                                       style={{borderWidth: 0.3, borderColor: "black", paddingLeft: 10}}/>
+                                       style={{borderWidth: 0.3, borderColor: getTheme().borderColor, paddingLeft: 10}}/>
                         </View>
                     </ConfirmDialog>
                     <ConfirmDialog
+                        dialogStyle={{backgroundColor: getTheme().postBackGroundColor}}
+                        titleStyle={{color: getTheme().textColor}}
+                        contentStyle={{color: getTheme().postBackGroundColor}}
                         title="Block"
                         visible={dialogVisible2}
                         onTouchOutside={() => setDialogVisible2(false)}
                         negativeButton={{
+                            titleStyle: {color: getTheme().buttonColor, opacity: getTheme().buttonOpacity},
                             title: "Cancel",
                             onPress: () => {
                                 changeText("")
@@ -502,6 +493,7 @@ const Post = React.memo((props) => {
                             }
                         }}
                         positiveButton={{
+                            titleStyle: {color: getTheme().buttonColor, opacity: getTheme().buttonOpacity},
                             title: "OK",
                             onPress: () => {
                                 let newData = {...blocklist}
@@ -533,6 +525,9 @@ const Post = React.memo((props) => {
                         }}>
                         <View>
                             <SelectMultiple onSelectionsChange={x => setSelected1(x)}
+                                            rowStyle={{backgroundColor: getTheme().postBackGroundColor}}
+                                            checkboxSource={checkbox}
+                                            selectedCheckboxSource={checkboxChecked}
                                 // items={['Block user', "Create new block word"]}
                                             items={['Block user']}
                                             selectedItems={selected1}/>

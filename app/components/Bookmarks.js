@@ -3,6 +3,7 @@ import {FlatList, Text, TextInput, TouchableNativeFeedback, View} from "react-na
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {ConfirmDialog} from "react-native-simple-dialogs";
+import {getTheme} from "../utils";
 
 export const Bookmarks = ({navigation, randomID}) => {
     const [bookmarks, setBookmarks] = useState()
@@ -17,49 +18,50 @@ export const Bookmarks = ({navigation, randomID}) => {
         })
     }, [randomID])
     return (
-        <View>
+        <View >
             <FlatList data={bookmarks && Object.entries(bookmarks)} renderItem={data => {
                 return (
                     <TouchableNativeFeedback onPress={()=>navigation.push("Group", {title: data.item[0], key: "bookmarks", type:"posts"})}>
                         <View style={{
-                            marginLeft: 10,
-                            marginRight: 10,
+                            marginLeft:0,
                             height: 100,
-                            backgroundColor: "white"
                         }}>
-                            <Text style={{marginTop: 22, marginLeft: 25, fontSize: 18, color: "black"}}>
+                            <Text style={{marginTop:20, marginLeft: 25, fontSize: 18, color: getTheme().textColor}}>
                                 {data.item[0]}
                             </Text>
-                            <Text style={{marginTop: 10, marginLeft: 25, color:"gray"}}>
+                            <Text style={{marginTop: 15, marginLeft: 25, color:"gray"}}>
                                 {data.item[1].length + " items"}
                             </Text>
                         </View>
                     </TouchableNativeFeedback>
                 )
             }}
-                      ItemSeparatorComponent={()=>(<View style={{height: 10}}/>)}
-                      style={{marginTop: 5}}
+                      style={{marginTop:-1.5}}
+                      ItemSeparatorComponent={()=>(<View style={{height: 0.01, borderTopWidth:0.2, borderColor:"gray"}}/>)}
                       ListFooterComponent={
                           <TouchableNativeFeedback onPress={() => setDialogVisible(true)}>
                               <View style={{
-                                  marginLeft: 10,
-                                  marginRight: 10,
-                                  marginTop: 10,
                                   height: 100,
-                                  backgroundColor: "white",
                                   alignItems: "center",
-                                  justifyContent: "center"
+                                  justifyContent: "center",
+                                  borderTopWidth:0.2,
+                                  borderBottomWidth:0.2,
+                                  borderColor:"gray"
                               }}>
                                   <Ionicons name={"add"} size={40} color={"gray"}/>
                               </View>
                           </TouchableNativeFeedback>}
             />
             <ConfirmDialog
+                dialogStyle={{backgroundColor: getTheme().postBackGroundColor}}
+                titleStyle={{color: getTheme().textColor}}
+                contentStyle={{color: getTheme().postBackGroundColor}}
                 title="Add folder"
                 visible={dialogVisible}
                 onTouchOutside={() => setDialogVisible(false)}
                 negativeButton={{
                     title: "NO",
+                    titleStyle: {color: getTheme().buttonColor, opacity: getTheme().buttonOpacity},
                     onPress: () => {
                         changeText("")
                         setDialogVisible(false)
@@ -67,6 +69,7 @@ export const Bookmarks = ({navigation, randomID}) => {
                 }}
                 positiveButton={{
                     title: "OK",
+                    titleStyle: {color: getTheme().buttonColor, opacity: getTheme().buttonOpacity},
                     onPress: () => {
                         if (bookmarks[text] !== undefined) {
                             alert("Name already exists")
@@ -84,7 +87,7 @@ export const Bookmarks = ({navigation, randomID}) => {
                     <TextInput value={text}
                                placeholder={"Folder Name"}
                                onChangeText={(value) => changeText(value)}
-                               style={{borderWidth: 0.3, borderColor: "black", paddingLeft: 10}}/>
+                               style={{borderWidth: 0.3, borderColor: getTheme().borderColor, paddingLeft: 10}}/>
                 </View>
             </ConfirmDialog>
         </View>

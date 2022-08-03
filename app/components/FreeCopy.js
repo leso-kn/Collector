@@ -1,20 +1,21 @@
 import React, {useEffect} from 'react';
-import {TextInput, TouchableOpacity, Clipboard} from "react-native";
+import {TextInput, TouchableOpacity, Clipboard, View} from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {showMessage} from "react-native-flash-message";
+import {getTheme} from "../utils";
 
-export const FreeCopy = ({route, navigation})=>{
-    useEffect(()=>{
+export const FreeCopy = ({route, navigation}) => {
+    useEffect(() => {
         navigation.setOptions({
-            headerRight:()=>(
-                <TouchableOpacity onPress={()=>{
+            headerRight: () => (
+                <TouchableOpacity onPress={() => {
                     Clipboard.setString(route.params.content)
                     showMessage({
                         message: "Copied",
                         type: "success",
                         icon: "success",
-                        duration:500,
-                        style: {justifyContent: "center", alignItems: "center", height:70, paddingTop:30},
+                        duration: 500,
+                        style: {justifyContent: "center", alignItems: "center", height: 70, paddingTop: 30},
                         statusBarHeight: 0,
                     })
                 }}>
@@ -22,6 +23,10 @@ export const FreeCopy = ({route, navigation})=>{
                 </TouchableOpacity>
             )
         })
-    },[])
-    return <TextInput value={route.params.content}/>
+    }, [])
+    return (
+        <View style={{flex:1, backgroundColor: getTheme().postBackGroundColor}}>
+            <TextInput value={route.params.content}/>
+        </View>
+    )
 }

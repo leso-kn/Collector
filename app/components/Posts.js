@@ -4,6 +4,7 @@ import {findService} from "../findService";
 import Post from "./post";
 import {FlatList, View} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {getTheme} from "../utils";
 
 const reducer = (state, action) => {
     let result = [...state]
@@ -114,7 +115,7 @@ export const Posts = React.memo((props) => {
     }
 
     return (
-        <View style={{backgroundColor: "#ececec", height: "100%", flex: 1}}>
+        <View style={{backgroundColor: getTheme().backgroundColor, height: "100%", flex: 1}}>
             <FlatList data={posts} renderItem={renderFunc}
                       keyExtractor={(item, index) => {
                           return item.getIdentifyID()

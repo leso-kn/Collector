@@ -4,6 +4,7 @@ import {FlatList, Text, TouchableNativeFeedback, TouchableOpacity, View} from "r
 import {deviceWidth, FIRST_POST, HOT_FIRST, OLD_FIRST, OTHER_POST} from "../constants";
 import {findService} from "../findService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {getTheme} from "../utils";
 
 const FullPost = (packedProps) => {
     let props = packedProps.route.params
@@ -108,6 +109,7 @@ const FullPost = (packedProps) => {
                   ListHeaderComponent={head}
                   ListEmptyComponent={<View/>}
                   extraData={randomID}
+                  style={{backgroundColor: getTheme().intervalColor}}
                   keyExtractor={x => x.getIdentifyID()}
                   onEndReached={() => {
                       hasMore && setPn(pn + 1)

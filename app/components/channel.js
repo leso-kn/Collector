@@ -7,7 +7,7 @@ import {
     View
 } from "react-native";
 import {findService} from "../findService";
-import {exists, reducer} from "../utils";
+import {exists, getTheme, reducer} from "../utils";
 import {deviceWidth} from "../constants";
 import {TabBar, TabView} from "react-native-tab-view";
 import {Posts} from "./Posts";
@@ -43,7 +43,7 @@ const ChannelInside = (props) => {
         <TabBar
             {...props}
             indicatorStyle={{backgroundColor: 'white'}}
-            style={{height: 40}}
+            style={{height: 40, backgroundColor: getTheme().tabBarColor}}
             labelStyle={{fontSize: 13, marginTop: -8, marginBottom: 0}}
         />
     );
@@ -109,7 +109,7 @@ const ChannelInside = (props) => {
             <Text style={{fontSize:20, fontWeight:"600", marginVertical:40}}>
                 This user has been blocked
             </Text>
-            <Button title={"Remove from blocklist"}  onPress={()=> {
+            <Button title={"Remove from blocklist"} color={getTheme().buttonBackgroundColor} onPress={()=> {
                 AsyncStorage.getItem("blocklist").then(res => {
                     let temp = JSON.parse(res)
                     temp.channels = temp.channels.filter(x => x.identifyID !== data.identifyID)
@@ -123,7 +123,7 @@ const ChannelInside = (props) => {
             <Image source={{uri: data.headImgUrl}}
                    style={{width: "100%", height: deviceWidth * data.headImgRatio || 0}}
                    resizeMode={"center"}/>
-            <View style={{backgroundColor: "white"}}>
+            <View style={{backgroundColor: getTheme().postBackGroundColor}}>
                 <View style={{flexDirection: "row", marginLeft: 10}}>
                     <View style={{flex: 1, flexDirection: "row"}}>
                         <TouchableNativeFeedback onPress={() => setShowAvatar(true)}>
@@ -135,7 +135,7 @@ const ChannelInside = (props) => {
                             <Text style={{
                                 marginTop: 5,
                                 fontWeight: "500",
-                                color: "black",
+                                color: getTheme().textColor,
                                 fontSize: 15
                             }}>{data.name}</Text>
                             <Text style={{marginTop: 2, fontSize: 12, color: "gray"}}>{"@" + data.identifyName}</Text>
@@ -202,8 +202,8 @@ const ChannelInside = (props) => {
                         borderRightWidth: 0.5,
                         borderRightColor: "gray"
                     }}>
-                        <Text style={{color: "#504d4d", fontSize: 13}}>{"Followers"}</Text>
-                        <Text style={{color: "#504d4d", fontSize: 13}}>{data.fanNum}</Text>
+                        <Text style={{ fontSize: 13}}>{"Followers"}</Text>
+                        <Text style={{fontSize: 13}}>{data.fanNum}</Text>
                     </View>
                     <View style={{
                         justifyContent: "center",
@@ -212,8 +212,8 @@ const ChannelInside = (props) => {
                         borderRightWidth: 0.5,
                         borderRightColor: "gray"
                     }}>
-                        <Text style={{color: "#504d4d", fontSize: 13}}>{"Friends"}</Text>
-                        <Text style={{color: "#504d4d", fontSize: 13}}>{data.followNum}</Text>
+                        <Text style={{ fontSize: 13}}>{"Friends"}</Text>
+                        <Text style={{ fontSize: 13}}>{data.followNum}</Text>
                     </View>
                     <View style={{
                         justifyContent: "center",
@@ -222,8 +222,8 @@ const ChannelInside = (props) => {
                         borderRightWidth: 0,
                         borderRightColor: "gray"
                     }}>
-                        <Text style={{color: "#504d4d", fontSize: 13}}>{"Likes"}</Text>
-                        <Text style={{color: "#504d4d", fontSize: 13}}>{data.likeNum}</Text>
+                        <Text style={{ fontSize: 13}}>{"Likes"}</Text>
+                        <Text style={{fontSize: 13}}>{data.likeNum}</Text>
                     </View>
                 </View>
             </View>
