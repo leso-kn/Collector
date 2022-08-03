@@ -31,7 +31,7 @@ export const LocalPosts = (props) => {
                           let offsetValue = 0
                           for (let i of layoutMap.current) {
                               if (i[0] === tempID) break
-                              offsetValue += i[1].height + 0.4
+                              offsetValue += i[1].height
                           }
                           layoutMap.current.set(tempID, {height: e.nativeEvent.layout.height, offset: offsetValue})
                       }
@@ -54,7 +54,6 @@ export const LocalPosts = (props) => {
                       maxToRenderPerBatch={40}
                       windowSize={6}
                       bounces={false}
-                      ItemSeparatorComponent={() => (<View style={{backgroundColor: "#dad7d7", height: 0.4}}/>)}
             />
         </View>
     )

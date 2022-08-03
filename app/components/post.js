@@ -194,6 +194,8 @@ const Post = React.memo((props) => {
         borderRadius: 0,
         marginTop: 0,
         marginBottom: 0,
+        borderWidth:0.2,
+        borderColor:"gray",
         height: props.height
     }
     return (
