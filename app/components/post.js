@@ -517,7 +517,8 @@ const Post = React.memo((props) => {
                                             name: data.name,
                                             avatar: data.avatar,
                                             url: data.channelUrl,
-                                            identifyID: data.channelIdentifyID
+                                            identifyID: data.channelIdentifyID,
+                                            identifyName: data.identifyName
                                         })
                                     }
                                 } else {
