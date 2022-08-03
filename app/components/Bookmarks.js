@@ -18,34 +18,34 @@ export const Bookmarks = ({navigation, randomID}) => {
         })
     }, [randomID])
     return (
-        <View >
+        <View style={{backgroundColor:getTheme().backgroundColor, flex:1}}>
             <FlatList data={bookmarks && Object.entries(bookmarks)} renderItem={data => {
                 return (
                     <TouchableNativeFeedback onPress={()=>navigation.push("Group", {title: data.item[0], key: "bookmarks", type:"posts"})}>
                         <View style={{
-                            marginLeft:0,
-                            height: 100,
+                            marginLeft:2,
+                            height: 90,
                         }}>
-                            <Text style={{marginTop:20, marginLeft: 25, fontSize: 18, color: getTheme().textColor}}>
+                            <Text style={{marginTop:17, marginLeft: 25, fontSize: 18, color: getTheme().textColor}}>
                                 {data.item[0]}
                             </Text>
-                            <Text style={{marginTop: 15, marginLeft: 25, color:"gray"}}>
+                            <Text style={{marginTop: 12, marginLeft: 25, color:"gray"}}>
                                 {data.item[1].length + " items"}
                             </Text>
                         </View>
                     </TouchableNativeFeedback>
                 )
             }}
-                      style={{marginTop:-1.5}}
+                      style={{marginTop:-1}}
                       ItemSeparatorComponent={()=>(<View style={{height: 0.01, borderTopWidth:0.2, borderColor:"gray"}}/>)}
                       ListFooterComponent={
                           <TouchableNativeFeedback onPress={() => setDialogVisible(true)}>
                               <View style={{
-                                  height: 100,
+                                  height: 90,
                                   alignItems: "center",
                                   justifyContent: "center",
                                   borderTopWidth:0.2,
-                                  borderBottomWidth:0.2,
+                                  borderBottomWidth:0.4,
                                   borderColor:"gray"
                               }}>
                                   <Ionicons name={"add"} size={40} color={"gray"}/>

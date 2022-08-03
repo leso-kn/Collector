@@ -13,9 +13,8 @@ export const themeDefault = {
     postBackGroundColor:"white",
     textColor:"black",
     borderColor:"black",
-    backgroundColor: "#ececec",
+    backgroundColor: "white",
     navigationTheme: DefaultTheme,
-    bookmarkColor: undefined
 }
 export const darkTheme = {
     color: "#121212",
@@ -28,5 +27,5 @@ export const darkTheme = {
     buttonBackgroundColor: "#bb86fc",
     navigationTheme: DarkTheme,
     tabBarColor:"#121212",
-    bookmarkColor: "black"
+    backgroundColor: "black"
 }

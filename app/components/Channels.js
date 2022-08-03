@@ -2,6 +2,7 @@ import React, {useEffect, useReducer, useRef, useState} from 'react';
 import {findService} from "../findService";
 import {ChannelInfo} from "./ChannelInfo";
 import {FlatList, View} from "react-native";
+import {getTheme} from "../utils";
 
 export const Channels = (props) => {
     const reducer = (state, action) => {
@@ -32,7 +33,7 @@ export const Channels = (props) => {
         return (<ChannelInfo data={user.item} navigation={props.navigation}/>)
     }
     return (
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, backgroundColor:getTheme().backgroundColor}}>
             <FlatList data={users} renderItem={renderFunc} ListFooterComponent={(<View style={{height: 50}}/>)}
                       keyExtractor={(item,index)=>JSON.stringify(item)+index}
                       onEndReached={() => {

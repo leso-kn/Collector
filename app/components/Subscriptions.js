@@ -24,7 +24,7 @@ export const Subscriptions = ({navigation, randomID}) => {
                     Groups
                 </Text>
             </View>
-            <FlatList style={{flexGrow: 0}}
+            <FlatList style={{flexGrow:0 ,backgroundColor:getTheme().backgroundColor}}
                       data={subscriptionData && Object.entries(subscriptionData).filter(x => x[0] !== "feeds")}
                       renderItem={data => (
                           <TouchableNativeFeedback onPress={() => navigation.push("Group", {
