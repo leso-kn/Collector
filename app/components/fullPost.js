@@ -3,6 +3,7 @@ import React, {useEffect, useReducer, useRef, useState} from 'react';
 import {FlatList, Text, TouchableNativeFeedback, TouchableOpacity, View} from "react-native";
 import {deviceWidth, FIRST_POST, HOT_FIRST, OLD_FIRST, OTHER_POST} from "../constants";
 import {findService} from "../findService";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const FullPost = (packedProps) => {
     let props = packedProps.route.params
@@ -13,7 +14,7 @@ const FullPost = (packedProps) => {
         // console.log(JSON.stringify(action.data.map(x=>x.member.uname+" " +x.content.message)) + "action" + action.data.length)
         let result = [...state]
         for (let item of action.data) {
-            if (result.map(x => x.getIdentifyID()).includes(item.getIdentifyID())) continue
+            if (result.map(x => x.getIdentifyID()).includes(item.getIdentifyID()) || action.blocklist.filter(x=>x.identifyID === item.getChannelIdentifyID()).length) continue
             result.push(item)
         }
         return result
@@ -26,46 +27,52 @@ const FullPost = (packedProps) => {
     const layoutMap = useRef(new Map())
 
     useEffect(() => {
-        if (props.parentID) {
-            packedProps.navigation.setOptions({
-                headerRight: ()=>(
-                    <TouchableOpacity onPress={()=>packedProps.navigation.push("FullPost", {url: props.url})}>
-                        <View>
-                            <Text>
-                                Origin Post
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-                )
-            })
-            findService(props.url, props.id, props.data)
-                .then(res => res.getReplies(pn, props.parentID, props.parentType)).then((res) => {
-                res?.length && dispatch({data: res})
-                setHasMore(res?.hasMore())
-            })
-        } else if (props.type === "reposts") {
-            packedProps.navigation.setOptions({
-                title: "Reposts"
-            })
-            findService(props.url, props.id, props.data).then(res => res.getReposts(lastID.current)).then(res => {
-                res?.length && dispatch({data: res})
-                setHasMore(res?.hasMore())
-                lastID.current = res.getLastID()
-            })
-        } else {
-            findService(props.url, props.id, props.data).then(res => {
-                parentRef.current.parentID = res.getID()
-                parentRef.current.parentType = res.getType()
-                return res.getComments(pn)
-            }).then(res => {
-                //TODO: show loading when fetching
-                //  alert(JSON.stringify(res.data.data.replies))
-                res?.length && dispatch({data: res})
-                setHasMore(res?.hasMore())
-            })
-        }
-
-
+        let blocklist
+        AsyncStorage.getItem("blocklist").then(res => {
+            if (!res) {
+                AsyncStorage.setItem("blocklist", JSON.stringify({words: [], channels: []}))
+            }
+            blocklist = JSON.parse(res)?.channels
+        }).then(res=>{
+            if (props.parentID) {
+                packedProps.navigation.setOptions({
+                    headerRight: ()=>(
+                        <TouchableOpacity onPress={()=>packedProps.navigation.push("FullPost", {url: props.url})}>
+                            <View>
+                                <Text>
+                                    Origin Post
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    )
+                })
+                findService(props.url, props.id, props.data)
+                    .then(res => res.getReplies(pn, props.parentID, props.parentType)).then((res) => {
+                    res?.length && dispatch({data: res, "blocklist":blocklist})
+                    setHasMore(res?.hasMore())
+                })
+            } else if (props.type === "reposts") {
+                packedProps.navigation.setOptions({
+                    title: "Reposts"
+                })
+                findService(props.url, props.id, props.data).then(res => res.getReposts(lastID.current)).then(res => {
+                    res?.length && dispatch({data: res, "blocklist":blocklist})
+                    setHasMore(res?.hasMore())
+                    lastID.current = res.getLastID()
+                })
+            } else {
+                findService(props.url, props.id, props.data).then(res => {
+                    parentRef.current.parentID = res.getID()
+                    parentRef.current.parentType = res.getType()
+                    return res.getComments(pn)
+                }).then(res => {
+                    //TODO: show loading when fetching
+                    //  alert(JSON.stringify(res.data.data.replies))
+                    res?.length && dispatch({data: res, "blocklist":blocklist})
+                    setHasMore(res?.hasMore())
+                })
+            }
+        })
     }, [pn])
     const head = (
         <View>

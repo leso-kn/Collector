@@ -66,6 +66,7 @@ export class BiliChannelExtractor {
                 result.getLastID = () => res.data.data.cards[res.data.data.cards.length - 1].desc.dynamic_id_str
                 for (let item of result) {
                     item.getIdentifyID = ()=> "biliSpace" + item.desc.dynamic_id_str
+                    item.getChannelIdentifyID = ()=>"biliSpace" + item.desc.uid
                     item.url = postPageUrl + item.desc.dynamic_id_str
                     item.getTime = () => item.desc.timestamp * 1000
                 }

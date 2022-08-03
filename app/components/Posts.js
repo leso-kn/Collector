@@ -3,11 +3,12 @@ import {deviceWidth, HOT_FIRST, PREVIEW_POST} from "../constants";
 import {findService} from "../findService";
 import Post from "./post";
 import {FlatList, View} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const reducer = (state, action) => {
     let result = [...state]
     for (let item of action.data) {
-        if (result.map(x => x.getIdentifyID()).includes(item.getIdentifyID())) continue
+        if (result.map(x => x.getIdentifyID()).includes(item.getIdentifyID()) || action.blocklist.filter(x=>x.identifyID === item.getChannelIdentifyID()).length) continue
         result.push(item)
     }
     if (action.sort)
@@ -27,62 +28,69 @@ export const Posts = React.memo((props) => {
     const layoutMap = useRef(new Map())
 
     useEffect(() => {
-        for (const [index, url] of props.urls.entries()) {
-            if (refContainer.current.notFetch[url]) continue
-            if (pn !== 1) {
-                if (!refContainer.current.hasMores[index]) continue
+        let blocklist
+        AsyncStorage.getItem("blocklist").then(res => {
+            if (!res) {
+                AsyncStorage.setItem("blocklist", JSON.stringify({words: [], channels: []}))
             }
-            let currentTime = Math.floor(Date.now() / 1000)
-            if (!requestControl.current.length) {
-                requestControl.current.push({time: currentTime, count: 1})
-            } else {
-                let lastItem = requestControl.current[requestControl.current.length - 1]
-                if (lastItem.time < currentTime) {
-                    requestControl.current = []
+            blocklist = JSON.parse(res)?.channels
+        }).then(res=>{
+            for (const [index, url] of props.urls.entries()) {
+                if (refContainer.current.notFetch[url]) continue
+                if (pn !== 1) {
+                    if (!refContainer.current.hasMores[index]) continue
+                }
+                let currentTime = Math.floor(Date.now() / 1000)
+                if (!requestControl.current.length) {
                     requestControl.current.push({time: currentTime, count: 1})
                 } else {
-                    lastItem.count >= 5 ?
-                        requestControl.current.push({time: lastItem.time + 1, count: 1}) :
-                        requestControl.current[requestControl.current.length - 1].count += 1
-                }
-            }
-            requestStatus.current.expect += 1
-            new Promise(r => setTimeout(r, (requestControl.current[requestControl.current.length - 1].time - currentTime) * 1000)).then(res => findService(url)).then(res => {
-                return res.getPosts(pn, refContainer.current.lastIDs?.[index])
-            }).then(res => {
-                //TODO: show loading when fetching
-                requestStatus.current.get += 1
-                refContainer.current.notFetch[url] = true
-                tempResultPool.current[url] = [...tempResultPool.current[url] ? tempResultPool.current[url] : [], ...res]
-                if (requestStatus.current.expect === requestStatus.current.get) {
-                    requestStatus.current = {expect: 0, get: 0}
-                    let lastTime = Math.max(...Object.entries(tempResultPool.current).map(x => {
-                        return x[1][x[1].length - 1].getTime()
-                    }))
-                    for (let item in tempResultPool.current) {
-                        for (let i = 0; i < tempResultPool.current[item].length; i++) {
-                            if (tempResultPool.current[item][i].getTime() >= lastTime || !props.sort) {
-                                tempResultQueue.current.push(tempResultPool.current[item][i])
-                            } else {
-                                tempResultPool.current[item] = tempResultPool.current[item].slice(i)
-                                break
-                            }
-                            if (i === tempResultPool.current[item].length - 1) {
-                                tempResultPool.current[item] = []
-                            }
-                        }
-                        if (!tempResultPool.current[item].length) {
-                            refContainer.current.notFetch[item] = false
-                        }
+                    let lastItem = requestControl.current[requestControl.current.length - 1]
+                    if (lastItem.time < currentTime) {
+                        requestControl.current = []
+                        requestControl.current.push({time: currentTime, count: 1})
+                    } else {
+                        lastItem.count >= 5 ?
+                            requestControl.current.push({time: lastItem.time + 1, count: 1}) :
+                            requestControl.current[requestControl.current.length - 1].count += 1
                     }
-                    tempResultQueue.current.length && dispatch({data: tempResultQueue.current, sort: props.sort})
-                    tempResultQueue.current = []
                 }
-                refContainer.current.hasMores[index] = res.hasMore()
-                refContainer.current.hasMores[index] && (refContainer.current.lastIDs[index] = res.getLastID())
-            })
-        }
-
+                requestStatus.current.expect += 1
+                new Promise(r => setTimeout(r, (requestControl.current[requestControl.current.length - 1].time - currentTime) * 1000)).then(res => findService(url)).then(res => {
+                    return res.getPosts(pn, refContainer.current.lastIDs?.[index])
+                }).then(res => {
+                    //TODO: show loading when fetching
+                    requestStatus.current.get += 1
+                    refContainer.current.notFetch[url] = true
+                    tempResultPool.current[url] = [...tempResultPool.current[url] ? tempResultPool.current[url] : [], ...res]
+                    if (requestStatus.current.expect === requestStatus.current.get) {
+                        requestStatus.current = {expect: 0, get: 0}
+                        let lastTime = Math.max(...Object.entries(tempResultPool.current).map(x => {
+                            return x[1][x[1].length - 1].getTime()
+                        }))
+                        for (let item in tempResultPool.current) {
+                            for (let i = 0; i < tempResultPool.current[item].length; i++) {
+                                if (tempResultPool.current[item][i].getTime() >= lastTime || !props.sort) {
+                                    tempResultQueue.current.push(tempResultPool.current[item][i])
+                                } else {
+                                    tempResultPool.current[item] = tempResultPool.current[item].slice(i)
+                                    break
+                                }
+                                if (i === tempResultPool.current[item].length - 1) {
+                                    tempResultPool.current[item] = []
+                                }
+                            }
+                            if (!tempResultPool.current[item].length) {
+                                refContainer.current.notFetch[item] = false
+                            }
+                        }
+                        tempResultQueue.current.length && dispatch({data: tempResultQueue.current, sort: props.sort, "blocklist":blocklist})
+                        tempResultQueue.current = []
+                    }
+                    refContainer.current.hasMores[index] = res.hasMore()
+                    refContainer.current.hasMores[index] && (refContainer.current.lastIDs[index] = res.getLastID())
+                })
+            }
+        })
     }, [pn])
 
     function renderFunc(post) {

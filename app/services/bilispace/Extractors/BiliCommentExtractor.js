@@ -98,6 +98,7 @@ export class BiliCommentExtractor {
             result.getLastID = () => result[result.length - 1].rpid_str
             for (let item of result) {
                 item.getIdentifyID = ()=> "biliSpace" + item.rpid_str
+                item.getChannelIdentifyID = ()=>"biliSpace" + item.mid
                 item.id = "biliComment"
                 item.getTime = () => item.ctime * 1000
                 item.parentID = "biliComment"

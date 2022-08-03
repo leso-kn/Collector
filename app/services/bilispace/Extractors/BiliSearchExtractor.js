@@ -24,7 +24,6 @@ export class BiliSearchExtractor{
     async getPosts(pn){
         let channelName = this.url.split("mid=")[1].split("&keyword=")[0]
         return axios.get(searchApiUrl + channelName, requestOption).then(res=>{
-            console.log(this.url.replace(channelName, res.data.data.result[0].mid) + `&pn=${pn}`)
             return axios.get(this.url.replace(channelName, res.data.data.result[0].mid) + `&pn=${pn}`)
         }).then(res=>{
             let result = res.data.data.cards || []
@@ -32,6 +31,7 @@ export class BiliSearchExtractor{
             result.getLastID = () => res.data.data.cards[res.data.data.cards.length - 1].desc.dynamic_id_str
             for (let item of result) {
                 item.getIdentifyID = ()=> "biliSpace" + item.desc.dynamic_id_str
+                item.getChannelIdentifyID = () => "biliSpace" + item.desc.uid
                 item.url = postPageUrl + item.desc.dynamic_id_str
                 item.getTime = () => item.desc.timestamp * 1000
             }
