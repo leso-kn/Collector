@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import Index from './app/index.js'
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {NavigationContainer} from "@react-navigation/native";
 import Channel from "./app/components/channel";
@@ -10,6 +9,7 @@ import {getTheme} from "./app/utils";
 import FlashMessage from "react-native-flash-message";
 import {Home} from "./app/components/Home";
 import {Trending} from "./app/components/Trending";
+import {FreeCopy} from "./app/components/FreeCopy";
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +26,7 @@ const App = () => {
                 <Stack.Screen name={"Search"} component={Search}/>
                 <Stack.Screen name={"Group"} component={Group}/>
                 <Stack.Screen name={"Trending"} component={Trending}/>
+                <Stack.Screen name={"FreeCopy"} component={FreeCopy}/>
             </Stack.Navigator>
             <FlashMessage position="top"/>
         </NavigationContainer>

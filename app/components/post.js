@@ -1,5 +1,5 @@
 import {
-    Image,
+    Image, Pressable,
     Text, TextInput,
     TouchableNativeFeedback,
     TouchableOpacity, TouchableWithoutFeedback,
@@ -180,8 +180,8 @@ const Post = React.memo((props) => {
                         borderRadius: 12,
                         width: 24,
                         height: 24,
-                        alignItems:"center",
-                        justifyContent:"center",
+                        alignItems: "center",
+                        justifyContent: "center",
                         backgroundColor: "black"
                     }}>
                         <MaterialIcons name={"photo-library"} size={18} color={"white"}/>
@@ -286,18 +286,22 @@ const Post = React.memo((props) => {
                     <View style={{minHeight: 25}}>
                         {props.type !== OTHER_POST && data.title ? titleElement(data) : null}
                         {data.content ?
-                            <Text numberOfLines={[PREVIEW_POST, EMBEDDED_POST].includes(props.type) ? 4 : undefined}
-                                  ellipsizeMode='tail'
-                                  style={{
-                                      color: props.type === FIRST_POST ? "gray" : "black",
-                                      fontWeight: "400",
-                                      marginLeft: 13,
-                                      fontSize: 14.5,
-                                      marginTop: 10,
-                                      width: "95%"
-                                  }}>
-                                {data.content}
-                            </Text> : null}
+                            <Pressable onLongPress={() => props.navigation.push("FreeCopy", {
+                                content: data.content
+                            })} disabled={props.type !== FIRST_POST}>
+                                <Text numberOfLines={[PREVIEW_POST, EMBEDDED_POST].includes(props.type) ? 4 : undefined}
+                                      ellipsizeMode='tail'
+                                      style={{
+                                          color: props.type === FIRST_POST ? "gray" : "black",
+                                          fontWeight: "400",
+                                          marginLeft: 13,
+                                          fontSize: 14.5,
+                                          marginTop: 10,
+                                          width: "95%"
+                                      }}>
+                                    {data.content}
+                                </Text>
+                            </Pressable> : null}
 
                         {data.images ? imagePreview : null}
                         {props.type !== OTHER_POST && data.refPost ? (
@@ -529,7 +533,7 @@ const Post = React.memo((props) => {
                         }}>
                         <View>
                             <SelectMultiple onSelectionsChange={x => setSelected1(x)}
-                                            // items={['Block user', "Create new block word"]}
+                                // items={['Block user', "Create new block word"]}
                                             items={['Block user']}
                                             selectedItems={selected1}/>
                             {/*<TextInput value={text}*/}
