@@ -152,7 +152,7 @@ const Post = React.memo((props) => {
             })
         }
         return () => mounted3.current = false
-    }, [data, dialogVisible1])
+    }, [data, dialogVisible1, dialogVisible2])
 
     const imagePreview = (
         <TouchableWithoutFeedback onPress={() => {
