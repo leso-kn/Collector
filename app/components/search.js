@@ -5,7 +5,7 @@ import {TabBar, TabView} from "react-native-tab-view";
 import {Channels} from "./Channels";
 import {deviceWidth} from "../constants";
 import {Posts} from "./Posts";
-import {getCurrentServiceUrl} from "../utils";
+import {getCurrentServiceUrl, getTheme} from "../utils";
 
 export const Search = ({navigation}) => {
     const [searchWord, setSearchWord] = useState("")
@@ -31,6 +31,7 @@ export const Search = ({navigation}) => {
                     width={"80%"}
                     containerStyle={styles.textInput}
                     textInputStyle={{marginTop: 2.5, marginLeft: 3}}
+                    isDarkTheme={getTheme().isDarkTheme}
                     value={text}
                     onChangeText={onChangeText}
                     onSubmitEditing={() => {
@@ -51,7 +52,7 @@ export const Search = ({navigation}) => {
             <TabBar
                 {...props}
                 indicatorStyle={{backgroundColor: 'white'}}
-                style={{height: 40}}
+                style={{height: 40, backgroundColor: getTheme().tabBarColor}}
                 labelStyle={{fontSize: 13, marginTop: -8, marginBottom: 0}}
             />
         );

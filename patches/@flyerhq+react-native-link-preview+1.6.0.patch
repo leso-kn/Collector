@@ -1,8 +1,58 @@
 diff --git a/node_modules/@flyerhq/react-native-link-preview/lib/LinkPreview.js b/node_modules/@flyerhq/react-native-link-preview/lib/LinkPreview.js
-index 7ab00a6..f0b8ef6 100644
+index 7ab00a6..667efe3 100644
 --- a/node_modules/@flyerhq/react-native-link-preview/lib/LinkPreview.js
 +++ b/node_modules/@flyerhq/react-native-link-preview/lib/LinkPreview.js
-@@ -57,16 +57,11 @@ export const LinkPreview = React.memo(({ containerStyle, enableAnimation, header
+@@ -1,12 +1,48 @@
+ import * as React from 'react';
+ import { Image, LayoutAnimation, Linking, StyleSheet, Text, TouchableWithoutFeedback, View, } from 'react-native';
+ import { getPreviewData, oneOf } from './utils';
+-export const LinkPreview = React.memo(({ containerStyle, enableAnimation, header, metadataContainerStyle, metadataTextContainerStyle, onPreviewDataFetched, previewData, renderDescription, renderHeader, renderImage, renderLinkPreview, renderMinimizedImage, renderText, renderTitle, requestTimeout = 5000, text, textContainerStyle, touchableWithoutFeedbackProps, }) => {
++export const LinkPreview = React.memo(({ containerStyle, enableAnimation, header, isDarkTheme, metadataContainerStyle, metadataTextContainerStyle, onPreviewDataFetched, previewData, renderDescription, renderHeader, renderImage, renderLinkPreview, renderMinimizedImage, renderText, renderTitle, requestTimeout = 5000, text, textContainerStyle, touchableWithoutFeedbackProps, }) => {
+     const [containerWidth, setContainerWidth] = React.useState(0);
+     const [data, setData] = React.useState(previewData);
+     const aspectRatio = (data === null || data === void 0 ? void 0 : data.image)
+         ? data.image.width / data.image.height
+         : undefined;
++    const styles = StyleSheet.create({
++        description: {
++            marginTop: 6,
++            color: isDarkTheme?undefined:"black"
++        },
++        header: {
++            marginBottom: 6,
++            color: isDarkTheme?undefined:"black"
++        },
++        image: {
++            alignSelf: 'center',
++            backgroundColor: '#f7f7f8',
++        },
++        metadataContainer: {
++            flexDirection: 'row',
++            marginTop: -2,
++        },
++        metadataTextContainer: {
++            flex: 1,
++        },
++        minimizedImage: {
++            borderRadius: 12,
++            height: 48,
++            marginLeft: 4,
++            width: 48,
++        },
++        textContainer: {
++            marginHorizontal: 10,
++            marginVertical: 16,
++        },
++        title: {
++            fontWeight: 'bold',
++            marginTop:2,
++            color: isDarkTheme?undefined:"black"
++        },
++    });
+     React.useEffect(() => {
+         let isCancelled = false;
+         if (previewData) {
+@@ -57,16 +93,11 @@ export const LinkPreview = React.memo(({ containerStyle, enableAnimation, header
          const ar = aspectRatio !== null && aspectRatio !== void 0 ? aspectRatio : 1;
          return oneOf(renderImage, React.createElement(Image, { accessibilityRole: 'image', resizeMode: 'contain', source: { uri: image.url }, style: StyleSheet.flatten([
                  styles.image,
@@ -21,7 +71,7 @@ index 7ab00a6..f0b8ef6 100644
                      },
              ]) }))(image);
      };
-@@ -77,7 +72,7 @@ export const LinkPreview = React.memo(({ containerStyle, enableAnimation, header
+@@ -77,7 +108,7 @@ export const LinkPreview = React.memo(({ containerStyle, enableAnimation, header
                      textContainerStyle,
                  ]) },
                  renderHeaderNode(),
@@ -30,7 +80,7 @@ index 7ab00a6..f0b8ef6 100644
                  ((data === null || data === void 0 ? void 0 : data.description) ||
                      ((data === null || data === void 0 ? void 0 : data.image) &&
                          aspectRatio === 1 &&
-@@ -108,17 +103,19 @@ export const LinkPreview = React.memo(({ containerStyle, enableAnimation, header
+@@ -108,41 +139,10 @@ export const LinkPreview = React.memo(({ containerStyle, enableAnimation, header
      };
      const renderTextNode = () => oneOf(renderText, React.createElement(Text, null, text))(text);
      const renderTitleNode = (title) => {
@@ -40,41 +90,39 @@ index 7ab00a6..f0b8ef6 100644
      return (React.createElement(TouchableWithoutFeedback, { accessibilityRole: 'button', onPress: handlePress, ...touchableWithoutFeedbackProps },
          React.createElement(View, { onLayout: handleContainerLayout, style: containerStyle }, renderLinkPreviewNode())));
  });
- const styles = StyleSheet.create({
-     description: {
+-const styles = StyleSheet.create({
+-    description: {
 -        marginTop: 4,
-+        marginTop: 6,
-+        color:"black"
-     },
-     header: {
-         marginBottom: 6,
-+        color:"black"
-     },
-     image: {
-         alignSelf: 'center',
-@@ -126,7 +123,7 @@ const styles = StyleSheet.create({
-     },
-     metadataContainer: {
-         flexDirection: 'row',
+-    },
+-    header: {
+-        marginBottom: 6,
+-    },
+-    image: {
+-        alignSelf: 'center',
+-        backgroundColor: '#f7f7f8',
+-    },
+-    metadataContainer: {
+-        flexDirection: 'row',
 -        marginTop: 16,
-+        marginTop: -2,
-     },
-     metadataTextContainer: {
-         flex: 1,
-@@ -138,11 +135,13 @@ const styles = StyleSheet.create({
-         width: 48,
-     },
-     textContainer: {
+-    },
+-    metadataTextContainer: {
+-        flex: 1,
+-    },
+-    minimizedImage: {
+-        borderRadius: 12,
+-        height: 48,
+-        marginLeft: 4,
+-        width: 48,
+-    },
+-    textContainer: {
 -        marginHorizontal: 24,
-+        marginHorizontal: 10,
-         marginVertical: 16,
-     },
-     title: {
-         fontWeight: 'bold',
-+        color:"black",
-+        marginTop:2
-     },
- });
+-        marginVertical: 16,
+-    },
+-    title: {
+-        fontWeight: 'bold',
+-    },
+-});
++
  //# sourceMappingURL=LinkPreview.js.map
 \ No newline at end of file
 diff --git a/node_modules/@flyerhq/react-native-link-preview/lib/utils.js b/node_modules/@flyerhq/react-native-link-preview/lib/utils.js

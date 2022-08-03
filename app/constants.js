@@ -12,10 +12,11 @@ export const themeDefault = {
     color: "#f5deb3",
     postBackGroundColor:"white",
     textColor:"black",
-    borderColor:"#dad7d7",
+    borderColor:"black",
     backgroundColor: "white",
     navigationTheme: DefaultTheme,
-    tabBarColor: "#2196f3"
+    tabBarColor: "#2196f3",
+    isDarkTheme: false
 }
 export const darkTheme = {
     color: "#121212",
@@ -29,4 +30,5 @@ export const darkTheme = {
     navigationTheme: DarkTheme,
     tabBarColor:"#121212",
     backgroundColor: "black",
+    isDarkTheme: true
 }

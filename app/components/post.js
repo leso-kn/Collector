@@ -313,7 +313,7 @@ const Post = React.memo((props) => {
                                         borderRadius: 5,
                                         marginTop: 10
                                     }}>
-                                    <LinkPreview text={data.highLightUrl} containerStyle={{height: 320}}></LinkPreview>
+                                    <LinkPreview text={data.highLightUrl} isDarkTheme={getTheme().isDarkTheme} containerStyle={{height: 320}}/>
                                 </View>
                             </View>
                         ) : null}
