@@ -41,7 +41,7 @@ export const Channels = (props) => {
                       }}
                       extraData={randomID}
                       onEndReachedThreshold={0.1}
-                      ItemSeparatorComponent={() => (<View style={{backgroundColor: "#dad7d7", height: 0.4}}/>)}
+                      ItemSeparatorComponent={() => (<View style={{backgroundColor: "gray", height: 0.4}}/>)}
             />
         </View>
     )

@@ -40,7 +40,7 @@ export const Subscriptions = ({navigation, randomID}) => {
                                   alignItems: "center",
                                   justifyContent: "center",
                                   borderWidth:0.2,
-                                  borderColor:"gray",
+                                  borderColor: getTheme().borderColor
                               }}>
                                   <Text style={{
                                       fontSize: 15,
@@ -70,7 +70,7 @@ export const Subscriptions = ({navigation, randomID}) => {
                               alignItems: "center",
                               justifyContent: "center",
                               borderWidth:0.2,
-                              borderColor:"gray"
+                              borderColor: getTheme().borderColor
                           }}>
                               <TouchableNativeFeedback onPress={() => setDialogVisible(true)}>
                                   <Ionicons name={"add-circle"} size={25}/>

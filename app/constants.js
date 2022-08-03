@@ -12,7 +12,7 @@ export const themeDefault = {
     color: "#f5deb3",
     postBackGroundColor:"white",
     textColor:"black",
-    borderColor:"black",
+    borderColor:"#dad7d7",
     backgroundColor: "white",
     navigationTheme: DefaultTheme,
     tabBarColor: "#2196f3"
