@@ -90,7 +90,7 @@ const Index = ({navigation}) => {
     }
 
     return (
-        <SafeAreaViewPlus style={{flex: 1}}>
+        <SafeAreaViewPlus style={{flex: 1}} barStyle={getTheme().isDarkTheme?null:undefined}>
             <TabView
                 renderTabBar={renderTabBar}
                 navigationState={{index, routes}}

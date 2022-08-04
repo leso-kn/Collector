@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, Text, TextInput, TouchableNativeFeedback, View} from "react-native";
+import {FlatList, StatusBar, Text, TextInput, TouchableNativeFeedback, View} from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Channels} from "./Channels";
@@ -18,7 +18,7 @@ export const Subscriptions = ({navigation, randomID}) => {
         })
     }, [randomID])
     return (
-        <SafeAreaViewPlus>
+        <SafeAreaViewPlus barStyle={getTheme().isDarkTheme?null:undefined}>
             <View style={{height: 50, backgroundColor: getTheme().color, marginTop: 0}}>
                 <Text style={{marginLeft: 15, fontSize: 19, color:getTheme().textColor,  fontWeight: "500", marginTop: 10}}>
                     Groups
@@ -40,7 +40,7 @@ export const Subscriptions = ({navigation, randomID}) => {
                                   alignItems: "center",
                                   justifyContent: "center",
                                   borderWidth:0.2,
-                                  borderColor: getTheme().borderColor
+                                  borderColor: "gray"
                               }}>
                                   <Text style={{
                                       fontSize: 15,
@@ -70,7 +70,7 @@ export const Subscriptions = ({navigation, randomID}) => {
                               alignItems: "center",
                               justifyContent: "center",
                               borderWidth:0.2,
-                              borderColor: getTheme().borderColor
+                              borderColor: "gray"
                           }}>
                               <TouchableNativeFeedback onPress={() => setDialogVisible(true)}>
                                   <Ionicons name={"add-circle"} size={25}/>
