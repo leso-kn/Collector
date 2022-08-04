@@ -2,13 +2,19 @@ import React, {useEffect} from 'react';
 import Index from "../index";
 import {Drawer} from "./Drawer";
 import {createDrawerNavigator} from "@react-navigation/drawer";
-import {getTheme} from "../utils";
+import {getScreen, getTheme} from "../utils";
+import {Linking} from "react-native";
 
 const HomeTab = createDrawerNavigator()
 
 export const Home = ({navigation})=>{
     useEffect(()=>{
         navigation.setOptions({headerShown:false})
+    },[])
+    useEffect(()=>{
+        Linking.getInitialURL().then(res=>navigation.push(getScreen(res), {url:res}))
+        const listener = Linking.addEventListener('url', res=>navigation.push(getScreen(res.url), res))
+        return ()=>listener.remove()
     },[])
     return (
         <HomeTab.Navigator

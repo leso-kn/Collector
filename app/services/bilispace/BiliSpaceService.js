@@ -1,5 +1,6 @@
 import {BiliPostExtractor} from "./Extractors/BiliPostExtractor";
 import {
+    mobilePostPageUrl,
     mobileSpaceUrl,
     PCSpaceRegUrl,
     postApiUrl,
@@ -27,7 +28,10 @@ export const getBiliSpaceService = async (url, id, data) => {
         }
         id = url.split(postPageUrl)[1].split("?")[0]
         return new BiliPostExtractor(postApiUrl + id, id, data);
-    } else if(url.includes("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/unlogin_dynamics?")){
+    } else if(url.includes(mobilePostPageUrl)){
+        id = url.split(mobilePostPageUrl)[1].split("?")[0]
+        return new BiliPostExtractor(postApiUrl + id, id, data);
+    }else if(url.includes("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/unlogin_dynamics?")){
         return new BiliChannelExtractor(url)
     } else if (url.includes(mobileSpaceUrl)) {
         if(data)return new DefaultChannelInfoExtractor(data)
