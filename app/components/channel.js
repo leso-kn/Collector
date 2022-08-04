@@ -283,8 +283,8 @@ const ChannelInside = (props) => {
                 }}>
                 <SelectMultiple onSelectionsChange={x => setSelected(x)}
                                 rowStyle={{backgroundColor: getTheme().postBackGroundColor}}
-                                checkboxSource={checkbox}
-                                selectedCheckboxSource={checkboxChecked}
+                                checkboxSource={getTheme().isDarkTheme?checkbox:undefined}
+                                selectedCheckboxSource={getTheme().isDarkTheme?checkboxChecked:undefined}
                                 items={subscriptionData ? Object.entries(subscriptionData).filter(x => x[0] !== 'feeds').map(x => x[0]) : []}
                                 selectedItems={selected}/>
             </ConfirmDialog>

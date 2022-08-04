@@ -433,8 +433,8 @@ const Post = React.memo((props) => {
                         }}>
                         <SelectMultiple onSelectionsChange={x => setSelected(x)}
                                         rowStyle={{backgroundColor: getTheme().postBackGroundColor}}
-                                        checkboxSource={checkbox}
-                                        selectedCheckboxSource={checkboxChecked}
+                                        checkboxSource={getTheme().isDarkTheme?checkbox:undefined}
+                                        selectedCheckboxSource={getTheme().isDarkTheme?checkboxChecked:undefined}
                                         items={bookmarks ? Object.entries(bookmarks).map(x => x[0]) : []}
                                         selectedItems={selected}/>
                     </ConfirmDialog>
@@ -526,8 +526,8 @@ const Post = React.memo((props) => {
                         <View>
                             <SelectMultiple onSelectionsChange={x => setSelected1(x)}
                                             rowStyle={{backgroundColor: getTheme().postBackGroundColor}}
-                                            checkboxSource={checkbox}
-                                            selectedCheckboxSource={checkboxChecked}
+                                            checkboxSource={getTheme().isDarkTheme?checkbox:undefined}
+                                            selectedCheckboxSource={getTheme().isDarkTheme?checkboxChecked:undefined}
                                 // items={['Block user', "Create new block word"]}
                                             items={['Block user']}
                                             selectedItems={selected1}/>
