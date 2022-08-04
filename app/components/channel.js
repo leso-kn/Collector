@@ -29,7 +29,7 @@ const ChannelInside = (props) => {
     const [selected, setSelected] = useState()
     const [routes] = React.useState([
         {key: 'posts', title: "Posts"},
-        {key: 'friends', title: "Friends"}
+        // {key: 'friends', title: "Friends"}
     ]);
     const [subscriptionData, setSubscriptionData] = useState(null)
     const followed = exists(subscriptionData?.feeds, data)
@@ -53,8 +53,8 @@ const ChannelInside = (props) => {
         switch (route.key) {
             case 'posts':
                 return <Posts urls={[props.url]} navigation={props.navigation}/>
-            case 'second':
-                return <Friends/>;
+            // case 'second':
+            //     return <Friends/>;
             default:
                 return null;
         }
