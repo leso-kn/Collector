@@ -10,6 +10,7 @@ import FlashMessage from "react-native-flash-message";
 import {Home} from "./app/components/Home";
 import {Trending} from "./app/components/Trending";
 import {FreeCopy} from "./app/components/FreeCopy";
+import {Article} from "./app/components/Article";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,7 @@ const App = () => {
                 <Stack.Screen name={"Group"} component={Group}/>
                 <Stack.Screen name={"Trending"} component={Trending}/>
                 <Stack.Screen name={"FreeCopy"} component={FreeCopy}/>
+                <Stack.Screen name={"Article"} component={Article}/>
             </Stack.Navigator>
             <FlashMessage position="top"/>
         </NavigationContainer>

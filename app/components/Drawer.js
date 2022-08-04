@@ -44,6 +44,8 @@ export const Drawer = (props) => {
                 label="Help"
                 onPress={() => alert(1)}
             />
+            <DrawerItem label={"Article"}
+                        onPress={()=>props.navigation.push("Article")}/>
         </DrawerContentScrollView>
     )
 }
