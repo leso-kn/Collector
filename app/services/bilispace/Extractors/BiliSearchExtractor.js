@@ -23,6 +23,7 @@ export class BiliSearchExtractor{
     }
     async getPosts(pn){
         let channelName = this.url.split("mid=")[1].split("&keyword=")[0]
+        if(!channelName)return null
         return axios.get(searchApiUrl + channelName, requestOption).then(res=>{
             return axios.get(this.url.replace(channelName, res.data.data.result[0].mid) + `&pn=${pn}`)
         }).then(res=>{
