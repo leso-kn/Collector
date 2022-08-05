@@ -1,5 +1,5 @@
 import axios from "axios";
-import {articlePageUrl, channelInfoApiUrl, viewInfoApiUrl} from "../BiliArticleLinks";
+import {articlePageUrl} from "../BiliArticleLinks";
 import {shortenLargeNumber} from "../../../utils";
 import {mobileSpaceUrl} from "../../bilispace/BiliSpaceLinks";
 import {BiliPostExtractor} from "../../bilispace/Extractors/BiliPostExtractor";
