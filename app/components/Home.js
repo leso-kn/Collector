@@ -12,8 +12,8 @@ export const Home = ({navigation})=>{
         navigation.setOptions({headerShown:false})
     },[])
     useEffect(()=>{
-        Linking.getInitialURL().then(res=>navigation.push(getScreen(res), {url:res}))
-        const listener = Linking.addEventListener('url', res=>navigation.push(getScreen(res.url), res))
+        Linking.getInitialURL().then(res=>res&&navigation.push(getScreen(res), {url:res}))
+        const listener = Linking.addEventListener('url', res=>res&&navigation.push(getScreen(res.url), res))
         return ()=>listener.remove()
     },[])
     return (
@@ -24,7 +24,7 @@ export const Home = ({navigation})=>{
                 headerTintColor: getTheme().buttonColor,
                 animation: "fade"
             }}>
-            <HomeTab.Screen name="Index" component={Index} options={{
+            <HomeTab.Screen name="Index"  component={Index} options={{
                 headerShadowVisible: false
             }}/>
         </HomeTab.Navigator>

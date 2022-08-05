@@ -13,6 +13,7 @@ export const Drawer = (props) => {
     for(let item of getCurrentServiceUrl().getTrendingUrls()){
         trendings.push(<DrawerItem
             label={item.label}
+            key={item.label}
             onPress={() => props.navigation.navigate("Trending", {url:item.url})}
         />)
     }
@@ -36,16 +37,12 @@ export const Drawer = (props) => {
                     <AntDesign name={"caretdown"} size={10}/>
                 </View>
             </View>
+            {/*{isSelecting?}*/}
             {trendings}
-            <View style={{backgroundColor: "#dad7d7", height: 0.4}}/>
+            <View style={{backgroundColor: "#dad7d7", height: 0.2}}/>
             <DrawerItem label={"Blocked Users"}
+                        key={"BlockedUsers"}
                         onPress={()=>props.navigation.push("Group", { title: "Blocked Users", type:"blocklist"})}/>
-            <DrawerItem
-                label="Help"
-                onPress={() => alert(1)}
-            />
-            <DrawerItem label={"Article"}
-                        onPress={()=>props.navigation.push("Article")}/>
         </DrawerContentScrollView>
     )
 }
