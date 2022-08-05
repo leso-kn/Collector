@@ -5,7 +5,7 @@ import {TabBar, TabView} from "react-native-tab-view";
 import {Channels} from "./Channels";
 import {deviceWidth} from "../constants";
 import {Posts} from "./Posts";
-import {getCurrentServiceUrl, getTheme} from "../utils";
+import {getCurrentServiceUrls, getTheme} from "../utils";
 
 export const Search = ({navigation}) => {
     const [searchWord, setSearchWord] = useState("")
@@ -47,7 +47,10 @@ export const Search = ({navigation}) => {
             {key: 'users', title: "Channels"},
             {key: "posts", title: "Posts"}
         ]);
-
+        const [serviceUrls, setServiceUrls] = useState()
+        useEffect(()=>{
+            getCurrentServiceUrls().then(res=>setServiceUrls(res))
+        },[])
         const renderTabBar = props => (
             <TabBar
                 {...props}
@@ -59,15 +62,15 @@ export const Search = ({navigation}) => {
         const renderScene = ({route}) => {
             switch (route.key) {
                 case 'users':
-                    return <Channels url={getCurrentServiceUrl().getSearchChannelUrl(searchWord)}
-                                     navigation={props.navigation}/>
+                    return serviceUrls?<Channels url={ serviceUrls.getSearchChannelUrl(searchWord)}
+                                     navigation={props.navigation}/>:null
                 case "posts":
                     let parsedSearchWord = searchWord.split("@")
                     if(parsedSearchWord.length === 1){
                         parsedSearchWord = ["", parsedSearchWord[0]]
                     }
-                    return <Posts navigation={props.navigation}
-                                  urls={[getCurrentServiceUrl().getSearchPostUrl(parsedSearchWord[0], parsedSearchWord[1])]}/>
+                    return serviceUrls?<Posts navigation={props.navigation}
+                                  urls={[serviceUrls.getSearchPostUrl(parsedSearchWord[0], parsedSearchWord[1])]}/>:null
             }
         };
 

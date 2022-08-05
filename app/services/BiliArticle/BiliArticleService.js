@@ -16,7 +16,7 @@ export const getBiliArticleService = async (url, id, data) => {
     return null
 }
 
-export const serviceUrl = {
+export const serviceUrls = {
     getSearchChannelUrl:(query)=>searchApiUrl + `${query}&page=0`,
     getTrendingUrls: ()=>[
         {label: "Trending of yesterday", url: trendingApiUrl + "3"},

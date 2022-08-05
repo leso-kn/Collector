@@ -1,4 +1,5 @@
 import * as BiliSpaceService from "./services/bilispace/BiliSpaceService";
+import * as BiliArticleService from "./services/BiliArticle/BiliArticleService"
 import {darkTheme, themeDefault} from "./constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {Appearance} from "react-native";
@@ -47,7 +48,11 @@ export const isBlocked = (data, blockList)=>{
 }
 
 export const getCurrentService = async()=>{
-    return await AsyncStorage.getItem("currentService")
+    return AsyncStorage.getItem("currentService").then(res=>{
+        if(res)return res
+        AsyncStorage.setItem("currentService", AvailableServiceNames[0])
+        return AvailableServiceNames[0]
+    })
 }
 
 export const updateCurrentService = async(name) =>{
@@ -55,7 +60,7 @@ export const updateCurrentService = async(name) =>{
 }
 
 export const AvailableServiceNames = [
-    "BiliSpace"
+    "BiliSpace", "BiliArticle"
 ]
 
 export const modifyUserServices = async(names) =>{
@@ -67,8 +72,16 @@ export const modifyUserServices = async(names) =>{
     getCurrentService().then(res=>!res && updateCurrentService(temp[0]))
 }
 
-export const getCurrentServiceUrl = ()=>{
-    return BiliSpaceService.serviceUrl
+export const getUserServices = async ()=>{
+    return AsyncStorage.getItem("userServices").then(res=> {
+        if(res)return JSON.parse(res)
+        AsyncStorage.setItem("userServices", JSON.stringify(AvailableServiceNames))
+        return AvailableServiceNames
+    })
+}
+
+export const getCurrentServiceUrls = async()=>{
+    return getCurrentService().then(res=>eval(res+"Service.serviceUrls"))
 }
 
 export const getCurrentServiceIcon = ()=>{

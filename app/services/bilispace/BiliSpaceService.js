@@ -54,7 +54,7 @@ export const requestOption = {
     'User-Agent': "Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0"
 }
 
-export const serviceUrl = {
+export const serviceUrls = {
     getSearchChannelUrl:(query)=>searchApiUrl + `${query}&page=0`,
     getTrendingUrls: ()=>[{label:"Trending", url: trendingApiUrl.replace("1093762", Math.floor(Math.random() * 1000000 + 500000))}],
     getSearchPostUrl: (user, query)=> {
