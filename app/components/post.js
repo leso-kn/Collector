@@ -90,7 +90,7 @@ const Post = React.memo((props) => {
             dispatch({
                 "field": [
                     "name", "avatar", "upvoteNum", "commentNum", "repostNum", "images", "prefix", "title", "subname",
-                    "pubtime", "refPost", "content", "replies", "highLightUrl", "identifyName", "id", "type", "identifyID",
+                    "pubtime", "refPost", "content", "highLightUrl", "identifyName", "id", "type", "identifyID",
                     "channelIdentifyID", "channelUrl", "parentID", "parentType"
                 ], "val": [
                     res.getName(),
@@ -105,8 +105,7 @@ const Post = React.memo((props) => {
                     res.getPubTime(),
                     res.getRefPost(),
                     res.getContent(),
-                    res.getPreviewReplies(),
-                    res.getHighLightUrl(),
+                    res.getHighlightUrl(),
                     res.getIdentifyName(),
                     res.getID(),
                     res.getType(),
