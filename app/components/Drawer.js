@@ -63,7 +63,7 @@ export const Drawer = (props) => {
             </View>
             {isSelecting ? userServices : <View>
                 {trendings}
-                <View style={{backgroundColor: "#dad7d7", height: 0.2}}/>
+                <View style={{backgroundColor: "#dad7d7", height: 0.3}}/>
                 <DrawerItem label={"Blocked Users"}
                             key={"BlockedUsers"}
                             onPress={() => props.navigation.push("Group", {
