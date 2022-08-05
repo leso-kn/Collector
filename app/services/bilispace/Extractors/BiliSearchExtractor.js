@@ -16,6 +16,7 @@ export class BiliSearchExtractor{
             let result = res.data.data.result
             for(let item of result){
                 item.url = "biliUserInfo"
+                item.identifyID = "biliSpace" + item.mid
             }
             result.hasMore = ()=>res.data.data.numPages !== res.data.data.page
             return result
