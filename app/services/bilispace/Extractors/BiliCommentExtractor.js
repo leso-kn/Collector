@@ -1,4 +1,4 @@
-import {commentReplyApiUrl, mobileSpaceUrl, postPageUrl} from "../BiliSpaceLinks";
+import {commentReplyApiUrl, mobileSpaceUrl} from "../BiliSpaceLinks";
 import {requestOption} from "../BiliSpaceService";
 import axios from "axios";
 
@@ -57,18 +57,6 @@ export class BiliCommentExtractor {
 
     getContent() {
         return this.data.content.message
-    }
-
-    getPreviewReplies() {
-        let result = this.data.replies || []
-        result.hasMore = () => this.data.rcount > result.length
-        result.getLastID = () => result[result.length-1].rpid_str
-        for (let item of result) {
-            item.getIdentifyID = ()=> item.rpid_str
-            item.url = undefined
-            item.getTime = () => item.ctime * 1000
-        }
-        return result
     }
 
     getID() {

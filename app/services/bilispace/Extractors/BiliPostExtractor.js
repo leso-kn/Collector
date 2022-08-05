@@ -75,7 +75,7 @@ export class BiliPostExtractor {
 
     getSubName() {
         return null
-    }
+    } postPageUrl
 
     getUpvoteNum() {
         return this.card.desc.like
@@ -173,9 +173,6 @@ export class BiliPostExtractor {
         }
     }
 
-    getPreviewReplies() {
-        return null
-    }
     async getComments(pn, sort = 1){
         return BiliPostExtractor.getCommentsImpl(pn, this.type, this.getID(), sort)
     }

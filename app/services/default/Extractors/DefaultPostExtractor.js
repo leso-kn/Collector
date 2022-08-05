@@ -72,10 +72,6 @@ export class DefaultPostExtractor {
         return this.data.identifyName
     }
 
-    getPreviewReplies() {
-        return null
-    }
-
     getType() {
         return this.data.type
     }

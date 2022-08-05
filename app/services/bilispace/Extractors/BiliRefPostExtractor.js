@@ -178,10 +178,6 @@ export class BiliRefPostExtractor {
 
     }
 
-    getPreviewReplies() {
-        return null
-    }
-
     getType() {
         return this.rawData.item.orig_type
     }

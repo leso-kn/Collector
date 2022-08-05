@@ -1,6 +1,6 @@
 import React, {useEffect, useReducer, useRef, useState} from 'react';
 import {deviceWidth, PREVIEW_POST} from "../constants";
-import {FlatList, Text, View} from "react-native";
+import {FlatList, View} from "react-native";
 import Post from "./post";
 
 export const LocalPosts = (props) => {

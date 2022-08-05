@@ -16,8 +16,6 @@ import {BiliSearchExtractor} from "./Extractors/BiliSearchExtractor";
 import {DefaultChannelInfoExtractor} from "../default/Extractors/DefaultChannelInfoExtractor";
 import {BiliRefPostExtractor} from "./Extractors/BiliRefPostExtractor";
 
-const acceptSpaceUrl = url => url.includes()
-    || new RegExp("space.bilibili.com/.*/dynamic").test(url)
 
 export const getBiliSpaceService = async (url, id, data) => {
     if (url.includes(postPageUrl)) {

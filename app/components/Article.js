@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, ScrollView, Text, TouchableOpacity, View} from "react-native";
+import {FlatList, Text, TouchableOpacity, View} from "react-native";
 import {deviceWidth} from "../constants";
 import RenderHTML from "react-native-render-html";
 import axios from "axios";

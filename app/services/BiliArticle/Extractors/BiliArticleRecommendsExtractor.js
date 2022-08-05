@@ -1,5 +1,4 @@
 import axios from "axios";
-import {requestOption} from "../../bilispace/BiliSpaceService";
 import {articlePageUrl, trendingApiUrl} from "../BiliArticleLinks";
 
 export class BiliArticleRecommendsExtractor{

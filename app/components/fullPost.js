@@ -1,6 +1,6 @@
 import Post from "./post";
 import React, {useEffect, useReducer, useRef, useState} from 'react';
-import {FlatList, Text, TouchableNativeFeedback, TouchableOpacity, View} from "react-native";
+import {FlatList, Text, TouchableOpacity, View} from "react-native";
 import {deviceWidth, FIRST_POST, HOT_FIRST, OLD_FIRST, OTHER_POST} from "../constants";
 import {findService} from "../findService";
 import AsyncStorage from "@react-native-async-storage/async-storage";

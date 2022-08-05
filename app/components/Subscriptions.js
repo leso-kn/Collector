@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, StatusBar, Text, TextInput, TouchableNativeFeedback, View} from "react-native";
+import {FlatList, Text, TextInput, TouchableNativeFeedback, View} from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Channels} from "./Channels";

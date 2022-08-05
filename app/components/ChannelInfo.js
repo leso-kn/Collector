@@ -1,4 +1,4 @@
-import React, {useEffect, useReducer, useState} from 'react';
+import React, {useEffect, useReducer} from 'react';
 import {Image, Text, TouchableNativeFeedback, View} from "react-native";
 import {findService} from "../findService";
 import {getTheme, reducer} from "../utils";
