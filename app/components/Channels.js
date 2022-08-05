@@ -34,8 +34,9 @@ export const Channels = (props) => {
     }
     return (
         <View style={{flex: 1, backgroundColor:getTheme().backgroundColor}}>
-            <FlatList data={users} renderItem={renderFunc} ListFooterComponent={(<View style={{height: 50}}/>)}
-                      keyExtractor={(item,index)=>JSON.stringify(item)+index}
+            <FlatList data={users} renderItem={renderFunc}
+                      keyExtractor={item=>item.identifyID}
+                      listKey={item=>item.identifyID}
                       onEndReached={() => {
                           refContainer.current.hasMore && setPn(pn + 1)
                       }}
