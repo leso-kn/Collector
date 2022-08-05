@@ -122,9 +122,9 @@ const ChannelInside = (props) => {
         </View>
     ) :(
         <View style={{flex: 1}}>
-            <Image source={{uri: data.headImgUrl}}
-                   style={{width: "100%", height: deviceWidth * data.headImgRatio || 0}}
-                   resizeMode={"center"}/>
+            {data.headImgUrl ? <Image source={{uri: data.headImgUrl}}
+                            style={{width: "100%", height: deviceWidth * data.headImgRatio || 0}}
+                            resizeMode={"center"}/> : <View style={{height:50}}><Text style={{textAlign:"center", marginTop:15, fontStyle:"italic"}}>No header provided</Text></View> }
             <View style={{backgroundColor: getTheme().postBackGroundColor}}>
                 <View style={{flexDirection: "row", marginLeft: 10}}>
                     <View style={{flex: 1, flexDirection: "row"}}>
