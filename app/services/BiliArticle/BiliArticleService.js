@@ -3,6 +3,7 @@ import {searchApiUrl} from "../bilispace/BiliSpaceLinks";
 import {BiliArticleRecommendsExtractor} from "./Extractors/BiliArticleRecommendsExtractor";
 import {BiliArticleExtractor} from "./Extractors/BiliArticleExtractor";
 import {BiliCommentExtractor} from "../bilispace/Extractors/BiliCommentExtractor";
+import {BiliArticleSearchExtractor} from "./Extractors/BiliArticleSearchExtractor";
 
 export const getBiliArticleService = async (url, id, data) => {
     if(url.includes(trendingApiUrl) || url.includes(recommendApiUrl)){
@@ -12,6 +13,8 @@ export const getBiliArticleService = async (url, id, data) => {
             return new BiliCommentExtractor(data)
         }
         return new BiliArticleExtractor(url, url.split(articlePageUrl)[1].split("&")[0])
+    }else if(url.includes(searchArticleApiUrl)){
+        return new BiliArticleSearchExtractor(url)
     }
     return null
 }

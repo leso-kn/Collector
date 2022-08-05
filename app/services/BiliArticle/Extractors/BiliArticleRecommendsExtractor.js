@@ -1,7 +1,6 @@
 import axios from "axios";
 import {requestOption} from "../../bilispace/BiliSpaceService";
-import {postPageUrl} from "../../bilispace/BiliSpaceLinks";
-import {articlePageUrl} from "../BiliArticleLinks";
+import {articlePageUrl, trendingApiUrl} from "../BiliArticleLinks";
 
 export class BiliArticleRecommendsExtractor{
     url
@@ -9,17 +8,18 @@ export class BiliArticleRecommendsExtractor{
         this.url = url
         return this
     }
-    getPosts(){
-        return axios.get(this.url, requestOption).then(res=>{
+    getPosts(pn){
+        return axios.get(this.url + `&pn=${pn}`).then(res=>{
             let result = res.data.data || []
-            result.hasMore = () => result.length === 20
+            result.hasMore = () => this.url.includes(trendingApiUrl)?false:result.length === 20
             result.getLastID = () => result[result.length-1].id
             for (let item of result) {
                 item.getIdentifyID = ()=> "BiliArticle" + item.id
                 item.getChannelIdentifyID = ()=>"biliSpace" + item.author.mid
-                item.url = articlePageUrl + "cv" + item.id
-                item.getTime = () => item.ctime * 1000
+                item.url = articlePageUrl + item.id
+                item.getTime = () => item.publish_time * 1000
             }
+            return result
         })
     }
 }

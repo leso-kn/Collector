@@ -60,7 +60,7 @@ export class BiliArticleExtractor{
         return shortenLargeNumber(Number(this.data.stats.view)) + " Views"
     }
     getPubTime(){
-        return this.data.publish_time
+        return this.data.publish_time * 1000
     }
     getTitle(){
         return this.data.title
