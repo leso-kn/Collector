@@ -195,6 +195,9 @@ export class BiliPostExtractor {
             case 8:
                 typeCode = 1
                 break
+            case 12:
+                typeCode = 12
+                break
             default:
                 return null
         }

@@ -3,6 +3,7 @@ import {darkTheme, themeDefault} from "./constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {Appearance} from "react-native";
 import * as BiliSpaceLinks from "./services/bilispace/BiliSpaceLinks"
+import * as BiliArticleLinks from "./services/BiliArticle/BiliArticleLinks"
 
 export function shortenLargeNumber(num, digits) {
     var units = ['k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'],
@@ -97,10 +98,14 @@ export const getBase64FromUrl = async (url) => {
 export const getScreen = (url)=>{
     const channelLinks = [BiliSpaceLinks.mobileSpaceUrl]
     const postLinks = [BiliSpaceLinks.postPageUrl, BiliSpaceLinks.mobilePostPageUrl]
+    const articleLinks = [BiliArticleLinks.articlePageUrl]
     for(let link of channelLinks){
         if(url.includes(link))return "Channel"
     }
     for(let link of postLinks){
         if(url.includes(link))return "FullPost"
+    }
+    for(let link of articleLinks){
+        if(url.includes(link))return "Article"
     }
 }

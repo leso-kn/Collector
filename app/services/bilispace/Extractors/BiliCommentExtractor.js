@@ -88,6 +88,9 @@ export class BiliCommentExtractor {
             case 8:
                 typeCode = 1
                 break
+            case 12:
+                typeCode = 12
+                break
             default:
                 typeCode = 17
         }

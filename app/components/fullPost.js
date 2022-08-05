@@ -67,8 +67,6 @@ const FullPost = (packedProps) => {
                     parentRef.current.parentType = res.getType()
                     return res.getComments(pn)
                 }).then(res => {
-                    //TODO: show loading when fetching
-                    //  alert(JSON.stringify(res.data.data.replies))
                     res?.length && dispatch({data: res, "blocklist":blocklist})
                     setHasMore(res?.hasMore())
                 })
@@ -85,6 +83,7 @@ const FullPost = (packedProps) => {
         </View>
     )
     const renderFunc = (comment) => {
+        console.log(comment.item)
         return (<Post navigation={packedProps.navigation} onLayout={e => {
             if (e.nativeEvent.layout.width !== deviceWidth) return
             let tempID = comment.item.getIdentifyID()

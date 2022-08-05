@@ -1,0 +1,6 @@
+export const searchArticleApiUrl = "https://api.bilibili.com/x/web-interface/search/type?search_type=article&keyword="
+export const recommendApiUrl = "https://api.bilibili.com/x/article/recommends?ps=20&sort=0&cid="
+export const trendingApiUrl = "https://api.bilibili.com/x/article/rank/list?cid="
+export const articlePageUrl = "https://www.bilibili.com/read/cv"
+export const viewInfoApiUrl = "https://api.bilibili.com/x/article/viewinfo?id="
+export const channelInfoApiUrl = "https://api.bilibili.com/x/web-interface/card?article=true&mid="

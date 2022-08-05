@@ -38,6 +38,9 @@
               <data
                       android:host="m.bilibili.com"
                       android:pathPrefix="/dynamic"/>
+              <data
+                      android:host="www.bilibili.com"
+                      android:pathPrefix="/read/"/>
           </intent-filter>
       </activity>
     </application>
