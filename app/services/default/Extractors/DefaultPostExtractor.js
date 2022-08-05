@@ -64,7 +64,7 @@ export class DefaultPostExtractor {
         return this.data.content
     }
 
-    getHighLightUrl() {
+    getHighlightUrl() {
         return this.data.highLightUrl
     }
 

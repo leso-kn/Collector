@@ -211,7 +211,7 @@ export class BiliPostExtractor {
             return result
         })
     }
-    getHighLightUrl(){
+    getHighlightUrl(){
         switch (this.type){
             case 8:
                 return this.contentCard.jump_url.replace("bilibili://video/", "https://www.bilibili.com/video/av").split("/?")[0]

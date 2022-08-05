@@ -107,7 +107,7 @@ export class BiliCommentExtractor {
             return result
         })
     }
-    getHighLightUrl(){
+    getHighlightUrl(){
         return ""
     }
     getIdentifyName(){

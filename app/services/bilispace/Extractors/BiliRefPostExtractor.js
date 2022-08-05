@@ -153,7 +153,7 @@ export class BiliRefPostExtractor {
         }
     }
 
-    getHighLightUrl() {
+    getHighlightUrl() {
         switch (this.type) {
             case 8:
                 return this.data.short_link
