@@ -15,13 +15,13 @@ export const Drawer = (props) => {
     const [selectedService, setSelectedService] = useState("biliSpace");
     const [isSelecting, setIsSelecting] = useState(false)
     const userServicesData = useRef([])
-    const trendingUrls = useRef([])
+    const [trendingUrls, setTrendingUrls] = useState([])
     useEffect(() => {
         getUserServices().then(res => userServicesData.current = res)
-        getCurrentServiceUrls().then(res => res.getTrendingUrls()).then(res => trendingUrls.current = res)
-    }, [])
+        getCurrentServiceUrls().then(res => res.getTrendingUrls()).then(res => setTrendingUrls(res))
+    }, [selectedService])
     let trendings = [], userServices = []
-    for (let item of trendingUrls.current) {
+    for (let item of trendingUrls) {
         trendings.push(<DrawerItem
             label={item.label}
             key={item.label}
