@@ -59,11 +59,15 @@ export const Search = ({navigation}) => {
         const renderScene = ({route}) => {
             switch (route.key) {
                 case 'users':
-                    return <Channels url={getCurrentServiceUrl().getSearchUrl(searchWord)}
+                    return <Channels url={getCurrentServiceUrl().getSearchChannelUrl(searchWord)}
                                      navigation={props.navigation}/>
                 case "posts":
+                    let parsedSearchWord = searchWord.split("@")
+                    if(parsedSearchWord.length === 1){
+                        parsedSearchWord = ["", parsedSearchWord[0]]
+                    }
                     return <Posts navigation={props.navigation}
-                                  urls={[getCurrentServiceUrl().getSearchPostUrl(searchWord.split("@")[0], searchWord.split("@")[1])]}/>
+                                  urls={[getCurrentServiceUrl().getSearchPostUrl(parsedSearchWord[0], parsedSearchWord[1])]}/>
             }
         };
 

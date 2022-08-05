@@ -56,7 +56,7 @@ export const requestOption = {
 export const BiliHeadImgHeightPercentage = 1 / 6.4
 
 export const serviceUrl = {
-    getSearchUrl:(query)=>searchApiUrl + `${query}&page=0`,
+    getSearchChannelUrl:(query)=>searchApiUrl + `${query}&page=0`,
     getTrendingUrls: ()=>[{label:"Trending", url: trendingApiUrl.replace("1093762", Math.floor(Math.random() * 1000000 + 500000))}],
     getSearchPostUrl: (user, query)=> {
         return searchPostApiUrl + user + `&keyword=${query}`
