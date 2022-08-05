@@ -31,7 +31,7 @@ export const getBiliSpaceService = async (url, id, data) => {
     } else if(url.includes(mobilePostPageUrl)){
         id = url.split(mobilePostPageUrl)[1].split("?")[0]
         return new BiliPostExtractor(postApiUrl + id, id, data);
-    }else if(url.includes("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/unlogin_dynamics?")){
+    }else if(url.includes(trendingApiUrl)){
         return new BiliChannelExtractor(url)
     } else if (url.includes(mobileSpaceUrl)) {
         if(data)return new DefaultChannelInfoExtractor(data)
@@ -56,7 +56,7 @@ export const requestOption = {
 
 export const serviceUrls = {
     getSearchChannelUrl:(query)=>searchApiUrl + `${query}&page=0`,
-    getTrendingUrls: ()=>[{label:"Trending", url: trendingApiUrl.replace("1093762", Math.floor(Math.random() * 1000000 + 500000))}],
+    getTrendingUrls: ()=>[{label:"Trending", url: trendingApiUrl +  Math.floor(Math.random() * 1000000 + 500000)}],
     getSearchPostUrl: (user, query)=> {
         return searchPostApiUrl + user + `&keyword=${query}`
     }
