@@ -37,7 +37,7 @@ export class BiliPostExtractor {
             this.type = this.card.desc.type
             this.contentCard = JSON.parse(this.card.card)
             if (this.type === 1) {
-                this.forwardCard = JSON.parse(this.contentCard.origin)
+                this.forwardCard = this.contentCard.origin && JSON.parse(this.contentCard.origin)
             }
             return this
         }
@@ -46,7 +46,7 @@ export class BiliPostExtractor {
             this.type = this.card.desc.type
             this.contentCard = JSON.parse(this.card.card)
             if (this.type === 1) {
-                this.forwardCard = JSON.parse(this.contentCard.origin)
+                this.forwardCard = this.contentCard.origin && JSON.parse(this.contentCard.origin)
             }
             return this
         }))() // https://stackoverflow.com/a/50885340
@@ -102,6 +102,8 @@ export class BiliPostExtractor {
         //TODO: embedded emojis, @ to user
         switch (this.type) {
             case 1:
+                if(!this.forwardCard)
+                    return this.contentCard.item.content + "\n\n(The origin resource is unavailable)"
             case 4:
                 return this.contentCard.item.content
             case 2:
@@ -147,6 +149,7 @@ export class BiliPostExtractor {
     getRefPost() {
         switch (this.type) {
             case 1:
+                if(!this.forwardCard)return null
                 let returnCard = {...this.contentCard}
                 returnCard.url = postPageUrl + this.card.desc.orig_dy_id_str
                 returnCard.type = this.card.desc.origin.type
