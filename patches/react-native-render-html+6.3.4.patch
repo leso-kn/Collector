@@ -1,0 +1,21 @@
+diff --git a/node_modules/react-native-render-html/src/elements/IMGElementContentSuccess.tsx b/node_modules/react-native-render-html/src/elements/IMGElementContentSuccess.tsx
+index 6fa6db4..deb0f8b 100644
+--- a/node_modules/react-native-render-html/src/elements/IMGElementContentSuccess.tsx
++++ b/node_modules/react-native-render-html/src/elements/IMGElementContentSuccess.tsx
+@@ -6,6 +6,7 @@ import {
+   NativeSyntheticEvent
+ } from 'react-native';
+ import { IMGElementStateSuccess } from './img-types';
++import FastImage from "react-native-fast-image";
+ 
+ const defaultImageStyle: ImageStyle = { resizeMode: 'cover' };
+ 
+@@ -24,7 +25,7 @@ export default function IMGElementContentSuccess({
+     [onError]
+   );
+   return (
+-    <Image
++    <FastImage
+       source={source}
+       onError={onImageError}
+       style={[defaultImageStyle, dimensions, imageStyle]}

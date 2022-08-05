@@ -1,12 +1,13 @@
 diff --git a/node_modules/@flyerhq/react-native-link-preview/lib/LinkPreview.js b/node_modules/@flyerhq/react-native-link-preview/lib/LinkPreview.js
-index 7ab00a6..667efe3 100644
+index 7ab00a6..b85aa67 100644
 --- a/node_modules/@flyerhq/react-native-link-preview/lib/LinkPreview.js
 +++ b/node_modules/@flyerhq/react-native-link-preview/lib/LinkPreview.js
-@@ -1,12 +1,48 @@
+@@ -1,12 +1,49 @@
  import * as React from 'react';
  import { Image, LayoutAnimation, Linking, StyleSheet, Text, TouchableWithoutFeedback, View, } from 'react-native';
  import { getPreviewData, oneOf } from './utils';
 -export const LinkPreview = React.memo(({ containerStyle, enableAnimation, header, metadataContainerStyle, metadataTextContainerStyle, onPreviewDataFetched, previewData, renderDescription, renderHeader, renderImage, renderLinkPreview, renderMinimizedImage, renderText, renderTitle, requestTimeout = 5000, text, textContainerStyle, touchableWithoutFeedbackProps, }) => {
++import FastImage from "react-native-fast-image";
 +export const LinkPreview = React.memo(({ containerStyle, enableAnimation, header, isDarkTheme, metadataContainerStyle, metadataTextContainerStyle, onPreviewDataFetched, previewData, renderDescription, renderHeader, renderImage, renderLinkPreview, renderMinimizedImage, renderText, renderTitle, requestTimeout = 5000, text, textContainerStyle, touchableWithoutFeedbackProps, }) => {
      const [containerWidth, setContainerWidth] = React.useState(0);
      const [data, setData] = React.useState(previewData);
@@ -52,9 +53,12 @@ index 7ab00a6..667efe3 100644
      React.useEffect(() => {
          let isCancelled = false;
          if (previewData) {
-@@ -57,16 +93,11 @@ export const LinkPreview = React.memo(({ containerStyle, enableAnimation, header
+@@ -55,18 +92,13 @@ export const LinkPreview = React.memo(({ containerStyle, enableAnimation, header
+         // aspectRatio shouldn't be undefined, just an additional check
+         /* istanbul ignore next */
          const ar = aspectRatio !== null && aspectRatio !== void 0 ? aspectRatio : 1;
-         return oneOf(renderImage, React.createElement(Image, { accessibilityRole: 'image', resizeMode: 'contain', source: { uri: image.url }, style: StyleSheet.flatten([
+-        return oneOf(renderImage, React.createElement(Image, { accessibilityRole: 'image', resizeMode: 'contain', source: { uri: image.url }, style: StyleSheet.flatten([
++        return oneOf(renderImage, React.createElement(FastImage, { accessibilityRole: 'image', resizeMode: 'contain', source: { uri: image.url }, style: StyleSheet.flatten([
                  styles.image,
 -                ar < 1
 -                    ? {
@@ -71,7 +75,7 @@ index 7ab00a6..667efe3 100644
                      },
              ]) }))(image);
      };
-@@ -77,7 +108,7 @@ export const LinkPreview = React.memo(({ containerStyle, enableAnimation, header
+@@ -77,7 +109,7 @@ export const LinkPreview = React.memo(({ containerStyle, enableAnimation, header
                      textContainerStyle,
                  ]) },
                  renderHeaderNode(),
@@ -80,7 +84,7 @@ index 7ab00a6..667efe3 100644
                  ((data === null || data === void 0 ? void 0 : data.description) ||
                      ((data === null || data === void 0 ? void 0 : data.image) &&
                          aspectRatio === 1 &&
-@@ -108,41 +139,10 @@ export const LinkPreview = React.memo(({ containerStyle, enableAnimation, header
+@@ -108,41 +140,10 @@ export const LinkPreview = React.memo(({ containerStyle, enableAnimation, header
      };
      const renderTextNode = () => oneOf(renderText, React.createElement(Text, null, text))(text);
      const renderTitleNode = (title) => {
