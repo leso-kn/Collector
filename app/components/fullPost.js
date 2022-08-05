@@ -83,7 +83,6 @@ const FullPost = (packedProps) => {
         </View>
     )
     const renderFunc = (comment) => {
-        console.log(comment.item)
         return (<Post navigation={packedProps.navigation} onLayout={e => {
             if (e.nativeEvent.layout.width !== deviceWidth) return
             let tempID = comment.item.getIdentifyID()
