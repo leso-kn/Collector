@@ -53,7 +53,6 @@ export const requestOption = {
     "Referer":"https://t.bilibili.com/",
     'User-Agent': "Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0"
 }
-export const BiliHeadImgHeightPercentage = 1 / 6.4
 
 export const serviceUrl = {
     getSearchChannelUrl:(query)=>searchApiUrl + `${query}&page=0`,
