@@ -48,8 +48,10 @@ export const getBiliSpaceService = async (url, id, data) => {
     return null;
 }
 export const requestOption = {
-    "Referer":"https://t.bilibili.com/",
-    'User-Agent': "Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0"
+    headers: {
+        "Referer": "https://t.bilibili.com/",
+        'User-Agent': "Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0"
+    }
 }
 
 export const serviceUrls = {
