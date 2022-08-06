@@ -11,7 +11,7 @@ export class BiliSearchExtractor{
             return this
         })() // https://stackoverflow.com/a/50885340
     }
-    async getResults(pn){
+    async getChannels(pn){
         return await axios.get(this.url.replace("page=0", `page=${pn}`), requestOption).then(res => {
             let result = res.data.data.result
             for(let item of result){
@@ -19,6 +19,7 @@ export class BiliSearchExtractor{
                 item.identifyID = "biliSpace" + item.mid
             }
             result.hasMore = ()=>res.data.data.numPages !== res.data.data.page
+            result.getLastID = ()=>""
             return result
         })
     }

@@ -48,9 +48,10 @@ const FullPost = (packedProps) => {
                     )
                 })
                 findService(props.url, props.id, props.data)
-                    .then(res => res.getReplies(pn, props.parentID, props.parentType)).then((res) => {
+                    .then(res => res.getReplies(pn, props.parentID, props.parentType, lastID.current)).then((res) => {
                     res?.length && dispatch({data: res, "blocklist":blocklist})
                     setHasMore(res?.hasMore())
+                    lastID.current = res.getLastID()
                 })
             } else if (props.type === "reposts") {
                 packedProps.navigation.setOptions({
@@ -65,10 +66,11 @@ const FullPost = (packedProps) => {
                 findService(props.url, props.id, props.data).then(res => {
                     parentRef.current.parentID = res.getID()
                     parentRef.current.parentType = res.getType()
-                    return res.getComments(pn)
+                    return res.getComments(pn, lastID.current)
                 }).then(res => {
                     res?.length && dispatch({data: res, "blocklist":blocklist})
                     setHasMore(res?.hasMore())
+                    lastID.current = res.getLastID()
                 })
             }
         })
