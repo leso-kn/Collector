@@ -1,6 +1,6 @@
 import axios from "axios";
 import {getFullTweetApiUrl, twitterUserPageUrl} from "../TwitterLinks";
-import {defaultParams, getToken, handleResult} from "../TwitterService";
+import {defaultParams, getLastID, getToken, handleResult} from "../TwitterService";
 
 export class TwitterPostExtractor{
     data
@@ -94,16 +94,21 @@ export class TwitterPostExtractor{
         return this.getServicePrefix() + this.getID()
     }
     getParentID(){
-        return null
+        return this.tweetData.in_reply_to_status_id_str
     }
     getParentType(){
         return null
     }
+    async getReplies(pn, lastID){
+        return TwitterPostExtractor.getCommentsImpl(this.getID(), this.getParentID(), lastID)
+    }
     async getComments(pn, lastID){
-        if(this.comments){
-            return handleResult(this.comments, undefined, "getComments", [this.getID()])
+        if(this.comments && !lastID){
+            let temp = this.comments
+            this.comments = null
+            return handleResult(temp, undefined, "getComments", [this.getID()])
         }
-        return TwitterPostExtractor.getCommentsImpl(this.getID(), lastID)
+        return TwitterPostExtractor.getCommentsImpl(this.getID(), this.getParentID(), lastID)
     }
     static async getCommentsImpl(ID, parentID, lastID){
         let requestParams = {
@@ -112,12 +117,24 @@ export class TwitterPostExtractor{
             'include_want_retweets': '1',
             cursor:lastID
         };
-        console.log(lastID)
+        let newLastID, token
         return getToken()
             .then(res=> {
+                token = res
                return axios.get(getFullTweetApiUrl+ ID + ".json", {headers: res,  params:requestParams})
             })
-            .then(res=>handleResult(res, undefined, "getComments", parentID?[ID, parentID]:[ID]))
+            .then(res=> {
+                newLastID = getLastID(res)
+                return handleResult(res, undefined, "getComments", parentID ? [ID, parentID] : [ID])
+            })
+            .then(res=>{
+                if(!lastID && !res.length && newLastID){
+                    requestParams.cursor = newLastID
+                    return axios.get(getFullTweetApiUrl+ ID + ".json", {headers: token,  params:requestParams})
+                        .then(res=>handleResult(res, undefined, "getComments", parentID ? [ID, parentID] : [ID]))
+                }
+                return res
+            })
     }
     getReposts(){
         return null

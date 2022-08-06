@@ -56,18 +56,20 @@ export const serviceUrls = {
     getSearchPostUrl:(user, query)=>searchTweetApiUrl + query,
     getSearchChannelUrl: (query)=>searchTweetApiUrl + query
 }
-
-export const handleResult = (res, userID, type, postIDs)=>{
-    let result = res.data.globalObjects
-    let returnArray = []
+export const getLastID = res=>{
     let temp
     for(let item of res.data.timeline.instructions){
         if(item.addEntries){
             temp = item.addEntries.entries
         }
     }
+    return temp[temp.length-1].content.operation?.cursor?.value
+}
+export const handleResult = (res, userID, type, postIDs)=>{
+    let result = res.data.globalObjects
+    let returnArray = []
     returnArray.hasMore = () => true
-    returnArray.getLastID = () => temp[temp.length-1].content.operation?.cursor?.value
+    returnArray.getLastID = () => getLastID(res)
     for (let key in result.tweets) {
         let item = result.tweets[key]
         if(type ==="userOnly" && item.user_id_str !== userID)continue
@@ -77,7 +79,9 @@ export const handleResult = (res, userID, type, postIDs)=>{
             userData: result.users[item.user_id_str],
             getIdentifyID: ()=> "Twitter" + item.id_str,
             getChannelIdentifyID: ()=>"Twitter" +item.user_id_str,
-            url:twitterUserPageUrl + result.users[item.user_id_str].screen_name + "/status/" + item.id_str,
+            url:item.in_reply_to_status_id_str?
+                twitterUserPageUrl + item.in_reply_to_screen_name + "/status/" + item.in_reply_to_status_id_str :
+                twitterUserPageUrl + result.users[item.user_id_str].screen_name + "/status/" + item.id_str,
             getTime: () => item.created_at
         })
     }
