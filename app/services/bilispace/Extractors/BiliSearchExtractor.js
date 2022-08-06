@@ -29,7 +29,7 @@ export class BiliSearchExtractor{
             return axios.get(this.url.replace(channelName, res.data.data.result[0].mid) + `&pn=${pn}`)
         }).then(res=>{
             let result = res.data.data.cards || []
-            result.hasMore = () => res.data.data.has_more
+            result.hasMore = () => true
             result.getLastID = () => res.data.data.cards[res.data.data.cards.length - 1].desc.dynamic_id_str
             for (let item of result) {
                 item.getIdentifyID = ()=> "biliSpace" + item.desc.dynamic_id_str
