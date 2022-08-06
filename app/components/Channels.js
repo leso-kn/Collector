@@ -18,10 +18,11 @@ export const Channels = (props) => {
     const refContainer = useRef({})
     useEffect(() => {
         !props.data && findService(props.url).then(res=> {
-            return res.getResults(pn)
+            return res.getChannels(pn, refContainer.current.lastID)
         }).then(res => {
             res?.length && dispatch({data: res})
             refContainer.current.hasMore = res.hasMore()
+            refContainer.current.lastID = res.getLastID()
         })
     }, [pn])
 
