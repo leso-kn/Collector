@@ -105,8 +105,6 @@ export const Search = ({navigation}) => {
     }
     useEffect(() => navigation.setOptions({headerTitle: SearchInside}), [])
     return (
-        <FlatList data={[1]}
-                  renderItem={(prop) => <SearchResult navigation={navigation}/>}/>
-
+        <SearchResult navigation={navigation}/>
     )
 }
