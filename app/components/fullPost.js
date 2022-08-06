@@ -15,7 +15,7 @@ const FullPost = (packedProps) => {
         // console.log(JSON.stringify(action.data.map(x=>x.member.uname+" " +x.content.message)) + "action" + action.data.length)
         let result = [...state]
         for (let item of action.data) {
-            if (result.map(x => x.getIdentifyID()).includes(item.getIdentifyID()) || action.blocklist.filter(x=>x.identifyID === item.getChannelIdentifyID()).length) continue
+            if (result.map(x => x.getIdentifyID()).includes(item.getIdentifyID()) || action?.blocklist.filter(x=>x.identifyID === item.getChannelIdentifyID()).length) continue
             result.push(item)
         }
         return result
