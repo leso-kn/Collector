@@ -67,7 +67,7 @@ export class TwitterUserExtractor {
         let userID = this.data.id_str
         return getToken().then(res=>
             axios.get(getUserTwitterApiUrl + this.data.id_str + ".json", {params:requestParams, headers: res}))
-            .then(res=>handleResult(res, userID))
+            .then(res=>handleResult(res, userID, "userOnly"))
     }
 
     getUrl() {

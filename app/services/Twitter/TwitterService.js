@@ -57,7 +57,7 @@ export const serviceUrls = {
     getSearchChannelUrl: (query)=>searchTweetApiUrl + query
 }
 
-export const handleResult = (res, userID)=>{
+export const handleResult = (res, userID, type, postIDs)=>{
     let result = res.data.globalObjects
     let returnArray = []
     let temp
@@ -67,10 +67,11 @@ export const handleResult = (res, userID)=>{
         }
     }
     returnArray.hasMore = () => true
-    returnArray.getLastID = () => temp[temp.length-1].content.operation.cursor.value
+    returnArray.getLastID = () => temp[temp.length-1].content.operation?.cursor?.value
     for (let key in result.tweets) {
         let item = result.tweets[key]
-        if(userID && item.user_id_str !== userID)continue
+        if(type ==="userOnly" && item.user_id_str !== userID)continue
+        if(type === "getComments" && postIDs.includes(item.id_str))continue
         returnArray.push({
             tweetData:item,
             userData: result.users[item.user_id_str],
