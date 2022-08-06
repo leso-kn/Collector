@@ -8,7 +8,10 @@ import {getTheme} from "../utils";
 
 const reducer = (state, action) => {
     let result = [...state]
-    for (let item of action.data) {
+    let tempData = [...action.data]
+    if (action.sort)
+        tempData = tempData.sort((a, b) => new Date(a.getTime()) < new Date(b.getTime()))
+    for (let item of tempData) {
         if (result.map(x => x.getIdentifyID()).includes(item.getIdentifyID()) || action.blocklist.filter(x=>x.identifyID === item.getChannelIdentifyID()).length) continue
         result.push(item)
     }
