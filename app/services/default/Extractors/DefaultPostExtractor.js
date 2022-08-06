@@ -1,6 +1,7 @@
 import {BiliPostExtractor} from "../../bilispace/Extractors/BiliPostExtractor";
 import {BiliCommentExtractor} from "../../bilispace/Extractors/BiliCommentExtractor";
 import {postPageUrl} from "../../bilispace/BiliSpaceLinks";
+import {TwitterPostExtractor} from "../../Twitter/Extractors/TwitterPostExtractor";
 
 export class DefaultPostExtractor {
     data
@@ -77,9 +78,12 @@ export class DefaultPostExtractor {
         return this.data.type
     }
 
-    async getComments(pn, sort = 1) {
+    async getComments(pn, lastID, sort = 1) {
         if(this.url.includes(postPageUrl)){
             return await BiliPostExtractor.getCommentsImpl(pn, this.getType(), this.getID(), sort)
+        }
+        if(new RegExp("https://twitter.com/.*/status/.*").test(this.url)){
+            return await TwitterPostExtractor.getCommentsImpl(this.getID(), lastID)
         }
     }
 
