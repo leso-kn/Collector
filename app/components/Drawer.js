@@ -3,6 +3,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {DrawerContentScrollView, DrawerItem} from "@react-navigation/drawer";
 import {Image, Text, TouchableWithoutFeedback, View} from "react-native";
 import {
+    getCurrentService,
     getCurrentServiceIcon,
     getCurrentServiceUrls,
     getTheme,
@@ -12,11 +13,12 @@ import {
 import AntDesign from "react-native-vector-icons/AntDesign";
 
 export const Drawer = (props) => {
-    const [selectedService, setSelectedService] = useState("biliSpace");
+    const [selectedService, setSelectedService] = useState("Twitter");
     const [isSelecting, setIsSelecting] = useState(false)
     const userServicesData = useRef([])
     const [trendingUrls, setTrendingUrls] = useState([])
     useEffect(() => {
+        getCurrentService().then(res=>setSelectedService(res))
         getUserServices().then(res => userServicesData.current = res)
         getCurrentServiceUrls().then(res => res.getTrendingUrls()).then(res => setTrendingUrls(res))
     }, [selectedService])
