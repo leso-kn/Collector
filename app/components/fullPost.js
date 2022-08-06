@@ -9,7 +9,7 @@ import {getTheme} from "../utils";
 const FullPost = (packedProps) => {
     let props = packedProps.route.params
     const parentRef = useRef({IDList: []});
-    const lastID = useRef(0)
+    const lastID = useRef()
     const reducer = (state, action) => {
         // console.log(JSON.stringify(state.map(x=>x.member.uname+" " +x.content.message)) + "state"+ state.length)
         // console.log(JSON.stringify(action.data.map(x=>x.member.uname+" " +x.content.message)) + "action" + action.data.length)
