@@ -13,7 +13,7 @@ const reducer = (state, action) => {
         result.push(item)
     }
     if (action.sort)
-        result = result.sort((a, b) => a.getTime() < b.getTime())
+        result = result.sort((a, b) => new Date(a.getTime()) < new Date(b.getTime()))
     return result
 }
 export const Posts = React.memo((props) => {
@@ -66,11 +66,11 @@ export const Posts = React.memo((props) => {
                     if (requestStatus.current.expect === requestStatus.current.get) {
                         requestStatus.current = {expect: 0, get: 0}
                         let lastTime = Math.max(...Object.entries(tempResultPool.current).map(x => {
-                            return x[1][x[1].length - 1].getTime()
+                            return new Date(x[1][x[1].length - 1].getTime())
                         }))
                         for (let item in tempResultPool.current) {
                             for (let i = 0; i < tempResultPool.current[item].length; i++) {
-                                if (tempResultPool.current[item][i].getTime() >= lastTime || !props.sort) {
+                                if (new Date(tempResultPool.current[item][i].getTime()) >= lastTime || !props.sort) {
                                     tempResultQueue.current.push(tempResultPool.current[item][i])
                                 } else {
                                     tempResultPool.current[item] = tempResultPool.current[item].slice(i)

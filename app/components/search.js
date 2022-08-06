@@ -62,7 +62,7 @@ export const Search = ({navigation}) => {
         const renderScene = ({route}) => {
             switch (route.key) {
                 case 'users':
-                    return serviceUrls?<Channels url={ serviceUrls.getSearchChannelUrl(searchWord)}
+                    return serviceUrls?<Channels url={serviceUrls.getSearchChannelUrl(searchWord)}
                                      navigation={props.navigation}/>:null
                 case "posts":
                     let parsedSearchWord = searchWord.split("@")
