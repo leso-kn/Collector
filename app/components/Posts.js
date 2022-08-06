@@ -87,7 +87,7 @@ export const Posts = React.memo((props) => {
                         tempResultQueue.current.length && dispatch({data: tempResultQueue.current, sort: props.sort, "blocklist":blocklist})
                         tempResultQueue.current = []
                     }
-                    refContainer.current.hasMores[index] = res.hasMore()
+                    refContainer.current.hasMores[index] = res.hasMore() && res.length
                     refContainer.current.hasMores[index] && (refContainer.current.lastIDs[index] = res.getLastID())
                 })
             }
@@ -120,6 +120,7 @@ export const Posts = React.memo((props) => {
                       keyExtractor={(item, index) => {
                           return item.getIdentifyID()
                       }}
+                      listKey={item=>item.getIdentifyID()}
                       onEndReached={() => {
                           setPn(pn + 1)
                       }}
