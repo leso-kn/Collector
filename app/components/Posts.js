@@ -12,8 +12,6 @@ const reducer = (state, action) => {
         if (result.map(x => x.getIdentifyID()).includes(item.getIdentifyID()) || action.blocklist.filter(x=>x.identifyID === item.getChannelIdentifyID()).length) continue
         result.push(item)
     }
-    if (action.sort)
-        result = result.sort((a, b) => new Date(a.getTime()) < new Date(b.getTime()))
     return result
 }
 export const Posts = React.memo((props) => {
