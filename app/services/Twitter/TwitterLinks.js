@@ -1,0 +1,6 @@
+export const searchTweetApiUrl = "https://api.twitter.com/2/search/adaptive.json"
+export const getTokenUrl = "https://api.twitter.com/1.1/guest/activate.json"
+export const twitterUserPageUrl = "https://twitter.com/"
+export const getUserInfoUrl = "https://api.twitter.com/1.1/users/lookup.json"
+export const getUserTwitterApiUrl = "https://api.twitter.com/2/timeline/profile/"
+export const getFullTweetApiUrl = "https://api.twitter.com/2/timeline/conversation/"
