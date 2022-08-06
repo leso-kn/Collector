@@ -210,7 +210,7 @@ const Post = React.memo((props) => {
                 <View style={rootStyle} onLayout={props.onLayout}>
                     <View style={{flexDirection: "row", marginTop: 10, marginLeft: 10, marginBottom: -5}}>
                         <TouchableOpacity onPress={() => {
-                            props.navigation.push("Channel", {url: mobileSpaceUrl + data.identifyName})
+                            props.navigation.push("Channel", {url: data.channelUrl})
                         }}>
                             <Image source={{uri: data.avatar}}
                                    style={{
