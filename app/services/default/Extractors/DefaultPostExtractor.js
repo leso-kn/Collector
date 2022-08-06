@@ -1,5 +1,6 @@
 import {BiliPostExtractor} from "../../bilispace/Extractors/BiliPostExtractor";
 import {BiliCommentExtractor} from "../../bilispace/Extractors/BiliCommentExtractor";
+import {postPageUrl} from "../../bilispace/BiliSpaceLinks";
 
 export class DefaultPostExtractor {
     data
@@ -77,16 +78,22 @@ export class DefaultPostExtractor {
     }
 
     async getComments(pn, sort = 1) {
-        return await BiliPostExtractor.getCommentsImpl(pn, this.getType(), this.getID(), sort)
+        if(this.url.includes(postPageUrl)){
+            return await BiliPostExtractor.getCommentsImpl(pn, this.getType(), this.getID(), sort)
+        }
     }
 
     async getReplies(pn, parentID, parentType) {
         if(parentID === "biliComment")return null
-        return await BiliCommentExtractor.getRepliesImpl(pn, parentID, parentType, this.getID())
+        if(this.url.includes(postPageUrl)){
+            return await BiliCommentExtractor.getRepliesImpl(pn, parentID, parentType, this.getID())
+        }
     }
 
     async getReposts(lastID){
-        return BiliPostExtractor.getRepostsImpl(lastID, this.url.split(".com/")[1])
+        if(this.url.includes(postPageUrl)) {
+            return BiliPostExtractor.getRepostsImpl(lastID, this.url.split(".com/")[1])
+        }
     }
 
     getIdentifyID() {
