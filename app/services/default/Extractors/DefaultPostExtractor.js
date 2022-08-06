@@ -83,14 +83,17 @@ export class DefaultPostExtractor {
             return await BiliPostExtractor.getCommentsImpl(pn, this.getType(), this.getID(), sort)
         }
         if(new RegExp("https://twitter.com/.*/status/.*").test(this.url)){
-            return await TwitterPostExtractor.getCommentsImpl(this.getID(), lastID)
+            return await TwitterPostExtractor.getCommentsImpl(this.getID(),undefined, lastID)
         }
     }
 
-    async getReplies(pn, parentID, parentType) {
+    async getReplies(pn, parentID, parentType, lastID) {
         if(parentID === "biliComment")return null
         if(this.url.includes(postPageUrl)){
             return await BiliCommentExtractor.getRepliesImpl(pn, parentID, parentType, this.getID())
+        }
+        if(new RegExp("https://twitter.com/.*/status/.*").test(this.url)){
+            return await TwitterPostExtractor.getCommentsImpl(this.getID(),parentID, lastID)
         }
     }
 
