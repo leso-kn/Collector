@@ -150,44 +150,6 @@ const Post = React.memo((props) => {
         return () => mounted3.current = false
     }, [data, dialogVisible1, dialogVisible2])
 
-    const imagePreview = (
-        <TouchableWithoutFeedback onPress={() => {
-            setIsVisible(true)
-        }}>
-            <View>
-                <FastImage
-                    style={{
-                        height: 200,
-                        width: "90%",
-                        marginLeft: 16,
-                        marginTop: 10,
-                        borderRadius: 10,
-                        marginBottom: 0
-                    }}
-                    source={{
-                        uri: data.images && data.images[0].uri,
-                        priority: FastImage.priority.normal,
-                    }}
-                    resizeMode={props.type === FIRST_POST ? FastImage.resizeMode.center : FastImage.resizeMode.cover}
-                />
-                {data.images?.length > 1 ?
-                    <View style={{
-                        position: "absolute",
-                        left: 30,
-                        top: 22,
-                        borderRadius: 12,
-                        width: 24,
-                        height: 24,
-                        alignItems: "center",
-                        justifyContent: "center",
-                        backgroundColor: "black"
-                    }}>
-                        <MaterialIcons name={"photo-library"} size={18} color={"white"}/>
-                    </View> : null}
-            </View>
-        </TouchableWithoutFeedback>
-    )
-
     const rootStyle = {
         backgroundColor:getTheme().postBackGroundColor,
         borderRadius: 0,
@@ -275,7 +237,44 @@ const Post = React.memo((props) => {
                                 </Text>
                             </Pressable> : null}
 
-                        {data.images ? imagePreview : null}
+                        {data.images?.length ? (
+                            <TouchableWithoutFeedback onPress={() => {
+                                setIsVisible(true)
+                            }}>
+                                <View>
+                                    <FastImage
+                                        style={{
+                                            height: 200,
+                                            width: "90%",
+                                            marginLeft: 16,
+                                            marginTop: 10,
+                                            borderRadius: 10,
+                                            marginBottom: 0
+                                        }}
+                                        source={{
+                                            uri: data.images && data.images[0].uri,
+                                            priority: FastImage.priority.normal,
+                                        }}
+                                        resizeMode={props.type === FIRST_POST ? FastImage.resizeMode.center : FastImage.resizeMode.cover}
+                                    />
+                                    {data.images?.length > 1 ?
+                                        <View style={{
+                                            position: "absolute",
+                                            left: 30,
+                                            top: 22,
+                                            borderRadius: 12,
+                                            width: 24,
+                                            height: 24,
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            backgroundColor: "black"
+                                        }}>
+                                            <MaterialIcons name={"photo-library"} size={18} color={"white"}/>
+                                        </View> : null}
+                                </View>
+                            </TouchableWithoutFeedback>
+                        ) : null}
+                        {data.video? <Video source={{uri:data.video}}/>:null}
                         {props.type !== OTHER_POST && data.refPost ? (
                             <TouchableOpacity onPress={() => (props.navigation.push("FullPost", {
                                 url: data.refPost?.url,
