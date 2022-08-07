@@ -5,6 +5,7 @@
 <img src="https://img.shields.io/github/search/InfinityLoop1309/Collector/Collector" />
 <img src="https://img.shields.io/github/downloads/InfinityLoop1309/Collector/totalr"/>
 <img src="https://img.shields.io/github/commit-activity/m/InfinityLoop1309/Collector"/>
+<img src="https://img.shields.io/tokei/lines/github/InfinityLoop1309/Collector"/>
 </div>
 
 ## Features
