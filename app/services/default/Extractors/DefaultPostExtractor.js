@@ -3,6 +3,7 @@ import {BiliCommentExtractor} from "../../bilispace/Extractors/BiliCommentExtrac
 import {postPageUrl} from "../../bilispace/BiliSpaceLinks";
 import {TwitterPostExtractor} from "../../Twitter/Extractors/TwitterPostExtractor";
 import {tweetPageRegexUrl} from "../../Twitter/TwitterLinks";
+import {articlePageUrl} from "../../BiliArticle/BiliArticleLinks";
 
 export class DefaultPostExtractor {
     data
@@ -84,7 +85,7 @@ export class DefaultPostExtractor {
     }
 
     async getComments(pn, lastID, sort = 1) {
-        if(this.url.includes(postPageUrl)){
+        if(this.url.includes(postPageUrl) || this.url.includes(articlePageUrl)){
             return await BiliPostExtractor.getCommentsImpl(pn, this.getType(), this.getID(), sort)
         }
         if(tweetPageRegexUrl.test(this.url)){
@@ -94,7 +95,7 @@ export class DefaultPostExtractor {
 
     async getReplies(pn, parentID, parentType, lastID) {
         if(parentID === "biliComment")return null
-        if(this.url.includes(postPageUrl)){
+        if(this.url.includes(postPageUrl) || this.url.includes(articlePageUrl)){
             return await BiliCommentExtractor.getRepliesImpl(pn, parentID, parentType, this.getID())
         }
         if(tweetPageRegexUrl.test(this.url)){
@@ -103,7 +104,7 @@ export class DefaultPostExtractor {
     }
 
     async getReposts(lastID){
-        if(this.url.includes(postPageUrl)) {
+        if(this.url.includes(postPageUrl) || this.url.includes(articlePageUrl)) {
             return BiliPostExtractor.getRepostsImpl(lastID, this.url.split(".com/")[1])
         }
     }
