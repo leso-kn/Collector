@@ -1,7 +1,11 @@
 <p align="center"><img src="https://i.imgur.com/A9HfPiT.png" width="150"></p>
 <h2 align="center"><b>Collector</b></h2>
 <h4 align="center">A universal information stream reader for Android.</h4>
-
+<div align="center">
+<img src="https://img.shields.io/github/search/InfinityLoop1309/Collector/Collector" />
+<img src="https://img.shields.io/github/downloads/InfinityLoop1309/Collector/totalr"/>
+<img src="https://img.shields.io/github/commit-activity/m/InfinityLoop1309/Collector"/>
+</div>
 ## Features
 - No login
 - Read Posts(Twitter-like or forum-like)
