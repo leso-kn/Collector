@@ -71,6 +71,9 @@ export class BiliArticleExtractor{
     getImages(){
         return null
     }
+    getVideo(){
+        return null
+    }
     getHighlightUrl(){
         return articlePageUrl + this.id
     }
