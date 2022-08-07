@@ -25,6 +25,7 @@ import {Dirs, FileSystem} from 'react-native-file-access';
 import {showMessage} from "react-native-flash-message";
 import checkbox from "../../assets/icon-checkbox-modified.png"
 import checkboxChecked from "../../assets/icon-checkbox-checked-modified.png"
+import {Autolink} from "react-native-autolink";
 
 TimeAgo.addLocale(en)
 const timeAgo = new TimeAgo('en-US')
@@ -223,8 +224,10 @@ const Post = React.memo((props) => {
                             <Pressable onLongPress={() => props.navigation.push("FreeCopy", {
                                 content: data.content
                             })} disabled={props.type !== FIRST_POST}>
-                                <Text numberOfLines={[PREVIEW_POST, EMBEDDED_POST].includes(props.type) ? 4 : undefined}
+                                <Autolink numberOfLines={[PREVIEW_POST, EMBEDDED_POST].includes(props.type) ? 4 : undefined}
                                       ellipsizeMode='tail'
+                                          url
+                                          text={data.content}
                                       style={{
                                           color: props.type === FIRST_POST ? "gray" : getTheme().textColor,
                                           fontWeight: "400",
@@ -233,8 +236,7 @@ const Post = React.memo((props) => {
                                           marginTop: 10,
                                           width: "95%"
                                       }}>
-                                    {data.content}
-                                </Text>
+                                </Autolink>
                             </Pressable> : null}
                         {data.video?
                             <TouchableWithoutFeedback onPress={()=>Linking.openURL(data.video)}>
