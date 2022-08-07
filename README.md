@@ -6,6 +6,7 @@
 <img src="https://img.shields.io/github/downloads/InfinityLoop1309/Collector/totalr"/>
 <img src="https://img.shields.io/github/commit-activity/m/InfinityLoop1309/Collector"/>
 </div>
+
 ## Features
 - No login
 - Read Posts(Twitter-like or forum-like)
@@ -18,6 +19,10 @@
 - Block user locally
 - Search for posts and users
 - Can be extended to any service easily
+
+## Available services
+- Twitter
+- BiliBiliSpace
 
 ## Screenshots
 <img src="https://i.imgur.com/Ml3ccdx.png" height="500"><img src="https://i.imgur.com/4vFtWMb.png" height="500">
