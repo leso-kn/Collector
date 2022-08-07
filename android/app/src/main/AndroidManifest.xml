@@ -41,6 +41,9 @@
               <data
                       android:host="www.bilibili.com"
                       android:pathPrefix="/read/"/>
+              <data
+                      android:host="mobile.twitter.com"
+                      android:pathPattern="/.*/status/.*"  />
           </intent-filter>
       </activity>
     </application>

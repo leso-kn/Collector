@@ -1,5 +1,11 @@
 import axios from "axios";
-import {getTokenUrl, searchTweetApiUrl, twitterUserPageUrl} from "./TwitterLinks";
+import {
+    getTokenUrl, mobileTweetPageRegexUrl,
+    mobileTwitterUserPageUrl,
+    searchTweetApiUrl,
+    tweetPageRegexUrl,
+    twitterUserPageUrl
+} from "./TwitterLinks";
 import {TwitterPostExtractor} from "./Extractors/TwitterPostExtractor";
 import {TwitterSearchExtractor} from "./Extractors/TwitterSearchExtractor";
 import {TwitterUserExtractor} from "./Extractors/TwitterUserExtractor";
@@ -42,10 +48,11 @@ export const getToken = async()=>{
 }
 
 export const getTwitterService = async(url, id, data)=>{
-    if(url.includes(twitterUserPageUrl) && !url.split(twitterUserPageUrl)[1].split("?")[0].split("/")[1]){
+    if(url.includes(mobileTwitterUserPageUrl) && !(url.split(mobileTwitterUserPageUrl)[1].split("?")[0].split("/")[1])){
         return new TwitterUserExtractor(url, id, data)
-    }
-    if(new RegExp("https://twitter.com/.*/status/.*").test(url)){
+    }else if(url.includes(twitterUserPageUrl) && !(url.split(twitterUserPageUrl)[1].split("?")[0].split("/")[1])){
+        return new TwitterUserExtractor(url, id, data)
+    }else if(tweetPageRegexUrl.test(url) || mobileTweetPageRegexUrl.test(url)){
         return new TwitterPostExtractor(url, id, data)
     }else if(url.includes(searchTweetApiUrl)){
         return new TwitterSearchExtractor(url)
@@ -54,7 +61,8 @@ export const getTwitterService = async(url, id, data)=>{
 
 export const serviceUrls = {
     getSearchPostUrl:(user, query)=>searchTweetApiUrl + query,
-    getSearchChannelUrl: (query)=>searchTweetApiUrl + query
+    getSearchChannelUrl: (query)=>searchTweetApiUrl + query,
+    getTrendingUrls:()=>[]
 }
 export const getLastID = res=>{
     let temp

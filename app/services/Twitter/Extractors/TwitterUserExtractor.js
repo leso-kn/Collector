@@ -8,7 +8,8 @@ export class TwitterUserExtractor {
         if(data){
             this.data = data.data
         }
-        id = url.split(twitterUserPageUrl)[1].split("/")[0].split("?")[0]
+        id = url.split("twitter.com/")[1].split("/")[0].split("?")[0]
+        console.log(id)
         return (async () => getToken()
             .then(res => axios.get(getUserInfoUrl, {params: {user_id: id}, headers: res}))
             .then(res => {

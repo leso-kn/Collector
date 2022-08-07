@@ -111,16 +111,20 @@ export const getBase64FromUrl = async (url) => {
 }
 
 export const getScreen = (url)=>{
-    const channelLinks = [BiliSpaceLinks.mobileSpaceUrl]
-    const postLinks = [BiliSpaceLinks.postPageUrl, BiliSpaceLinks.mobilePostPageUrl, ]
+    const channelLinks = [BiliSpaceLinks.mobileSpaceUrl, TwitterLinks.mobileTwitterUserPageUrl]
+    const postLinks = [BiliSpaceLinks.postPageUrl, BiliSpaceLinks.mobilePostPageUrl]
     const articleLinks = [BiliArticleLinks.articlePageUrl]
-    for(let link of channelLinks){
-        if(url.includes(link))return "Channel"
+    const postRegLinks = [TwitterLinks.mobileTweetPageRegexUrl]
+    for(let pattern of postRegLinks){
+        if(pattern.test(url))return "FullPost"
     }
     for(let link of postLinks){
         if(url.includes(link))return "FullPost"
     }
     for(let link of articleLinks){
         if(url.includes(link))return "Article"
+    }
+    for(let link of channelLinks){
+        if(url.includes(link))return "Channel"
     }
 }

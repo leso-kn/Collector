@@ -2,6 +2,7 @@ import {BiliPostExtractor} from "../../bilispace/Extractors/BiliPostExtractor";
 import {BiliCommentExtractor} from "../../bilispace/Extractors/BiliCommentExtractor";
 import {postPageUrl} from "../../bilispace/BiliSpaceLinks";
 import {TwitterPostExtractor} from "../../Twitter/Extractors/TwitterPostExtractor";
+import {tweetPageRegexUrl} from "../../Twitter/TwitterLinks";
 
 export class DefaultPostExtractor {
     data
@@ -86,7 +87,7 @@ export class DefaultPostExtractor {
         if(this.url.includes(postPageUrl)){
             return await BiliPostExtractor.getCommentsImpl(pn, this.getType(), this.getID(), sort)
         }
-        if(new RegExp("https://twitter.com/.*/status/.*").test(this.url)){
+        if(tweetPageRegexUrl.test(this.url)){
             return await TwitterPostExtractor.getCommentsImpl(this.getID(),undefined, lastID)
         }
     }
@@ -96,7 +97,7 @@ export class DefaultPostExtractor {
         if(this.url.includes(postPageUrl)){
             return await BiliCommentExtractor.getRepliesImpl(pn, parentID, parentType, this.getID())
         }
-        if(new RegExp("https://twitter.com/.*/status/.*").test(this.url)){
+        if(tweetPageRegexUrl.test(this.url)){
             return await TwitterPostExtractor.getCommentsImpl(this.getID(),parentID, lastID)
         }
     }
