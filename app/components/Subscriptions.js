@@ -14,7 +14,7 @@ export const Subscriptions = ({navigation, randomID}) => {
     const [subscriptionData, setSubscriptionData] = useState({})
     useEffect(() => {
         AsyncStorage.getItem("subscriptionData").then(res => {
-            setSubscriptionData(JSON.parse(res))
+            res&&setSubscriptionData(JSON.parse(res))
         })
     }, [randomID])
     return (
