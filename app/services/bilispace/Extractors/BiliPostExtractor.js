@@ -267,5 +267,8 @@ export class BiliPostExtractor {
     getParentType(){
         return null
     }
+    getVideo(){
+        return null
+    }
 }
 

@@ -1,5 +1,5 @@
 import {
-    Image, Pressable,
+    Image, Linking, Pressable,
     Text, TextInput,
     TouchableNativeFeedback,
     TouchableOpacity, TouchableWithoutFeedback,
@@ -13,11 +13,10 @@ import ImageView from "react-native-image-viewing";
 import FastImage from 'react-native-fast-image'
 import Icon from 'react-native-vector-icons/AntDesign';
 import FeatherIcon from 'react-native-vector-icons/Feather';
-import {getBase64FromUrl, getTheme, isBlocked, reducer, shortenLargeNumber} from "../utils"
+import {getBase64FromUrl, getTheme, reducer, shortenLargeNumber} from "../utils"
 import {LinkPreview} from '@flyerhq/react-native-link-preview'
-import {FIRST_POST, PREVIEW_POST, OTHER_POST, EMBEDDED_POST, deviceWidth} from "../constants";
+import {FIRST_POST, PREVIEW_POST, OTHER_POST, EMBEDDED_POST} from "../constants";
 import {findService} from "../findService";
-import {mobileSpaceUrl} from "../services/bilispace/BiliSpaceLinks";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {ConfirmDialog} from "react-native-simple-dialogs";
 import SelectMultiple from "react-native-select-multiple";
@@ -91,7 +90,7 @@ const Post = React.memo((props) => {
                 "field": [
                     "name", "avatar", "upvoteNum", "commentNum", "repostNum", "images", "prefix", "title", "subname",
                     "pubtime", "refPost", "content", "highLightUrl", "identifyName", "id", "type", "identifyID",
-                    "channelIdentifyID", "channelUrl", "parentID", "parentType"
+                    "channelIdentifyID", "channelUrl", "parentID", "parentType", "video"
                 ], "val": [
                     res.getName(),
                     res.getAvatar(),
@@ -113,7 +112,8 @@ const Post = React.memo((props) => {
                     res.getChannelIdentifyID(),
                     res.getChannelUrl(),
                     res.getParentID(),
-                    res.getParentType()
+                    res.getParentType(),
+                    res.getVideo()
                 ]
             })
         })
@@ -236,7 +236,13 @@ const Post = React.memo((props) => {
                                     {data.content}
                                 </Text>
                             </Pressable> : null}
-
+                        {data.video?
+                            <TouchableWithoutFeedback onPress={()=>Linking.openURL(data.video)}>
+                                <View style={{marginTop:10, marginBottom:10}}>
+                                    <Text style={{color:"darkblue", marginLeft:15, textDecorationLine:"underline"}}>
+                                        Watch the origin video</Text>
+                                </View>
+                            </TouchableWithoutFeedback>:null}
                         {data.images?.length ? (
                             <TouchableWithoutFeedback onPress={() => {
                                 setIsVisible(true)
@@ -274,7 +280,6 @@ const Post = React.memo((props) => {
                                 </View>
                             </TouchableWithoutFeedback>
                         ) : null}
-                        {data.video? <Video source={{uri:data.video}}/>:null}
                         {props.type !== OTHER_POST && data.refPost ? (
                             <TouchableOpacity onPress={() => (props.navigation.push("FullPost", {
                                 url: data.refPost?.url,

@@ -126,4 +126,7 @@ export class BiliCommentExtractor {
     getParentType(){
         return  this.data.parentType
     }
+    getVideo(){
+        return null
+    }
 }

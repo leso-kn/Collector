@@ -38,6 +38,10 @@ export class DefaultPostExtractor {
         return this.data.images
     }
 
+    getVideo(){
+        return this.data.video
+    }
+
     getPrefix() {
         return this.data.prefix
     }

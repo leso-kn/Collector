@@ -78,6 +78,9 @@ export class TwitterPostExtractor{
     getImages(){
         return this.tweetData.extended_entities?.media?.map(x=>{return {uri:x.media_url_https}})
     }
+    getVideo(){
+        return this.tweetData.extended_entities?.media?.[0]?.video_info?.variants?.[0]?.url
+    }
     getHighlightUrl(){
         return null
     }
