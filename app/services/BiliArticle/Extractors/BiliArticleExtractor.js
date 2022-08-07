@@ -95,7 +95,7 @@ export class BiliArticleExtractor{
     getParentType(){
         return null
     }
-    async getComments(pn, sort=1){
+    async getComments(pn, lastID, sort=1){
         return BiliPostExtractor.getCommentsImpl(pn, 12, this.id, sort)
     }
     getReposts(){
