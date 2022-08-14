@@ -1,6 +1,6 @@
 <p align="center"><img src="https://i.imgur.com/A9HfPiT.png" width="150"></p>
 <h2 align="center"><b>Collector</b></h2>
-<h4 align="center">A universal information stream reader for Android.</h4>
+<h4 align="center">An Android universal information stream reader aiming to replace RSS.</h4>
 <div align="center">
 <img src="https://img.shields.io/github/search/InfinityLoop1309/Collector/Collector" />
 <img src="https://img.shields.io/github/downloads/InfinityLoop1309/Collector/total"/>
@@ -11,6 +11,8 @@
 
 ## Features
 - No login
+- No tracking
+- All unique identifiers are removed from requests
 - Read Posts(Twitter-like or forum-like)
 - Read Articles
 - Get comments and replies
@@ -25,6 +27,7 @@
 ## Available services
 - Twitter
 - BiliBiliSpace
+- BiliBiliArticle
 
 ## Screenshots
 <img src="https://i.imgur.com/Ml3ccdx.png" height="500"><img src="https://i.imgur.com/4vFtWMb.png" height="500">
@@ -43,10 +46,10 @@
 <img src="https://i.imgur.com/K7rtKAl.png" height="500">
 
 ## Contribute
-Collector is designed to be compatiable to any service, so feel free to implement services - it isn't hard. 
+Collector is designed to be compatiable to any service, so feel free to implement services - it isn't hard.
 
 Contribute docs are working in progress. Currently, please raise an issue for help if you want to contribute a service you.
 
-Any PRs are welcome as long as the service doesn't cause discomfort. 
+Any PRs are welcome as long as the service doesn't cause discomfort.
 
 Note: issues are for contributers **only**. For bug reports and feature requests, please use discussions instead.
