@@ -22,6 +22,7 @@
 - Local Bookmark
 - Block user locally
 - Search for posts and users
+- Full Dark Mode Support
 - Can be extended to any service easily
 
 ## Available services
