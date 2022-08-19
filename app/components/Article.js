@@ -1,19 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {FlatList, Text, TouchableOpacity, View} from "react-native";
-import {deviceWidth} from "../constants";
-import RenderHTML from "react-native-render-html";
-import axios from "axios";
+import React, {useEffect} from 'react';
+import {Text, TouchableOpacity, View} from "react-native";
+import WebView from "react-native-webview";
 
 export const Article = ({route, navigation})=>{
-    const [html, setHtml] = useState(route.params.html)
     useEffect(()=>{
-        if(!route.params.html && route.params.url){
-            axios.get(route.params.url).then(res=>
-                setHtml(res.data.split("//").join("https://")
-                    .split("data-").join("")
-                    .split("http:https").join("https")
-                    .split("https:https").join("https")))
-        }
         navigation.setOptions({
             headerRight: ()=>(
                 <TouchableOpacity onPress={()=>navigation.push("FullPost", {url: route.params.url})}>
@@ -27,14 +17,6 @@ export const Article = ({route, navigation})=>{
         })
     },[])
     return (
-        <FlatList 
-            data={[]}
-            ListEmptyComponent={()=>(<View style={{width:deviceWidth*0.95}}>
-                <RenderHTML source={{"html": html}} contentWidth={deviceWidth*0.95}
-                            enableExperimentalGhostLinesPrevention={true}
-                            enableExperimentalMarginCollapsing={true}
-                            enableExperimentalBRCollapsing={true} ignoredDomTags={["canvas"]}/>
-            </View>)}
-            contentContainerStyle={{justifyContent:"center", alignItems:"center"}} renderItem={()=>null}/>
+        <WebView source={{uri: route.params.url}}/>
     )
 }
