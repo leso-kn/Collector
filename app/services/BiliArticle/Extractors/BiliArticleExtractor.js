@@ -75,7 +75,7 @@ export class BiliArticleExtractor{
         return null
     }
     getHighlightUrl(){
-        return articlePageUrl + this.id
+        return {uri: articlePageUrl +this.id, showImg: false}
     }
     getRefPost(){
         return null

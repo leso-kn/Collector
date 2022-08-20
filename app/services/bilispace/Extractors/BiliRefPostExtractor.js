@@ -156,13 +156,13 @@ export class BiliRefPostExtractor {
     getHighlightUrl() {
         switch (this.type) {
             case 8:
-                return this.data.short_link
+                return {uri:this.data.short_link, showImg: true}
             case 4200:
-                return this.data.slide_link
+                return {uri:this.data.slide_link, showImg: true}
             case 64:
-                return `https://www.bilibili.com/read/cv${this.data.id}`
+                return {uri:`https://www.bilibili.com/read/cv${this.data.id}`, showImg: false}
             case 2048:
-                return this.data.target_url
+                return {uri:this.data.target_url, showImg: true}
             default:
                 return null
         }

@@ -316,7 +316,7 @@ const Post = React.memo((props) => {
                                         borderRadius: 5,
                                         marginTop: 10
                                     }}>
-                                    <LinkPreview text={data.highLightUrl} isDarkTheme={getTheme().isDarkTheme} containerStyle={{height: 320}}/>
+                                    <LinkPreview showImg={data.highLightUrl.showImg} text={data.highLightUrl.uri} isDarkTheme={getTheme().isDarkTheme} containerStyle={{height: data.highLightUrl.showImg?320:120}}/>
                                 </View>
                             </View>
                         ) : null}

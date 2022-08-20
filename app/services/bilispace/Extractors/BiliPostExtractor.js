@@ -217,13 +217,13 @@ export class BiliPostExtractor {
     getHighlightUrl(){
         switch (this.type){
             case 8:
-                return this.contentCard.jump_url.replace("bilibili://video/", "https://www.bilibili.com/video/av").split("/?")[0]
+                return {uri: this.contentCard.jump_url.replace("bilibili://video/", "https://www.bilibili.com/video/av").split("/?")[0], showImg:true}
             case 4200:
-                return this.contentCard.slide_link
+                return {uri:this.contentCard.slide_link, showImg: true}
             case 64:
-                return `https://www.bilibili.com/read/cv${this.contentCard.id}`
+                return {uri: `https://www.bilibili.com/read/cv${this.contentCard.id}`, showImg: false}
             case 2048:
-                return this.contentCard.target_url
+                return {uri: this.contentCard.target_url, showImg: true}
             default:
                 return ""
         }

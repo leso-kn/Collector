@@ -803,7 +803,7 @@
 
 "@flyerhq/react-native-link-preview@^1.6.0":
   version "1.6.0"
-  resolved "https://registry.npmjs.org/@flyerhq/react-native-link-preview/-/react-native-link-preview-1.6.0.tgz"
+  resolved "https://registry.yarnpkg.com/@flyerhq/react-native-link-preview/-/react-native-link-preview-1.6.0.tgz#c7285ab93a133328edc5d69b011822581bb4414b"
   integrity sha512-MY2Kxlf3SzLVUAuGU2LXhDU0a2icNBWL7MDCA8BNpmKqsWI+tHjX3mHm5nGpsLweYG5wsajzBd5XS0KCXNPkJA==
   dependencies:
     html-entities "^2.3.2"
