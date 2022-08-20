@@ -130,3 +130,8 @@ export const getScreen = (url)=>{
 }
 
 export const sum=(x)=>x?x.reduce((a,b)=>a+b,0):null
+
+export const getDomain=(url)=>{
+    let groups = new URL(url).hostname.split(".")
+    return groups.slice(groups.length - 2).join(".")
+}

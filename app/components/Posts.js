@@ -4,7 +4,7 @@ import {findService} from "../findService";
 import Post from "./post";
 import {FlatList, View} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {getTheme} from "../utils";
+import {getDomain, getTheme} from "../utils";
 
 const reducer = (state, action) => {
     let result = [...state]
@@ -44,16 +44,16 @@ export const Posts = React.memo((props) => {
                 }
                 let currentTime = Math.floor(Date.now() / 1000)
                 if (!requestControl.current.length) {
-                    requestControl.current.push({time: currentTime, count: 1})
+                    requestControl.current.push({time: currentTime, count: {[getDomain(url)]: 1}})
                 } else {
                     let lastItem = requestControl.current[requestControl.current.length - 1]
                     if (lastItem.time < currentTime) {
                         requestControl.current = []
-                        requestControl.current.push({time: currentTime, count: 1})
+                        requestControl.current.push({time: currentTime, count: {[getDomain(url)]: 1}})
                     } else {
-                        lastItem.count >= 5 ?
-                            requestControl.current.push({time: lastItem.time + 1, count: 1}) :
-                            requestControl.current[requestControl.current.length - 1].count += 1
+                        lastItem.count[getDomain(url)] >= 5 ?
+                            requestControl.current.push({time: lastItem.time + 1, count: {[getDomain(url)]: 1}}) :
+                            requestControl.current[requestControl.current.length - 1].count[getDomain(url)] += 1
                     }
                 }
                 requestStatus.current.expect += 1
