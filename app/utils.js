@@ -128,3 +128,5 @@ export const getScreen = (url)=>{
         if(url.includes(link))return "Channel"
     }
 }
+
+export const sum=(x)=>x?x.reduce((a,b)=>a+b,0):null
