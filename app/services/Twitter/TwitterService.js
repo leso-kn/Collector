@@ -9,6 +9,7 @@ import {
 import {TwitterPostExtractor} from "./Extractors/TwitterPostExtractor";
 import {TwitterSearchExtractor} from "./Extractors/TwitterSearchExtractor";
 import {TwitterUserExtractor} from "./Extractors/TwitterUserExtractor";
+import {DefaultChannelInfoExtractor} from "../default/Extractors/DefaultChannelInfoExtractor";
 
 export const defaultParams = {
     'include_profile_interstitial_type': '0',
@@ -49,8 +50,10 @@ export const getToken = async()=>{
 
 export const getTwitterService = async(url, id, data)=>{
     if(url.includes(mobileTwitterUserPageUrl) && !(url.split(mobileTwitterUserPageUrl)[1].split("?")[0].split("/")[1])){
+        if(data)return new DefaultChannelInfoExtractor(data)
         return new TwitterUserExtractor(url, id, data)
     }else if(url.includes(twitterUserPageUrl) && !(url.split(twitterUserPageUrl)[1].split("?")[0].split("/")[1])){
+        if(data)return new DefaultChannelInfoExtractor(data)
         return new TwitterUserExtractor(url, id, data)
     }else if(tweetPageRegexUrl.test(url) || mobileTweetPageRegexUrl.test(url)){
         return new TwitterPostExtractor(url, id, data)
