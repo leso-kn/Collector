@@ -31,7 +31,7 @@ export const Group = ({navigation, route})=>{
     const HeaderRightElement = () => {
         return (<View style={{flexDirection: "row"}}>
             <RefreshButton/>
-            {route.params.type==="blocklist"?null:<DeleteButton/>}
+            {["blocklist", "RSS"].includes(route.params.type)?null:<DeleteButton/>}
         </View>)
     }
     const DeleteButton = () => {
@@ -73,6 +73,7 @@ export const Group = ({navigation, route})=>{
                           navigation={navigation}/>
             )
         case "blocklist":
+        case "RSS":
             return (
                 <Channels data={data}
                           randomID={Math.random()*1000}

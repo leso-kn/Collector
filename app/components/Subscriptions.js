@@ -12,9 +12,14 @@ export const Subscriptions = ({navigation, randomID}) => {
     const [dialogVisible, setDialogVisible] = useState(false)
     const [text, changeText] = useState("")
     const [subscriptionData, setSubscriptionData] = useState({})
+    const [RSSData, setRSSData] = useState([])
     useEffect(() => {
         AsyncStorage.getItem("subscriptionData").then(res => {
             res&&setSubscriptionData(JSON.parse(res))
+        })
+        AsyncStorage.getItem("RSS").then(res=>{
+            !res && AsyncStorage.setItem("RSS", JSON.stringify([]))
+            res && setRSSData(JSON.parse(res))
         })
     }, [randomID])
     return (
@@ -59,7 +64,37 @@ export const Subscriptions = ({navigation, randomID}) => {
                           </TouchableNativeFeedback>
                       )}
                       horizontal={true}
-                      ListHeaderComponent={<View style={{width: 10, backgroundColor: "red"}}/>}
+                      ListHeaderComponent={(
+                          <TouchableNativeFeedback onPress={() => navigation.push("Group", {
+                              key: "RSS",
+                              type:"RSS",
+                              title:"RSS"
+                          })}>
+                              <View style={{
+                                  margin:10,
+                                  height: 60,
+                                  minWidth: 100,
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  borderWidth:0.2,
+                                  borderColor: "gray"
+                              }}>
+                                  <Text style={{
+                                      fontSize: 15,
+                                      marginTop: 0,
+                                      fontWeight: "500",
+                                      marginLeft: 20,
+                                      marginRight: 20,
+                                      color:getTheme().textColor,
+                                  }}>
+                                      {'RSS'}
+                                  </Text>
+                                  <Text style={{color: "gray", fontSize: 13, marginTop: 2}}>
+                                      {`(${RSSData.length})`}
+                                  </Text>
+                              </View>
+                          </TouchableNativeFeedback>
+                      )}
                       ListFooterComponent={(
                           <View style={{
                               marginBottom: 10,

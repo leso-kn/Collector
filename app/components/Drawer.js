@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 
 import {DrawerContentScrollView, DrawerItem} from "@react-navigation/drawer";
-import {Image, Text, TouchableWithoutFeedback, View} from "react-native";
+import {Image, Text, TextInput, TouchableWithoutFeedback, View} from "react-native";
 import {
     getCurrentService,
     getCurrentServiceIcon,
@@ -11,14 +11,20 @@ import {
     updateCurrentService
 } from "../utils";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {ConfirmDialog} from "react-native-simple-dialogs";
+import * as rssParser from 'react-native-rss-parser';
+import axios from "axios";
 
 export const Drawer = (props) => {
     const [selectedService, setSelectedService] = useState("Twitter");
     const [isSelecting, setIsSelecting] = useState(false)
     const userServicesData = useRef([])
     const [trendingUrls, setTrendingUrls] = useState([])
+    const [dialogVisible, setDialogVisible] = useState(false)
+    const [text, changeText] = useState("")
     useEffect(() => {
-        getCurrentService().then(res=>setSelectedService(res))
+        getCurrentService().then(res => setSelectedService(res))
         getUserServices().then(res => userServicesData.current = res)
         getCurrentServiceUrls().then(res => res.getTrendingUrls()).then(res => setTrendingUrls(res))
     }, [selectedService])
@@ -51,7 +57,13 @@ export const Drawer = (props) => {
                     </Text>
                     <TouchableWithoutFeedback onPress={() => setIsSelecting(!isSelecting)}>
                         <View style={{flexDirection: "row", marginTop: 10}}>
-                            <Text style={{fontSize: 16, marginTop: 10, marginBottom: 10, width:"100%", textAlign:"center"}}>
+                            <Text style={{
+                                fontSize: 16,
+                                marginTop: 10,
+                                marginBottom: 10,
+                                width: "100%",
+                                textAlign: "center"
+                            }}>
                                 {selectedService.charAt(0).toUpperCase() + selectedService.slice(1)}
                             </Text>
                         </View>
@@ -72,8 +84,55 @@ export const Drawer = (props) => {
                                 title: "Blocked Users",
                                 type: "blocklist"
                             })}/>
+                <DrawerItem label={"Add RSS feed"} onPress={() => setDialogVisible(true)}/>
             </View>}
-
+            <ConfirmDialog
+                title="Add feed"
+                dialogStyle={{backgroundColor: getTheme().postBackGroundColor}}
+                titleStyle={{color: getTheme().textColor}}
+                contentStyle={{color: getTheme().postBackGroundColor}}
+                visible={dialogVisible}
+                onTouchOutside={() => setDialogVisible(false)}
+                negativeButton={{
+                    titleStyle: {color: getTheme().buttonColor, opacity: getTheme().buttonOpacity},
+                    title: "NO",
+                    onPress: () => {
+                        changeText("")
+                        setDialogVisible(false)
+                    }
+                }}
+                positiveButton={{
+                    title: "OK",
+                    titleStyle: {color: getTheme().buttonColor, opacity: getTheme().buttonOpacity},
+                    onPress: () => {
+                        AsyncStorage.getItem("RSS").then(res => JSON.parse(res)).then(res => {
+                            if (res.filter(x => x.identifyID === text).length) {
+                                alert("Feed already exists")
+                            } else {
+                                axios.get(text).then(res1 => rssParser.parse(res1.data)).then(res1 => {
+                                    const originURL = res1.links?.[0]?.url
+                                    res.push({
+                                        name: res1.title,
+                                        avatar: res1.image.url,
+                                        isRSS: true,
+                                        identifyName: originURL,
+                                        info: res1.description,
+                                        url: text
+                                    })
+                                    AsyncStorage.setItem("RSS", JSON.stringify(res))
+                                })
+                            }
+                        })
+                        changeText("")
+                    }
+                }}>
+                <View>
+                    <TextInput value={text}
+                               placeholder={"Feed URL"}
+                               onChangeText={(value) => changeText(value)}
+                               style={{borderWidth: 0.3, borderColor: getTheme().borderColor, paddingLeft: 10}}/>
+                </View>
+            </ConfirmDialog>
         </DrawerContentScrollView>
     )
 }

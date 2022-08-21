@@ -2,12 +2,14 @@ import * as BiliSpaceService from "./services/bilispace/BiliSpaceService";
 import * as DefaultService from "./services/default/DefaultService";
 import * as BiliArticleService from "./services/BiliArticle/BiliArticleService"
 import * as TwitterService from "./services/Twitter/TwitterService"
+import * as RSSService from "./services/RSS/RSSService"
 
 const availableServices = [
     DefaultService.getDefaultService,
     BiliSpaceService.getBiliSpaceService,
     BiliArticleService.getBiliArticleService,
-    TwitterService.getTwitterService
+    TwitterService.getTwitterService,
+    RSSService.getRSSService
 ]
 
 export const findService = async (url, id, data)=>{

@@ -52,7 +52,7 @@ const ChannelInside = (props) => {
     const renderScene = ({route}) => {
         switch (route.key) {
             case 'posts':
-                return <Posts urls={[props.url]} navigation={props.navigation}/>
+                return <Posts urls={[props.url]} id={props.id} navigation={props.navigation}/>
             // case 'second':
             //     return <Friends/>;
             default:
@@ -62,7 +62,7 @@ const ChannelInside = (props) => {
 
     useEffect(() => {
         let identifyID
-        findService(props.url).then(res => {
+        findService(props.url, props.id).then(res => {
             identifyID = res.getIdentifyID()
             dispatch({
                 field: [
@@ -336,7 +336,7 @@ const Channel = (packedProps) => {
     return (
         <FlatList data={[props]}
                   renderItem={(prop) => {
-                      return (<ChannelInside url={props.url} navigation={packedProps.navigation}/>)
+                      return (<ChannelInside url={props.url} id={props.id} navigation={packedProps.navigation}/>)
                   }}/>
     )
 }

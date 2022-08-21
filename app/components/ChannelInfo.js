@@ -6,7 +6,7 @@ import {getTheme, reducer} from "../utils";
 export const ChannelInfo = React.memo((props) => {
     const [data, dispatch] = useReducer(reducer, {})
     useEffect(() => {
-        findService(props.data.url, null, props.data).then((res) => {
+        findService(props.data.url, props.data.isRSS?"RSSSource":null, props.data).then((res) => {
             dispatch({
                 field: [
                     "name", "avatar", "info", "identifyName","url"
@@ -19,7 +19,7 @@ export const ChannelInfo = React.memo((props) => {
     }, [])
     return (
         <TouchableNativeFeedback
-            onPress={() => props.navigation.push("Channel", {url: data.url})}>
+            onPress={() => props.navigation.push("Channel", {url: data.url, id: props.data.isRSS?"RSSSource":null})}>
             <View style={{flexDirection: "row", marginTop: 7.5, marginBottom: 7.5}}>
                 <Image source={{uri: data.avatar}}
                        style={{
