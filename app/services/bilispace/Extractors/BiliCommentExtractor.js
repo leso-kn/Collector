@@ -129,4 +129,7 @@ export class BiliCommentExtractor {
     getVideo(){
         return null
     }
+    getHTMLContent(){
+        return null
+    }
 }

@@ -81,6 +81,9 @@ export class TwitterPostExtractor{
     getVideo(){
         return this.tweetData.extended_entities?.media?.[0]?.video_info?.variants?.[0]?.url
     }
+    getHTMLContent(){
+        return null
+    }
     getHighlightUrl(){
         return null
     }

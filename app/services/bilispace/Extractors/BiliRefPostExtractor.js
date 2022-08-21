@@ -223,4 +223,7 @@ export class BiliRefPostExtractor {
     getVideo(){
         return null
     }
+    getHTMLContent(){
+        return null
+    }
 }

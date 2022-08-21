@@ -44,6 +44,10 @@ export class DefaultPostExtractor {
         return this.data.video
     }
 
+    getHTMLContent(){
+        return this.data.htmlContent
+    }
+
     getPrefix() {
         return this.data.prefix
     }

@@ -6,6 +6,7 @@ export class RSSItemExtractor {
         this.url = url
         this.id = id
         this.data = data
+        console.log(data)
         return (async () => this)()
     }
 
@@ -37,6 +38,10 @@ export class RSSItemExtractor {
         return null
     }
 
+    getHTMLContent(){
+        return this.data.description
+    }
+
     getPrefix() {
         return "RSS"
     }
@@ -62,7 +67,7 @@ export class RSSItemExtractor {
     }
 
     getContent() {
-        return this.data.content
+        return null
     }
 
     getHighlightUrl() {

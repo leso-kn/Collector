@@ -270,5 +270,8 @@ export class BiliPostExtractor {
     getVideo(){
         return null
     }
+    getHTMLContent(){
+        return null
+    }
 }
 

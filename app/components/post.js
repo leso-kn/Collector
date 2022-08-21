@@ -15,7 +15,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import {getBase64FromUrl, getTheme, reducer, shortenLargeNumber} from "../utils"
 import {LinkPreview} from '@flyerhq/react-native-link-preview'
-import {FIRST_POST, PREVIEW_POST, OTHER_POST, EMBEDDED_POST} from "../constants";
+import {FIRST_POST, PREVIEW_POST, OTHER_POST, EMBEDDED_POST, deviceWidth} from "../constants";
 import {findService} from "../findService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {ConfirmDialog} from "react-native-simple-dialogs";
@@ -26,9 +26,11 @@ import {showMessage} from "react-native-flash-message";
 import checkbox from "../../assets/icon-checkbox-modified.png"
 import checkboxChecked from "../../assets/icon-checkbox-checked-modified.png"
 import {Autolink} from "react-native-autolink";
+import RenderHTML from "react-native-render-html";
 
 TimeAgo.addLocale(en)
 const timeAgo = new TimeAgo('en-US')
+const he = require("he")
 
 const titleElement = (data, type) => (
     <Text numberOfLines={[PREVIEW_POST, EMBEDDED_POST].includes(type) ? 1 : undefined} ellipsizeMode='tail' style={{
@@ -91,7 +93,7 @@ const Post = React.memo((props) => {
                 "field": [
                     "name", "avatar", "upvoteNum", "commentNum", "repostNum", "images", "prefix", "title", "subname",
                     "pubtime", "refPost", "content", "highLightUrl", "identifyName", "id", "type", "identifyID",
-                    "channelIdentifyID", "channelUrl", "parentID", "parentType", "video"
+                    "channelIdentifyID", "channelUrl", "parentID", "parentType", "video", "htmlContent"
                 ], "val": [
                     res.getName(),
                     res.getAvatar(),
@@ -114,7 +116,8 @@ const Post = React.memo((props) => {
                     res.getChannelUrl(),
                     res.getParentID(),
                     res.getParentType(),
-                    res.getVideo()
+                    res.getVideo(),
+                    res.getHTMLContent()
                 ]
             })
         })
@@ -238,6 +241,20 @@ const Post = React.memo((props) => {
                                       }}>
                                 </Autolink>
                             </Pressable> : null}
+                        {data.htmlContent && props.type === FIRST_POST?<View
+                            style={{
+                                color: props.type === FIRST_POST ? "gray" : getTheme().textColor,
+                                fontWeight: "400",
+                                marginLeft: 13,
+                                marginRight:13,
+                                fontSize: 14.5,
+                                marginTop: 10,
+                                width: "93%",
+                            }}
+                        ><RenderHTML
+                            contentWidth={deviceWidth*0.92}
+                            source={{html: he.decode(data.htmlContent).replaceAll("\\","")}}
+                        /></View>:null}
                         {data.video?
                             <TouchableWithoutFeedback onPress={()=>Linking.openURL(data.video)}>
                                 <View style={{marginTop:10, marginBottom:10}}>
