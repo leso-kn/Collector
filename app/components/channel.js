@@ -192,42 +192,43 @@ const ChannelInside = (props) => {
                     marginRight: 5
                 }}>
                     <Text style={{color: "gray", fontSize: 13}}>{data.info || "No description provided"}</Text>
-                    {data.additionalData ? (
+                    {data.additionalText ? (
                         <Text
-                            style={{fontSize: 11, color: "#504d4d", marginTop: 5}}>{data.additionalText}</Text>) : null}
+                            style={{fontSize: 11, color: "gray", marginTop: 5}}>{data.additionalText}</Text>) : null}
                 </View>
-                <View style={{flexDirection: "row", marginBottom: 10, marginTop: 10}}>
-                    <View style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flex: 1,
-                        borderRightWidth: 0.5,
-                        borderRightColor: "gray"
-                    }}>
-                        <Text style={{ fontSize: 13}}>{"Followers"}</Text>
-                        <Text style={{fontSize: 13}}>{data.fanNum}</Text>
-                    </View>
-                    <View style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flex: 1,
-                        borderRightWidth: 0.5,
-                        borderRightColor: "gray"
-                    }}>
-                        <Text style={{ fontSize: 13}}>{"Friends"}</Text>
-                        <Text style={{ fontSize: 13}}>{data.followNum}</Text>
-                    </View>
-                    <View style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        flex: 1,
-                        borderRightWidth: 0,
-                        borderRightColor: "gray"
-                    }}>
-                        <Text style={{ fontSize: 13}}>{"Likes"}</Text>
-                        <Text style={{fontSize: 13}}>{data.likeNum}</Text>
-                    </View>
-                </View>
+                {data.fanNum || data.followNum || data.likeNum ? (
+                    <View style={{flexDirection: "row", marginBottom: 10, marginTop: 10}}>
+                        <View style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                            flex: 1,
+                            borderRightWidth: 0.5,
+                            borderRightColor: "gray"
+                        }}>
+                            <Text style={{fontSize: 13}}>{"Followers"}</Text>
+                            <Text style={{fontSize: 13}}>{data.fanNum}</Text>
+                        </View>
+                        <View style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                            flex: 1,
+                            borderRightWidth: 0.5,
+                            borderRightColor: "gray"
+                        }}>
+                            <Text style={{fontSize: 13}}>{"Friends"}</Text>
+                            <Text style={{fontSize: 13}}>{data.followNum}</Text>
+                        </View>
+                        <View style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                            flex: 1,
+                            borderRightWidth: 0,
+                            borderRightColor: "gray"
+                        }}>
+                            <Text style={{fontSize: 13}}>{"Likes"}</Text>
+                            <Text style={{fontSize: 13}}>{data.likeNum}</Text>
+                        </View>
+                    </View>) : null}
             </View>
 
             <TabView
