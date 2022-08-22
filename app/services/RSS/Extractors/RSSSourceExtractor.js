@@ -19,7 +19,7 @@ export class RSSSourceExtractor {
     }
 
     getAdditionalText() {
-        return `Last update: ${this.data.lastPublished || this.data.lastUpdated}  Type: ${this.data.type}`
+        return `Last update: ${this.data.lastPublished || this.data.lastUpdated}`
     }
 
     getName() {
