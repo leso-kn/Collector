@@ -57,7 +57,7 @@ export const Posts = React.memo((props) => {
                     }
                 }
                 requestStatus.current.expect += 1
-                new Promise(r => setTimeout(r, (requestControl.current[requestControl.current.length - 1].time - currentTime) * 1000)).then(res => findService(url, props.id)).then(res => {
+                new Promise(r => setTimeout(r, (requestControl.current[requestControl.current.length - 1].time - currentTime) * 1000)).then(res => findService(url, props.ids?.[index])).then(res => {
                     return res.getPosts(pn, refContainer.current.lastIDs?.[index])
                 }).then(res => {
                     //TODO: show loading when fetching

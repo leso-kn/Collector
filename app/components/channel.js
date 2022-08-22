@@ -52,7 +52,7 @@ const ChannelInside = (props) => {
     const renderScene = ({route}) => {
         switch (route.key) {
             case 'posts':
-                return <Posts urls={[props.url]} id={props.id} navigation={props.navigation}/>
+                return <Posts urls={[props.url]} ids={[props.id]} navigation={props.navigation}/>
             // case 'second':
             //     return <Friends/>;
             default:
@@ -67,7 +67,7 @@ const ChannelInside = (props) => {
             dispatch({
                 field: [
                     "name", "headImgUrl", "avatar", "likeNum", "fanNum", "identifyName",
-                    "followNum", "info", "additionalText", "headImgRatio", "url", "identifyID"
+                    "followNum", "info", "additionalText", "headImgRatio", "url", "identifyID", "isRSS"
                 ],
                 val: [
                     res.getName(),
@@ -81,7 +81,8 @@ const ChannelInside = (props) => {
                     res.getAdditionalText(),
                     res.getHeadImgRatio(),
                     res.getUrl(),
-                    res.getIdentifyID()
+                    res.getIdentifyID(),
+                    props.id === "RSSSource"
                 ]
             })
         }).then(res => AsyncStorage.getItem("blocklist")).then(res => {
