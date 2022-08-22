@@ -31,7 +31,16 @@ export class RSSItemExtractor {
     }
 
     getImages() {
-        return this.data.imageUrl
+        let result = []
+        if(this.data.imageUrl){
+            result.push({uri: this.data.imageUrl})
+        }
+        for(let item of this.data.enclosures){
+            if(item.mimeType.includes("image")){
+                result.push({uri: item.url})
+            }
+        }
+        return result
     }
 
     getVideo(){
