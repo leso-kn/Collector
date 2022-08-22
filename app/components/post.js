@@ -36,10 +36,10 @@ const titleElement = (data, type) => (
     <Text numberOfLines={[PREVIEW_POST, EMBEDDED_POST].includes(type) ? 1 : undefined} ellipsizeMode='tail' style={{
         fontWeight: "600",
         color: getTheme().textColor,
-        marginBottom: -5,
         fontSize: 16.5,
         marginLeft: 13,
-        marginTop: 10
+        marginTop: 10,
+        marginRight: 10,
     }}>
         {data.title}
     </Text>
@@ -237,7 +237,7 @@ const Post = React.memo((props) => {
                                           marginLeft: 13,
                                           fontSize: 14.5,
                                           marginTop: 10,
-                                          width: "95%"
+                                          marginRight:13
                                       }}>
                                 </Autolink>
                             </Pressable> : null}
@@ -249,7 +249,6 @@ const Post = React.memo((props) => {
                                 marginRight:13,
                                 fontSize: 14.5,
                                 marginTop: 10,
-                                width: "93%",
                             }}
                         ><RenderHTML
                             contentWidth={deviceWidth*0.92}
