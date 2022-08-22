@@ -6,7 +6,6 @@ export class RSSItemExtractor {
         this.url = url
         this.id = id
         this.data = data
-        console.log(data)
         return (async () => this)()
     }
 
