@@ -43,7 +43,7 @@ export class RSSItemExtractor {
     }
 
     getPrefix() {
-        return "RSS"
+        return null
     }
 
     getTitle() {
