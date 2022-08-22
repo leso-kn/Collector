@@ -133,7 +133,7 @@ const ChannelInside = (props) => {
                                 width: 80, height: 80, borderRadius: 40, marginTop: -30
                             }}/>
                         </TouchableNativeFeedback>
-                        <View style={{marginLeft: 10}}>
+                        <View style={{marginLeft: 10, width:150}}>
                             <Text style={{
                                 marginTop: 5,
                                 fontWeight: "500",
@@ -194,7 +194,7 @@ const ChannelInside = (props) => {
                     <Text style={{color: "gray", fontSize: 13}}>{data.info || "No description provided"}</Text>
                     {data.additionalText ? (
                         <Text
-                            style={{fontSize: 11, color: "gray", marginTop: 5}}>{data.additionalText}</Text>) : null}
+                            style={{fontSize: 11, color: "gray", marginTop: 5, marginBottom:5}}>{data.additionalText}</Text>) : null}
                 </View>
                 {data.fanNum || data.followNum || data.likeNum ? (
                     <View style={{flexDirection: "row", marginBottom: 10, marginTop: 10}}>
