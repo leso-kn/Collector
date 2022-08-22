@@ -1,6 +1,4 @@
 import axios from "axios";
-import {requestOption} from "../../bilispace/BiliSpaceService";
-import {postPageUrl} from "../../bilispace/BiliSpaceLinks";
 import * as rssParser from "react-native-rss-parser";
 
 export class RSSSourceExtractor {
@@ -10,6 +8,7 @@ export class RSSSourceExtractor {
     constructor(url, id, data) {
         return (async () => await axios.get(url).then(res=>rssParser.parse(res.data)).then(res=>{
             this.data = res
+            this.url = url
             return this
         }))()
     }
@@ -51,7 +50,7 @@ export class RSSSourceExtractor {
     }
 
     getIdentifyName() {
-        return this.data.originURL
+        return this.url
     }
 
     getServicePrefix() {
