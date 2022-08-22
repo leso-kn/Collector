@@ -39,7 +39,7 @@ export class RSSItemExtractor {
     }
 
     getHTMLContent(){
-        return this.data.description
+        return this.data.description || this.data.content
     }
 
     getPrefix() {
