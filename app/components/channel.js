@@ -139,7 +139,8 @@ const ChannelInside = (props) => {
                                 marginTop: 5,
                                 fontWeight: "500",
                                 color: getTheme().textColor,
-                                fontSize: 15
+                                fontSize: 15,
+                                width:135
                             }}>{data.name}</Text>
                             <Text style={{marginTop: 2, fontSize: 12, color: "gray"}}>{"@" + data.identifyName}</Text>
                         </View>
