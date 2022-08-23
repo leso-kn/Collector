@@ -52,6 +52,8 @@ export class RSSItemExtractor {
                 result.push({uri: item.url, type: "video"})
             }
         }
+        this.data.links?.[0].url && result.push({type:"link", uri:this.data.links?.[0].url})
+        return result
     }
 
     getHTMLContent() {

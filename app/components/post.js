@@ -268,6 +268,13 @@ const Post = React.memo((props) => {
                                         Origin audio</Text>
                                 </View>
                             </TouchableWithoutFeedback>:null}
+                        {data.outerContentURLs && data.outerContentURLs?.filter(x=>x.type==="link").length?
+                            <TouchableWithoutFeedback onPress={()=>Linking.openURL(data.outerContentURLs?.filter(x=>x.type==="link")[0].uri)}>
+                                <View style={{marginTop:10, marginBottom:10}}>
+                                    <Text style={{color:"darkblue", marginLeft:15, textDecorationLine:"underline"}}>
+                                        Origin link</Text>
+                                </View>
+                            </TouchableWithoutFeedback>:null}
                         {data.images?.length ? (
                             <TouchableWithoutFeedback onPress={() => {
                                 setIsVisible(true)
