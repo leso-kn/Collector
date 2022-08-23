@@ -71,7 +71,7 @@ export class BiliArticleExtractor{
     getImages(){
         return null
     }
-    getVideo(){
+    getOuterContentURLs(){
         return null
     }
 

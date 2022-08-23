@@ -93,7 +93,7 @@ const Post = React.memo((props) => {
                 "field": [
                     "name", "avatar", "upvoteNum", "commentNum", "repostNum", "images", "prefix", "title", "subname",
                     "pubtime", "refPost", "content", "highLightUrl", "identifyName", "id", "type", "identifyID",
-                    "channelIdentifyID", "channelUrl", "parentID", "parentType", "video", "htmlContent"
+                    "channelIdentifyID", "channelUrl", "parentID", "parentType", "outerContentURLs", "htmlContent"
                 ], "val": [
                     res.getName(),
                     res.getAvatar(),
@@ -116,7 +116,7 @@ const Post = React.memo((props) => {
                     res.getChannelUrl(),
                     res.getParentID(),
                     res.getParentType(),
-                    res.getVideo(),
+                    res.getOuterContentURLs(),
                     res.getHTMLContent()
                 ]
             })
@@ -254,11 +254,18 @@ const Post = React.memo((props) => {
                             contentWidth={deviceWidth*0.92}
                             source={{html: he.decode(data.htmlContent).replaceAll("\\","")}}
                         /></View>:null}
-                        {data.video?
-                            <TouchableWithoutFeedback onPress={()=>Linking.openURL(data.video)}>
+                        {data.outerContentURLs && data.outerContentURLs?.filter(x=>x.type==="video").length?
+                            <TouchableWithoutFeedback onPress={()=>Linking.openURL(data.outerContentURLs?.filter(x=>x.type==="video")[0].uri)}>
                                 <View style={{marginTop:10, marginBottom:10}}>
                                     <Text style={{color:"darkblue", marginLeft:15, textDecorationLine:"underline"}}>
                                         Watch the origin video</Text>
+                                </View>
+                            </TouchableWithoutFeedback>:null}
+                        {data.outerContentURLs && data.outerContentURLs?.filter(x=>x.type==="audio").length?
+                            <TouchableWithoutFeedback onPress={()=>Linking.openURL(data.outerContentURLs?.filter(x=>x.type==="audio")[0].uri)}>
+                                <View style={{marginTop:10, marginBottom:10}}>
+                                    <Text style={{color:"darkblue", marginLeft:15, textDecorationLine:"underline"}}>
+                                        Origin audio</Text>
                                 </View>
                             </TouchableWithoutFeedback>:null}
                         {data.images?.length ? (

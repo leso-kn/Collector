@@ -2,6 +2,7 @@ export class RSSItemExtractor {
     data
     id
     url
+
     constructor(url, id, data) {
         this.url = url
         this.id = id
@@ -10,7 +11,7 @@ export class RSSItemExtractor {
     }
 
     getName() {
-        return this.data.authors.map(x=>x.name).join(", ")
+        return this.data.authors.map(x => x.name).join(", ")
     }
 
     getAvatar() {
@@ -31,22 +32,29 @@ export class RSSItemExtractor {
 
     getImages() {
         let result = []
-        if(this.data.imageUrl){
+        if (this.data.imageUrl) {
             result.push({uri: this.data.imageUrl})
         }
-        for(let item of this.data.enclosures){
-            if(item.mimeType.includes("image")){
+        for (let item of this.data.enclosures) {
+            if (item.mimeType.includes("image")) {
                 result.push({uri: item.url})
             }
         }
         return result
     }
 
-    getVideo(){
-        return null
+    getOuterContentURLs() {
+        let result = []
+        for (let item of this.data.enclosures) {
+            if (item.mimeType.includes("audio")) {
+                result.push({uri: item.url, type: "audio"})
+            } else if (item.mimeType.includes("video")) {
+                result.push({uri: item.url, type: "video"})
+            }
+        }
     }
 
-    getHTMLContent(){
+    getHTMLContent() {
         return this.data.description || this.data.content
     }
 
@@ -59,7 +67,7 @@ export class RSSItemExtractor {
     }
 
     getSubName() {
-        return this.data.categories.map(x=>x.name).join(", ")
+        return this.data.categories.map(x => x.name).join(", ")
     }
 
     getID() {
@@ -98,7 +106,7 @@ export class RSSItemExtractor {
         return null
     }
 
-    async getReposts(lastID){
+    async getReposts(lastID) {
         return null
     }
 
@@ -114,11 +122,11 @@ export class RSSItemExtractor {
         return null
     }
 
-    getParentID(){
+    getParentID() {
         return null
     }
 
-    getParentType(){
+    getParentType() {
         return null
     }
 }

@@ -40,8 +40,8 @@ export class DefaultPostExtractor {
         return this.data.images
     }
 
-    getVideo(){
-        return this.data.video
+    getOuterContentURLs(){
+        return this.data.outerContentURLs
     }
 
     getHTMLContent(){

@@ -220,7 +220,7 @@ export class BiliRefPostExtractor {
     getParentType(){
         return null
     }
-    getVideo(){
+    getOuterContentURLs(){
         return null
     }
     getHTMLContent(){

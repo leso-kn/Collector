@@ -267,7 +267,7 @@ export class BiliPostExtractor {
     getParentType(){
         return null
     }
-    getVideo(){
+    getOuterContentURLs(){
         return null
     }
     getHTMLContent(){
