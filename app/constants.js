@@ -16,7 +16,8 @@ export const themeDefault = {
     backgroundColor: "white",
     navigationTheme: DefaultTheme,
     tabBarColor: "#2196f3",
-    isDarkTheme: false
+    isDarkTheme: false,
+    linkColor: "darkblue"
 }
 export const darkTheme = {
     color: "#121212",
@@ -30,5 +31,6 @@ export const darkTheme = {
     navigationTheme: DarkTheme,
     tabBarColor:"#121212",
     backgroundColor: "black",
-    isDarkTheme: true
+    isDarkTheme: true,
+    linkColor:"#2A9D8F"
 }

@@ -155,7 +155,7 @@ const Post = React.memo((props) => {
     }, [data, dialogVisible1, dialogVisible2])
 
     const rootStyle = {
-        backgroundColor:getTheme().postBackGroundColor,
+        backgroundColor: getTheme().postBackGroundColor,
         borderRadius: 0,
         marginTop: 0,
         marginBottom: 0,
@@ -227,54 +227,70 @@ const Post = React.memo((props) => {
                             <Pressable onLongPress={() => props.navigation.push("FreeCopy", {
                                 content: data.content
                             })} disabled={props.type !== FIRST_POST}>
-                                <Autolink numberOfLines={[PREVIEW_POST, EMBEDDED_POST].includes(props.type) ? 4 : undefined}
-                                      ellipsizeMode='tail'
-                                          url
-                                          text={data.content}
-                                      style={{
-                                          color: props.type === FIRST_POST ? "gray" : getTheme().textColor,
-                                          fontWeight: "400",
-                                          marginLeft: 13,
-                                          fontSize: 14.5,
-                                          marginTop: 10,
-                                          marginRight:13
-                                      }}>
+                                <Autolink
+                                    numberOfLines={[PREVIEW_POST, EMBEDDED_POST].includes(props.type) ? 4 : undefined}
+                                    ellipsizeMode='tail'
+                                    url
+                                    text={data.content}
+                                    style={{
+                                        color: props.type === FIRST_POST ? "gray" : getTheme().textColor,
+                                        fontWeight: "400",
+                                        marginLeft: 13,
+                                        fontSize: 14.5,
+                                        marginTop: 10,
+                                        marginRight: 13
+                                    }}>
                                 </Autolink>
                             </Pressable> : null}
-                        {data.htmlContent && props.type === FIRST_POST?<View
+                        {data.htmlContent && props.type === FIRST_POST ? <View
                             style={{
                                 color: props.type === FIRST_POST ? "gray" : getTheme().textColor,
                                 fontWeight: "400",
                                 marginLeft: 13,
-                                marginRight:13,
+                                marginRight: 13,
                                 fontSize: 14.5,
                                 marginTop: 10,
                             }}
                         ><RenderHTML
-                            contentWidth={deviceWidth*0.92}
-                            source={{html: he.decode(data.htmlContent).replaceAll("\\","")}}
-                        /></View>:null}
-                        {data.outerContentURLs && data.outerContentURLs?.filter(x=>x.type==="video").length?
-                            <TouchableWithoutFeedback onPress={()=>Linking.openURL(data.outerContentURLs?.filter(x=>x.type==="video")[0].uri)}>
-                                <View style={{marginTop:10, marginBottom:10}}>
-                                    <Text style={{color:"darkblue", marginLeft:15, textDecorationLine:"underline"}}>
+                            contentWidth={deviceWidth * 0.92}
+                            source={{html: he.decode(data.htmlContent).replaceAll("\\", "")}}
+                        /></View> : null}
+                        {data.outerContentURLs && data.outerContentURLs?.filter(x => x.type === "video").length ?
+                            <TouchableWithoutFeedback
+                                onPress={() => Linking.openURL(data.outerContentURLs?.filter(x => x.type === "video")[0].uri)}>
+                                <View style={{marginTop: 10, marginBottom: 10}}>
+                                    <Text style={{
+                                        color: getTheme().linkColor,
+                                        marginLeft: 15,
+                                        textDecorationLine: "underline"
+                                    }}>
                                         Watch the origin video</Text>
                                 </View>
-                            </TouchableWithoutFeedback>:null}
-                        {data.outerContentURLs && data.outerContentURLs?.filter(x=>x.type==="audio").length?
-                            <TouchableWithoutFeedback onPress={()=>Linking.openURL(data.outerContentURLs?.filter(x=>x.type==="audio")[0].uri)}>
-                                <View style={{marginTop:10, marginBottom:10}}>
-                                    <Text style={{color:"darkblue", marginLeft:15, textDecorationLine:"underline"}}>
+                            </TouchableWithoutFeedback> : null}
+                        {data.outerContentURLs && data.outerContentURLs?.filter(x => x.type === "audio").length ?
+                            <TouchableWithoutFeedback
+                                onPress={() => Linking.openURL(data.outerContentURLs?.filter(x => x.type === "audio")[0].uri)}>
+                                <View style={{marginTop: 10, marginBottom: 10}}>
+                                    <Text style={{
+                                        color: getTheme().linkColor,
+                                        marginLeft: 15,
+                                        textDecorationLine: "underline"
+                                    }}>
                                         Origin audio</Text>
                                 </View>
-                            </TouchableWithoutFeedback>:null}
-                        {data.outerContentURLs && data.outerContentURLs?.filter(x=>x.type==="link").length?
-                            <TouchableWithoutFeedback onPress={()=>Linking.openURL(data.outerContentURLs?.filter(x=>x.type==="link")[0].uri)}>
-                                <View style={{marginTop:10, marginBottom:10}}>
-                                    <Text style={{color:"darkblue", marginLeft:15, textDecorationLine:"underline"}}>
+                            </TouchableWithoutFeedback> : null}
+                        {data.outerContentURLs && data.outerContentURLs?.filter(x => x.type === "link").length ?
+                            <TouchableWithoutFeedback
+                                onPress={() => Linking.openURL(data.outerContentURLs?.filter(x => x.type === "link")[0].uri)}>
+                                <View style={{marginTop: 10, marginBottom: 10}}>
+                                    <Text style={{
+                                        color: getTheme().linkColor,
+                                        marginLeft: 15,
+                                        textDecorationLine: "underline"
+                                    }}>
                                         Origin link</Text>
                                 </View>
-                            </TouchableWithoutFeedback>:null}
+                            </TouchableWithoutFeedback> : null}
                         {data.images?.length ? (
                             <TouchableWithoutFeedback onPress={() => {
                                 setIsVisible(true)
@@ -346,7 +362,9 @@ const Post = React.memo((props) => {
                                         borderRadius: 5,
                                         marginTop: 10
                                     }}>
-                                    <LinkPreview showImg={data.highLightUrl.showImg} text={data.highLightUrl.uri} isDarkTheme={getTheme().isDarkTheme} containerStyle={{height: data.highLightUrl.showImg?320:120}}/>
+                                    <LinkPreview showImg={data.highLightUrl.showImg} text={data.highLightUrl.uri}
+                                                 isDarkTheme={getTheme().isDarkTheme}
+                                                 containerStyle={{height: data.highLightUrl.showImg ? 320 : 120}}/>
                                 </View>
                             </View>
                         ) : null}
@@ -408,7 +426,7 @@ const Post = React.memo((props) => {
                                                 let path = `/${data.identifyID + "-" + imageIndex}.png`
                                                 return FileSystem.exists(Dirs.SDCardDir + "/Pictures/Collector")
                                                     .then(res => !res && FileSystem.mkdir(Dirs.SDCardDir + "/Pictures/Collector"))
-                                                    .then(res=>FileSystem.writeFile(Dirs.CacheDir + path, imageData, "base64")).then(res => path)
+                                                    .then(res => FileSystem.writeFile(Dirs.CacheDir + path, imageData, "base64")).then(res => path)
                                             }
                                         ).then(path => FileSystem.cp(Dirs.CacheDir + path, Dirs.SDCardDir + "/Pictures/Collector" + path)).then(res => showMessage({
                                             message: "Success",
@@ -468,8 +486,8 @@ const Post = React.memo((props) => {
                         }}>
                         <SelectMultiple onSelectionsChange={x => setSelected(x)}
                                         rowStyle={{backgroundColor: getTheme().postBackGroundColor}}
-                                        checkboxSource={getTheme().isDarkTheme?checkbox:undefined}
-                                        selectedCheckboxSource={getTheme().isDarkTheme?checkboxChecked:undefined}
+                                        checkboxSource={getTheme().isDarkTheme ? checkbox : undefined}
+                                        selectedCheckboxSource={getTheme().isDarkTheme ? checkboxChecked : undefined}
                                         items={bookmarks ? Object.entries(bookmarks).map(x => x[0]) : []}
                                         selectedItems={selected}/>
                     </ConfirmDialog>
@@ -509,7 +527,11 @@ const Post = React.memo((props) => {
                             <TextInput value={text}
                                        placeholder={"Folder Name"}
                                        onChangeText={(value) => changeText(value)}
-                                       style={{borderWidth: 0.3, borderColor: getTheme().borderColor, paddingLeft: 10}}/>
+                                       style={{
+                                           borderWidth: 0.3,
+                                           borderColor: getTheme().borderColor,
+                                           paddingLeft: 10
+                                       }}/>
                         </View>
                     </ConfirmDialog>
                     <ConfirmDialog
@@ -561,8 +583,8 @@ const Post = React.memo((props) => {
                         <View>
                             <SelectMultiple onSelectionsChange={x => setSelected1(x)}
                                             rowStyle={{backgroundColor: getTheme().postBackGroundColor}}
-                                            checkboxSource={getTheme().isDarkTheme?checkbox:undefined}
-                                            selectedCheckboxSource={getTheme().isDarkTheme?checkboxChecked:undefined}
+                                            checkboxSource={getTheme().isDarkTheme ? checkbox : undefined}
+                                            selectedCheckboxSource={getTheme().isDarkTheme ? checkboxChecked : undefined}
                                 // items={['Block user', "Create new block word"]}
                                             items={['Block user']}
                                             selectedItems={selected1}/>
