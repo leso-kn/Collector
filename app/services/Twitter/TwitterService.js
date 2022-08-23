@@ -53,7 +53,6 @@ export const getTwitterService = async(url, id, data)=>{
         if(data)return new DefaultChannelInfoExtractor(data)
         return new TwitterUserExtractor(url, id, data)
     }else if(url.includes(twitterUserPageUrl) && !(url.split(twitterUserPageUrl)[1].split("?")[0].split("/")[1])){
-        if(data)return new DefaultChannelInfoExtractor(data)
         return new TwitterUserExtractor(url, id, data)
     }else if(tweetPageRegexUrl.test(url) || mobileTweetPageRegexUrl.test(url)){
         return new TwitterPostExtractor(url, id, data)
