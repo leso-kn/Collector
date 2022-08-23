@@ -13,21 +13,27 @@
 - No login
 - No tracking
 - All unique identifiers are removed from requests
+- Import RSS feeds
 - Read Posts(Twitter-like or forum-like)
 - Read Articles
 - Get comments and replies
 - Get reposts
 - Get feeds
-- Get trendings
+- Get trendings and recommendations
 - Local Bookmark
+- Follow users and put the different groups locally
 - Block user locally
 - Search for posts and users
+- Full support for dark mode
+- A modern and smooth UI, inspired by NewPipe
 - Can be extended to any service easily
+- Fully compatible with RSS
 
 ## Available services
 - Twitter
 - BiliBiliSpace
 - BiliBiliArticle
+- User-imported RSS
 
 ## Screenshots
 <img src="https://i.imgur.com/Ml3ccdx.png" height="500"><img src="https://i.imgur.com/4vFtWMb.png" height="500">
@@ -44,6 +50,9 @@
 <img src="https://i.imgur.com/Vi6Zb3l.png" height="500">
 <img src="https://i.imgur.com/fyRMVjf.png" height="500">
 <img src="https://i.imgur.com/K7rtKAl.png" height="500">
+<img src="https://i.imgur.com/s2Lf7Pl.png" height="500">
+<img src="https://i.imgur.com/odsr4Jh.png" height="500">
+<img src="https://i.imgur.com/1tIbUh8.png" height="500">
 
 ## Contribute
 Collector is designed to be compatiable to any service, so feel free to implement services - it isn't hard.
