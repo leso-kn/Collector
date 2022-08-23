@@ -133,7 +133,7 @@ export const Posts = React.memo((props) => {
                           if (!item) return undefined
                           return {length: item.height, offset: item.offset, index}
                       }}
-                      maxToRenderPerBatch={40}
+                      maxToRenderPerBatch={props.urls.length*20}
                       windowSize={6}
                       bounces={false}
             />
