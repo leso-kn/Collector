@@ -79,7 +79,8 @@ export class TwitterPostExtractor{
         return this.tweetData.extended_entities?.media?.map(x=>{return {uri:x.media_url_https}})
     }
     getOuterContentURLs(){
-        return [{type: "video", uri: this.tweetData.extended_entities?.media?.[0]?.video_info?.variants?.[0]?.url}]
+        const url = this.tweetData.extended_entities?.media?.[0]?.video_info?.variants?.[0]?.url
+        return url?[{type: "video", uri: url}]:null
     }
     getHTMLContent(){
         return null
