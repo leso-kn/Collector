@@ -7,6 +7,38 @@ import {getTheme} from "../utils";
 import SafeAreaViewPlus from "react-native-zy-safe-area-plus";
 import {ConfirmDialog} from 'react-native-simple-dialogs';
 
+const renderFunc = (navigation)=> data => (
+    <TouchableNativeFeedback onPress={() => navigation.push("Group", {
+        'title': data.item[0],
+        key: "subscriptionData",
+        type:"channels"
+    })}>
+        <View style={{
+            marginBottom: 10,
+            marginTop: 10,
+            height: 60,
+            minWidth: 100,
+            alignItems: "center",
+            justifyContent: "center",
+            borderWidth:0.2,
+            borderColor: "gray"
+        }}>
+            <Text style={{
+                fontSize: 15,
+                marginTop: 0,
+                fontWeight: "500",
+                marginLeft: 20,
+                marginRight: 20,
+                color:getTheme().textColor,
+            }}>
+                {`${data.item[0]}`}
+            </Text>
+            <Text style={{color: "gray", fontSize: 13, marginTop: 2}}>
+                {`(${data.item[1].length})`}
+            </Text>
+        </View>
+    </TouchableNativeFeedback>
+)
 
 export const Subscriptions = ({navigation, randomID}) => {
     const [dialogVisible, setDialogVisible] = useState(false)
@@ -31,38 +63,7 @@ export const Subscriptions = ({navigation, randomID}) => {
             </View>
             <FlatList style={{flexGrow:0 ,backgroundColor:getTheme().backgroundColor}}
                       data={subscriptionData && Object.entries(subscriptionData).filter(x => x[0] !== "feeds")}
-                      renderItem={data => (
-                          <TouchableNativeFeedback onPress={() => navigation.push("Group", {
-                              'title': data.item[0],
-                              key: "subscriptionData",
-                              type:"channels"
-                          })}>
-                              <View style={{
-                                  marginBottom: 10,
-                                  marginTop: 10,
-                                  height: 60,
-                                  minWidth: 100,
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                  borderWidth:0.2,
-                                  borderColor: "gray"
-                              }}>
-                                  <Text style={{
-                                      fontSize: 15,
-                                      marginTop: 0,
-                                      fontWeight: "500",
-                                      marginLeft: 20,
-                                      marginRight: 20,
-                                      color:getTheme().textColor,
-                                  }}>
-                                      {`${data.item[0]}`}
-                                  </Text>
-                                  <Text style={{color: "gray", fontSize: 13, marginTop: 2}}>
-                                      {`(${data.item[1].length})`}
-                                  </Text>
-                              </View>
-                          </TouchableNativeFeedback>
-                      )}
+                      renderItem={renderFunc(navigation)}
                       horizontal={true}
                       ListHeaderComponent={(
                           <TouchableNativeFeedback onPress={() => navigation.push("Group", {

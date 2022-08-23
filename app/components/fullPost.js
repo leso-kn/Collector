@@ -1,10 +1,22 @@
 import Post from "./post";
 import React, {useEffect, useReducer, useRef, useState} from 'react';
 import {FlatList, Text, TouchableOpacity, View} from "react-native";
-import {deviceWidth, FIRST_POST, HOT_FIRST, OLD_FIRST, OTHER_POST} from "../constants";
+import {FIRST_POST, HOT_FIRST, OLD_FIRST, OTHER_POST, PREVIEW_POST} from "../constants";
 import {findService} from "../findService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {getTheme} from "../utils";
+import {getItemLayout, onLayout} from "./renderPost";
+
+function renderFunc(layoutMap, props, packedProps, parentRef) {
+    return (comment) => {
+        return (<Post navigation={packedProps.navigation} onLayout={onLayout(comment, layoutMap)} data={comment.item}
+                      parentType={props.type === "reposts" ? undefined : parentRef.current.parentType}
+                      parentID={props.type === "reposts" ? undefined : parentRef.current.parentID}
+                      height={layoutMap.current.get(comment.item.getIdentifyID())?.height > 121 ? layoutMap.current.get(comment.item.getIdentifyID())?.height : undefined}
+                      type={OTHER_POST} depth={0} url={comment.item.url || props.url} id={comment.item.id}/>)
+    }
+}
+
 
 const FullPost = (packedProps) => {
     let props = packedProps.route.params
@@ -15,7 +27,7 @@ const FullPost = (packedProps) => {
         // console.log(JSON.stringify(action.data.map(x=>x.member.uname+" " +x.content.message)) + "action" + action.data.length)
         let result = [...state]
         for (let item of action.data) {
-            if (result.map(x => x.getIdentifyID()).includes(item.getIdentifyID()) || action?.blocklist.filter(x=>x.identifyID === item.getChannelIdentifyID()).length) continue
+            if (result.map(x => x.getIdentifyID()).includes(item.getIdentifyID()) || action?.blocklist.filter(x => x.identifyID === item.getChannelIdentifyID()).length) continue
             result.push(item)
         }
         return result
@@ -34,11 +46,11 @@ const FullPost = (packedProps) => {
                 AsyncStorage.setItem("blocklist", JSON.stringify({words: [], channels: []}))
             }
             blocklist = JSON.parse(res)?.channels
-        }).then(res=>{
+        }).then(res => {
             if (props.parentID) {
                 packedProps.navigation.setOptions({
-                    headerRight: ()=>(
-                        <TouchableOpacity onPress={()=>packedProps.navigation.push("FullPost", {url: props.url})}>
+                    headerRight: () => (
+                        <TouchableOpacity onPress={() => packedProps.navigation.push("FullPost", {url: props.url})}>
                             <View>
                                 <Text>
                                     Origin Post
@@ -49,7 +61,7 @@ const FullPost = (packedProps) => {
                 })
                 findService(props.url, props.id, props.data)
                     .then(res => res.getReplies(pn, props.parentID, props.parentType, lastID.current)).then((res) => {
-                    res?.length && dispatch({data: res, "blocklist":blocklist})
+                    res?.length && dispatch({data: res, "blocklist": blocklist})
                     setHasMore(res?.hasMore())
                     lastID.current = res.getLastID()
                 })
@@ -58,7 +70,7 @@ const FullPost = (packedProps) => {
                     title: "Reposts"
                 })
                 findService(props.url, props.id, props.data).then(res => res.getReposts(lastID.current)).then(res => {
-                    res?.length && dispatch({data: res, "blocklist":blocklist})
+                    res?.length && dispatch({data: res, "blocklist": blocklist})
                     setHasMore(res?.hasMore())
                     lastID.current = res.getLastID()
                 })
@@ -68,7 +80,7 @@ const FullPost = (packedProps) => {
                     parentRef.current.parentType = res.getType()
                     return res.getComments(pn, lastID.current)
                 }).then(res => {
-                    res?.length && dispatch({data: res, "blocklist":blocklist})
+                    res?.length && dispatch({data: res, "blocklist": blocklist})
                     setHasMore(res?.hasMore())
                     lastID.current = res.getLastID()
                 })
@@ -84,28 +96,9 @@ const FullPost = (packedProps) => {
             </View>
         </View>
     )
-    const renderFunc = (comment) => {
-        return (<Post navigation={packedProps.navigation} onLayout={e => {
-            if (e.nativeEvent.layout.width !== deviceWidth) return
-            let tempID = comment.item.getIdentifyID()
-            let item = layoutMap.current.get(tempID)
-            if (!item || (item && item.height < e.nativeEvent.layout.height)) {
-                let offsetValue = 0
-                for (let i of layoutMap.current) {
-                    if (i[0] === tempID) break
-                    offsetValue += i[1].height
-                }
-                layoutMap.current.set(tempID, {height: e.nativeEvent.layout.height, offset: offsetValue})
-            }
-        }} data={comment.item} parentType={props.type === "reposts" ? undefined : parentRef.current.parentType}
-                      parentID={props.type === "reposts" ? undefined : parentRef.current.parentID}
-                      height={layoutMap.current.get(comment.item.getIdentifyID())?.
-                          height > 121 ? layoutMap.current.get(comment.item.getIdentifyID())?.height : undefined}
-                      type={OTHER_POST} depth={0} url={comment.item.url || props.url} id={comment.item.id}/>)
-    }
 
     return (
-        <FlatList data={comments} renderItem={renderFunc} ListFooterComponent={(<View style={{height: 50}}/>)}
+        <FlatList data={comments} renderItem={renderFunc(layoutMap, props, packedProps, parentRef)} ListFooterComponent={(<View style={{height: 50}}/>)}
                   ListHeaderComponent={head}
                   ListEmptyComponent={<View/>}
                   extraData={randomID}
@@ -115,11 +108,7 @@ const FullPost = (packedProps) => {
                       hasMore && setPn(pn + 1)
                   }}
                   onEndReachedThreshold={0.1}
-                  getItemLayout={(data, index) => {
-                      let item = layoutMap.current.get(data[index].getIdentifyID())
-                      if (!item) return undefined
-                      return {length: item.height, offset: item.offset, index}
-                  }}
+                  getItemLayout={getItemLayout(layoutMap)}
                   maxToRenderPerBatch={50}
                   windowSize={8}
                   initialNumToRender={8}

@@ -5,6 +5,7 @@ import Post from "./post";
 import {FlatList, View} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {getDomain, getTheme} from "../utils";
+import {getItemLayout, onLayout} from "./renderPost";
 
 const reducer = (state, action) => {
     let result = [...state]
@@ -17,6 +18,16 @@ const reducer = (state, action) => {
     }
     return result
 }
+
+function renderFunc(layoutMap, props) {
+    return (post)=>{
+        return (
+            <Post type={PREVIEW_POST} depth={0} onLayout={onLayout(post, layoutMap)} url={post.item.url} data={post.item}
+                  height={layoutMap.current.get(post.item.getIdentifyID())?.height > 121 ? layoutMap.current.get(post.item.getIdentifyID())?.height : undefined}
+                  navigation={props.navigation}/>)
+    }
+}
+
 export const Posts = React.memo((props) => {
     const [pn, setPn] = useState(1)
     const refContainer = useRef({hasMores: [], lastIDs: [], notFetch: {}})
@@ -94,30 +105,9 @@ export const Posts = React.memo((props) => {
             }
         })
     }, [pn])
-
-    function renderFunc(post) {
-        return (
-            <Post type={PREVIEW_POST} depth={0} onLayout={e => {
-                if (e.nativeEvent.layout.width !== deviceWidth) return
-                let tempID = post.item.getIdentifyID()
-                let item = layoutMap.current.get(tempID)
-                if (!item || (item && item.height < e.nativeEvent.layout.height)) {
-                    let offsetValue = 0
-                    for (let i of layoutMap.current) {
-                        if (i[0] === tempID) break
-                        offsetValue += i[1].height
-                    }
-                    layoutMap.current.set(tempID, {height: e.nativeEvent.layout.height, offset: offsetValue})
-                }
-            }
-            } url={post.item.url} data={post.item}
-                  height={layoutMap.current.get(post.item.getIdentifyID())?.height > 121 ? layoutMap.current.get(post.item.getIdentifyID())?.height : undefined}
-                  navigation={props.navigation}/>)
-    }
-
     return (
         <View style={{backgroundColor: getTheme().backgroundColor, height: "100%", flex: 1}}>
-            <FlatList data={posts} renderItem={renderFunc}
+            <FlatList data={posts} renderItem={renderFunc(layoutMap, props)}
                       keyExtractor={(item, index) => {
                           return item.getIdentifyID()
                       }}
@@ -128,11 +118,7 @@ export const Posts = React.memo((props) => {
                       removeClippedSubviews={true}
                       onEndReachedThreshold={0.1}
                       initialNumToRender={5}
-                      getItemLayout={(data, index) => {
-                          let item = layoutMap.current.get(data[index].getIdentifyID())
-                          if (!item) return undefined
-                          return {length: item.height, offset: item.offset, index}
-                      }}
+                      getItemLayout={getItemLayout(layoutMap)}
                       maxToRenderPerBatch={props.urls.length*20}
                       windowSize={6}
                       bounces={false}

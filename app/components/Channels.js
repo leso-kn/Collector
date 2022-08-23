@@ -4,6 +4,10 @@ import {ChannelInfo} from "./ChannelInfo";
 import {FlatList, View} from "react-native";
 import {getTheme} from "../utils";
 
+const renderFunc = props=>(user) => {
+    return (<ChannelInfo data={user.item} navigation={props.navigation}/>)
+}
+
 export const Channels = (props) => {
     const reducer = (state, action) => {
         if(action.type === "replace"){
@@ -30,12 +34,9 @@ export const Channels = (props) => {
        props.data && dispatch({data:props.data, type:"replace"})
     },[props.randomID])
 
-    const renderFunc = (user) => {
-        return (<ChannelInfo data={user.item} navigation={props.navigation}/>)
-    }
     return (
         <View style={{flex: 1, backgroundColor:getTheme().backgroundColor}}>
-            <FlatList data={users} renderItem={renderFunc}
+            <FlatList data={users} renderItem={renderFunc(props)}
                       keyExtractor={item=>item.identifyID}
                       listKey={item=>item.identifyID}
                       onEndReached={() => {
