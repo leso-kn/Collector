@@ -50,6 +50,7 @@
     "react-native-simple-dialogs": "^1.5.0",
     "react-native-tab-view": "^2.16.0",
     "react-native-url-polyfill": "^1.3.0",
+    "react-native-user-avatar": "^1.0.8",
     "react-native-vector-icons": "^9.2.0",
     "react-native-webview": "^11.23.0",
     "react-native-zy-safe-area-plus": "^1.1.0",

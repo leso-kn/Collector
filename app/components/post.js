@@ -23,6 +23,7 @@ import SelectMultiple from "react-native-select-multiple";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import {Dirs, FileSystem} from 'react-native-file-access';
 import {showMessage} from "react-native-flash-message";
+import UserAvatar from 'react-native-user-avatar';
 import checkbox from "../../assets/icon-checkbox-modified.png"
 import checkboxChecked from "../../assets/icon-checkbox-checked-modified.png"
 import {Autolink} from "react-native-autolink";
@@ -70,6 +71,7 @@ const forward = (data, url, navigation) => (
         </View>
     </TouchableOpacity>
 )
+
 const Post = React.memo((props) => {
     const [visible, setIsVisible] = useState(false);
     const [selected, setSelected] = useState()
@@ -178,14 +180,16 @@ const Post = React.memo((props) => {
                         <TouchableOpacity onPress={() => {
                             props.navigation.push("Channel", {url: data.channelUrl})
                         }}>
-                            <Image source={{uri: data.avatar}}
+                            <UserAvatar src={data.avatar}
+                                        name={data.name}
+                                        size={35}
                                    style={{
                                        marginLeft: 5,
                                        width: 35,
                                        height: 35,
                                        borderRadius: 35,
                                        marginBottom: 7
-                                   }}></Image>
+                                   }}></UserAvatar>
                         </TouchableOpacity>
                         <View style={{flex: 1, marginLeft: 10, marginTop: data.subname ? 1 : 6}}>
                             <Text style={{color: getTheme().textColor}}>

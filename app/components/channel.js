@@ -16,6 +16,7 @@ import {ConfirmDialog} from "react-native-simple-dialogs";
 import SelectMultiple from "react-native-select-multiple";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import ImageView from "react-native-image-viewing";
+import UserAvatar from 'react-native-user-avatar';
 import checkbox from "../../assets/icon-checkbox-modified.png";
 import checkboxChecked from "../../assets/icon-checkbox-checked-modified.png";
 
@@ -130,7 +131,7 @@ const ChannelInside = (props) => {
                 <View style={{flexDirection: "row", marginLeft: 10}}>
                     <View style={{flex: 1, flexDirection: "row"}}>
                         <TouchableNativeFeedback onPress={() => setShowAvatar(true)}>
-                            <Image source={{uri: data.avatar}} style={{
+                            <UserAvatar size={80} src={data.avatar} name={data.name} style={{
                                 width: 80, height: 80, borderRadius: 40, marginTop: -30
                             }}/>
                         </TouchableNativeFeedback>

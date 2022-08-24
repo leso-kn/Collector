@@ -2,6 +2,7 @@ import React, {useEffect, useReducer} from 'react';
 import {Image, Text, TouchableNativeFeedback, View} from "react-native";
 import {findService} from "../findService";
 import {getTheme, reducer} from "../utils";
+import UserAvatar from 'react-native-user-avatar';
 
 export const ChannelInfo = React.memo((props) => {
     const [data, dispatch] = useReducer(reducer, {})
@@ -21,7 +22,7 @@ export const ChannelInfo = React.memo((props) => {
         <TouchableNativeFeedback
             onPress={() => props.navigation.push("Channel", {url: data.url, id: props.data.isRSS?"RSSSource":null})}>
             <View style={{flexDirection: "row", marginTop: 7.5, marginBottom: 7.5}}>
-                <Image source={{uri: data.avatar}}
+                <UserAvatar src={data.avatar} name={data.name} size={50}
                        style={{
                            width: 50,
                            height: 50,
