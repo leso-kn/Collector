@@ -4,7 +4,7 @@ import {findService} from "../findService";
 import Post from "./post";
 import {FlatList, View} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {getDomain, getTheme} from "../utils";
+import {getDomain, getRequestLimit, getTheme} from "../utils";
 import {getItemLayout, onLayout} from "./renderPost";
 
 const reducer = (state, action) => {
@@ -62,7 +62,7 @@ export const Posts = React.memo((props) => {
                         requestControl.current = []
                         requestControl.current.push({time: currentTime, count: {[getDomain(url)]: 1}})
                     } else {
-                        lastItem.count[getDomain(url)] >= 5 ?
+                        lastItem.count[getDomain(url)] >= getRequestLimit(getDomain(url)) ?
                             requestControl.current.push({time: lastItem.time + 1, count: {[getDomain(url)]: 1}}) :
                             requestControl.current[requestControl.current.length - 1].count[getDomain(url)] += 1
                     }

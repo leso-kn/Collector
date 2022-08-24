@@ -135,3 +135,12 @@ export const getDomain=(url)=>{
     let groups = new URL(url).hostname.split(".")
     return groups.slice(groups.length - 2).join(".")
 }
+
+export const getRequestLimit = (domain)=>{
+    console.log(domain)
+    const limitDict = {
+        "bilibili.com": 10,
+        "twitter.com": 10
+    }
+    return limitDict[domain] || 5
+}
