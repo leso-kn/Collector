@@ -25,6 +25,7 @@ export class BiliPostExtractor {
     512 	番剧更新 	433040940915592171
     1024 	？
     2048 	分享歌单 	325805722180163707
+    4099    综艺      697603783829487618
     4200    直播
     4300 	（只能被转发，不能单独查询）视频收藏夹 	485549634823272700
     */
@@ -154,6 +155,7 @@ export class BiliPostExtractor {
                 returnCard.url = postPageUrl + this.card.desc.orig_dy_id_str
                 returnCard.type = this.card.desc.origin.type
                 returnCard.id = this.card.desc.orig_dy_id_str
+                if(returnCard.type === 4099)return ""
                 returnCard.rp_id = this.card.desc.origin.rid_str
                 return returnCard
             default:
@@ -224,6 +226,10 @@ export class BiliPostExtractor {
                 return {uri: `https://www.bilibili.com/read/cv${this.contentCard.id}`, showImg: false}
             case 2048:
                 return {uri: this.contentCard.target_url, showImg: true}
+            case 1:
+                if(this.card.desc.origin.type === 4099){
+                    return {uri: this.forwardCard.url, showImg: true}
+                }
             default:
                 return ""
         }
