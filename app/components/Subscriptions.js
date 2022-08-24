@@ -7,7 +7,7 @@ import {getTheme} from "../utils";
 import SafeAreaViewPlus from "react-native-zy-safe-area-plus";
 import {ConfirmDialog} from 'react-native-simple-dialogs';
 
-const renderFunc = (navigation)=> data => (
+const renderFunc = (navigation, blocklist)=> data => (
     <TouchableNativeFeedback onPress={() => navigation.push("Group", {
         'title': data.item[0],
         key: "subscriptionData",
@@ -34,7 +34,7 @@ const renderFunc = (navigation)=> data => (
                 {`${data.item[0]}`}
             </Text>
             <Text style={{color: "gray", fontSize: 13, marginTop: 2}}>
-                {`(${data.item[1].length})`}
+                {`(${data.item[1].filter(x => !blocklist.includes(x.isRSS?"RSS"+x.url :x.identifyID)).length})`}
             </Text>
         </View>
     </TouchableNativeFeedback>
@@ -45,7 +45,12 @@ export const Subscriptions = ({navigation, randomID}) => {
     const [text, changeText] = useState("")
     const [subscriptionData, setSubscriptionData] = useState({})
     const [RSSData, setRSSData] = useState([])
+    const [blocklist, setBlocklist] = useState([])
     useEffect(() => {
+        AsyncStorage.getItem("blocklist").then(res=> {
+            res = JSON.parse(res)
+            setBlocklist(res.channels.map(x => x.identifyID))
+        })
         AsyncStorage.getItem("subscriptionData").then(res => {
             res&&setSubscriptionData(JSON.parse(res))
         })
@@ -63,7 +68,7 @@ export const Subscriptions = ({navigation, randomID}) => {
             </View>
             <FlatList style={{flexGrow:0 ,backgroundColor:getTheme().backgroundColor}}
                       data={subscriptionData && Object.entries(subscriptionData).filter(x => x[0] !== "feeds")}
-                      renderItem={renderFunc(navigation)}
+                      renderItem={renderFunc(navigation, blocklist)}
                       horizontal={true}
                       ListHeaderComponent={(
                           <TouchableNativeFeedback onPress={() => navigation.push("Group", {
@@ -91,7 +96,7 @@ export const Subscriptions = ({navigation, randomID}) => {
                                       {'RSS'}
                                   </Text>
                                   <Text style={{color: "gray", fontSize: 13, marginTop: 2}}>
-                                      {`(${RSSData.length})`}
+                                      {`(${RSSData.filter(x => !blocklist.includes(x.isRSS?"RSS"+x.url :x.identifyID)).length})`}
                                   </Text>
                               </View>
                           </TouchableNativeFeedback>

@@ -3,6 +3,7 @@ import {findService} from "../findService";
 import {ChannelInfo} from "./ChannelInfo";
 import {FlatList, View} from "react-native";
 import {getTheme} from "../utils";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const renderFunc = props=>(user) => {
     return (<ChannelInfo data={user.item} navigation={props.navigation}/>)
@@ -31,7 +32,11 @@ export const Channels = (props) => {
     }, [pn])
 
     useEffect(()=>{
-       props.data && dispatch({data:props.data, type:"replace"})
+       props.data &&  AsyncStorage.getItem("blocklist").then(res=> {
+           res = JSON.parse(res)
+           let blocklist = res.channels.map(x=>x.identifyID)
+           dispatch({data: props.data.filter(x => !blocklist.includes(x.isRSS?"RSS"+x.url :x.identifyID)), type: "replace"})
+       })
     },[props.randomID])
 
     return (
