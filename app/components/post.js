@@ -254,9 +254,14 @@ const Post = React.memo((props) => {
                                 marginRight: 13,
                                 fontSize: 14.5,
                                 marginTop: 10,
+                                maxWidth:deviceWidth*0.92
                             }}
                         ><RenderHTML
                             contentWidth={deviceWidth * 0.92}
+                            enableExperimentalBRCollapsing={true}
+                            enableExperimentalGhostLinesPrevention={true}
+                            enableExperimentalMarginCollapsing={true}
+                            ignoredStyles={['width']}
                             source={{html: he.decode(data.htmlContent).replaceAll("\\", "")}}
                         /></View> : null}
                         {data.outerContentURLs && data.outerContentURLs?.filter(x => x.type === "video").length ?
