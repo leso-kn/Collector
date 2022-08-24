@@ -200,7 +200,7 @@ const ChannelInside = (props) => {
                             style={{fontSize: 11, color: "gray", marginTop: 5, marginBottom:5}}>{data.additionalText}</Text>) : null}
                 </View>
                 {data.fanNum || data.followNum || data.likeNum ? (
-                    <View style={{flexDirection: "row", marginBottom: 10, marginTop: 10}}>
+                    <View style={{flexDirection: "row", marginBottom: 10, marginTop:data.additionalText ?5: 10}}>
                         <View style={{
                             justifyContent: "center",
                             alignItems: "center",
