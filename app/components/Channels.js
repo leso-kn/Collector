@@ -35,7 +35,7 @@ export const Channels = (props) => {
        props.data &&  AsyncStorage.getItem("blocklist").then(res=> {
            res = JSON.parse(res)
            let blocklist = res.channels.map(x=>x.identifyID)
-           dispatch({data: props.data.filter(x => !blocklist.includes(x.isRSS?"RSS"+x.url :x.identifyID)), type: "replace"})
+           dispatch({data: props.noBlock?props.data:props.data.filter(x => !blocklist.includes(x.isRSS?"RSS"+x.url :x.identifyID)), type: "replace"})
        })
     },[props.randomID])
 

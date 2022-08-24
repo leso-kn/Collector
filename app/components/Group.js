@@ -73,6 +73,12 @@ export const Group = ({navigation, route})=>{
                           navigation={navigation}/>
             )
         case "blocklist":
+            return (
+                <Channels data={data}
+                          noBlock={true}
+                          randomID={Math.random()*1000}
+                          navigation={navigation}/>
+            )
         case "RSS":
             return (
                 <Channels data={data}
