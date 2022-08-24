@@ -93,7 +93,7 @@ export class RSSItemExtractor {
     }
 
     getIdentifyName() {
-        return this.data.identifyName
+        return this.data.getChannelIdentifyID().slice(3)
     }
 
     getType() {
@@ -121,7 +121,7 @@ export class RSSItemExtractor {
     }
 
     getChannelUrl() {
-        return null
+        return this.getIdentifyName()
     }
 
     getParentID() {

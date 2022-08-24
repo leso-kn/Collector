@@ -577,7 +577,8 @@ const Post = React.memo((props) => {
                                             avatar: data.avatar,
                                             url: data.channelUrl,
                                             identifyID: data.channelIdentifyID,
-                                            identifyName: data.identifyName
+                                            identifyName: data.identifyName,
+                                            isRSS: props.data.url ==="RSSItem"
                                         })
                                     }
                                 } else {
