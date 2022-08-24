@@ -11,7 +11,7 @@ export class RSSItemExtractor {
     }
 
     getName() {
-        return this.data.authors.map(x => x.name).join(", ")
+        return this.data.name || this.data.authors.map(x => x.name).join(", ")
     }
 
     getAvatar() {

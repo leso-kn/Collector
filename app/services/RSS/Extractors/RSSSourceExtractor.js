@@ -75,6 +75,7 @@ export class RSSSourceExtractor {
             item.url = "RSSItem"
             item.avatar = this.data.image.url
             item.getTime = () => item.published
+            item.name = this.data.title
         }
         return result
     }
