@@ -1,6 +1,8 @@
 <p align="center"><img src="https://i.imgur.com/A9HfPiT.png" width="150"></p>
 <h2 align="center"><b>Collector</b></h2>
 <h4 align="center">An Android universal information stream reader aiming to replace RSS.</h4>
+<p align="center"><a href="https://apt.izzysoft.de/fdroid/index/apk/org.collector.release"><img src="assets/IzzyOnDroid.png" alt="Get it on IzzyOnDroid" height=80/></a></p>
+
 <div align="center">
 <img src="https://img.shields.io/github/search/InfinityLoop1309/Collector/Collector" />
 <img src="https://img.shields.io/github/downloads/InfinityLoop1309/Collector/total"/>
