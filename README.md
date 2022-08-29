@@ -12,30 +12,19 @@
 </div>
 
 ## Features
-- No login
-- No tracking
-- All unique identifiers are removed from requests
-- Import RSS feeds
-- Read Posts(Twitter-like or forum-like)
-- Read Articles
-- Get comments and replies
-- Get reposts
-- Get feeds
-- Get trendings and recommendations
-- Local Bookmark
-- Follow users and put the different groups locally
-- Block user locally
-- Search for posts and users
-- Full support for dark mode
-- A modern and smooth UI, inspired by NewPipe
-- Can be extended to any service easily
-- Fully compatible with RSS
+* No login, No tracking, All unique identifiers are removed from requests
+* Read Posts(Twitter-like or forum-like) or Articles, search for posts and users
+* Get feeds, comments and replies, reposts, trendings and recommendations
+* Local Bookmark, follow users and put the different groups locally, block user locally
+* A modern and smooth UI, inspired by NewPipe, with full support for dark mode
+* Can be extended to any service easily
+* Fully compatible with RSS
 
 ## Available services
-- Twitter
-- BiliBiliSpace
-- BiliBiliArticle
-- User-imported RSS
+* Twitter
+* BiliBiliSpace
+* BiliBiliArticle
+* User-imported RSS
 
 ## Screenshots
 <img src="https://i.imgur.com/Ml3ccdx.png" height="500"><img src="https://i.imgur.com/4vFtWMb.png" height="500">
@@ -56,11 +45,15 @@
 <img src="https://i.imgur.com/odsr4Jh.png" height="500">
 <img src="https://i.imgur.com/1tIbUh8.png" height="500">
 
+## My other projects
+
+[InfinityLoop1309/AnimePipe](https://github.com/InfinityLoop1309/AnimePipe) An alternative Android player of Bilibili, NicoNico, Youtube and more. 
+
 ## Contribute
-Collector is designed to be compatiable to any service, so feel free to implement services - it isn't hard.
+Collector is designed to be compatiable to any service, you can implement your own service even if you are a begginer. Give it a try!
 
-Contribute docs are working in progress. Currently, please raise an issue for help if you want to contribute a service you.
+Contribute docs are working in progress. Currently, please raise an issue for help if you want to contribute a service.
 
-Any PRs are welcome as long as the service doesn't cause discomfort.
+PRs and issues are welcomed. Help me to make Collector better!
 
-Note: issues are for contributers **only**. For bug reports and feature requests, please use discussions instead.
+
