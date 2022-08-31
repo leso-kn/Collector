@@ -1,6 +1,7 @@
 An Android universal information stream reader aiming to replace RSS.
 
 **Features*
+
 * No login, No tracking, All unique identifiers are removed from requests
 * Read Posts(Twitter-like or forum-like) or Articles, search for posts and users
 * Get feeds, comments and replies, reposts, trendings and recommendations
@@ -10,6 +11,7 @@ An Android universal information stream reader aiming to replace RSS.
 * Fully compatible with RSS
 
 **Available services**
+
 * Twitter
 * BiliBiliSpace
 * BiliBiliArticle
