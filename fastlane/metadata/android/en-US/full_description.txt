@@ -1,6 +1,6 @@
 An Android universal information stream reader aiming to replace RSS.
 
-**Features*
+**Features**
 
 * No login, No tracking, All unique identifiers are removed from requests
 * Read Posts(Twitter-like or forum-like) or Articles, search for posts and users
