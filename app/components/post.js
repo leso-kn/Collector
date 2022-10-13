@@ -394,7 +394,14 @@ const Post = React.memo((props) => {
                                 }}>
                                     <FeatherIcon name={"bookmark"} size={20} color={"gray"} style={{marginLeft: 15}}/>
                                 </TouchableNativeFeedback>
-                                <FeatherIcon name={"share-2"} size={20} color={"gray"} style={{marginLeft: 10}}/>
+                                <TouchableNativeFeedback onPress={() => {
+                                    Share.open({
+                                        title: data.title,
+                                        url: props.url
+                                    })
+                                }}>
+                                    <FeatherIcon name={"share-2"} size={20} color={"gray"} style={{marginLeft: 10}}/>
+                                </TouchableNativeFeedback>
                                 <TouchableNativeFeedback onPress={() => {
                                     setDialogVisible2(true)
                                 }}>
