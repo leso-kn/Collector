@@ -44,6 +44,9 @@
               <data
                       android:host="mobile.twitter.com"
                       android:pathPattern="/.*/status/.*"  />
+              <data
+                      android:host="twitter.com"
+                      android:pathPattern="/.*/status/.*"  />
           </intent-filter>
       </activity>
     </application>

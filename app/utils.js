@@ -114,7 +114,7 @@ export const getScreen = (url)=>{
     const channelLinks = [BiliSpaceLinks.mobileSpaceUrl, TwitterLinks.mobileTwitterUserPageUrl]
     const postLinks = [BiliSpaceLinks.postPageUrl, BiliSpaceLinks.mobilePostPageUrl]
     const articleLinks = [BiliArticleLinks.articlePageUrl]
-    const postRegLinks = [TwitterLinks.mobileTweetPageRegexUrl]
+    const postRegLinks = [TwitterLinks.tweetPageRegexUrl, TwitterLinks.mobileTweetPageRegexUrl]
     for(let pattern of postRegLinks){
         if(pattern.test(url))return "FullPost"
     }
